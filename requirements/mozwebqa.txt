@@ -1,0 +1,8 @@
+# This pulls in all the libraries needed to run Selenium tests
+# on the Mozilla CaseConductor project
+
+selenium
+pytest
+pytest-xdist
+pytest-mozwebqa
+unittestzero
