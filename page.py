@@ -13,7 +13,7 @@
 # for the specific language governing rights and limitations under the
 # License.
 #
-# The Original Code is CaseConductor
+# The Original Code is Case Conductor
 #
 # The Initial Developer of the Original Code is
 # Mozilla Corp.
