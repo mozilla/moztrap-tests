@@ -40,9 +40,9 @@ from base_page import CaseConductorBasePage
 
 
 class CaseConductorHomePage(CaseConductorBasePage):
-    
+
     _page_title = "Mozilla Case Conductor"
-    
+
     def __init__(self, testsetup):
+        CaseConductorBasePage.__init__(self, testsetup)
         self.open("/")
-        

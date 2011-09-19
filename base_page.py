@@ -39,18 +39,18 @@
 from page import Page
 
 class CaseConductorBasePage(Page):
-    
-    _user_name= "css=.meta>ul>li"
-    
+
+    _user_name = "css=.meta>ul>li"
+
     def login(self, user="default"):
         from login_page import CaseConductorLoginPage
-        login_page = CaseConductorLoginPage()
+        login_page = CaseConductorLoginPage(self.testsetup)
         return login_page.login(user)
-    
+
     @property
     def is_user_loged_in(self):
         return self.is_element_visible(self._user_name)
-        
+
     @property
     def users_name(self):
         return self.get_text(self._user_name).split()[1]

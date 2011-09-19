@@ -37,7 +37,7 @@
 # ***** END LICENSE BLOCK *****
 
 from home_page import CaseConductorHomePage
-
+from unittestzero import Assert
 
 class TestHomepage:
 
