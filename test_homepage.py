@@ -41,7 +41,19 @@ from unittestzero import Assert
 
 class TestHomepage:
 
-    def test_login(self, mozwebqa):
+    def test_that_user_can_login_and_logout(self, mozwebqa):
         home = CaseConductorHomePage(mozwebqa)
         home.login()
         Assert.true(home.is_user_loged_in)
+        user_text = u"Welcome %s [Sign Out]" % home.testsetup.credentials["default"]["name"]
+        Assert.equal(home.users_name_text, user_text)
+
+        login_page = home.logout()
+
+        Assert.true(login_page.is_register_visible)
+        Assert.true(login_page.is_signin_visible)
+
+        Assert.equal(login_page.account_text, "Sign in or Register")
+
+
+

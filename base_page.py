@@ -40,7 +40,8 @@ from page import Page
 
 class CaseConductorBasePage(Page):
 
-    _user_name = "css=.meta>ul>li"
+    _user_name_locator = "css=.meta>ul>li"
+    _logout_locator = "css=.meta>ul>li>a"
 
     def login(self, user="default"):
         from login_page import CaseConductorLoginPage
@@ -49,8 +50,13 @@ class CaseConductorBasePage(Page):
 
     @property
     def is_user_loged_in(self):
-        return self.is_element_visible(self._user_name)
+        return self.is_element_visible(self._user_name_locator)
 
     @property
-    def users_name(self):
-        return self.get_text(self._user_name).split()[1]
+    def users_name_text(self):
+        return self.get_text(self._user_name_locator)
+
+    def logout(self):
+        self.click(self._logout_locator, True)
+        from login_page import CaseConductorLoginPage
+        return CaseConductorLoginPage(self.testsetup)
