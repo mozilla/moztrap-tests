@@ -1,7 +1,7 @@
 CaseConductor Tests
 ===================
 
-Automated tests for the Socorro web application.
+Automated tests for the Case Conductor web application.
 
 Running Tests
 -------------
@@ -27,7 +27,7 @@ __note__
 If you are running on Ubuntu/Debian you will need to do following first
 
     sudo apt-get install python-setuptools
-    
+
 to install the required Python libraries.
 
 ### Selenium
@@ -43,13 +43,16 @@ Change the path/name to the downloaded Selenium server file.
 
 ### Running tests locally
 
-To run tests locally it's a simple case of calling py.test from the Socorro-tests directory
-<br />You should specify the following argument for Selenium rc: --api=rc
-<br />The base URL should be a valid instance of CaseConductor: the staging env is currently https://tcm.oddsites.net 
+To run tests locally it's a simple case of calling py.test from the
+caseconductor-tests directory. You should specify the following argument for
+Selenium RC: --api=rc
 
-    py.test --api=rc --baseurl=http://example.com
+The base URL should be a valid instance of CaseConductor: the staging env is
+currently https://cc.oddsites.net
 
-For other instructions type py.test --help .
+    py.test --api=rc --baseurl=https://cc.oddsites.net
+
+For other possible options, type py.test --help .
 
 
 Writing Tests
