@@ -46,10 +46,10 @@ class TestHomepage:
         home_pg = CaseConductorHomePage(mozwebqa)
 
         user = home_pg.testsetup.credentials["default"]
+        home_pg.go_to_homepage_page(True, user)
+
         # TODO: uncomment when the id's are added
         #Assert.false(home_pg.is_user_logged_in)
-
-        home_pg.login(user)
 
         Assert.true(home_pg.is_user_logged_in)
         welcome_text = u"Welcome %s [Sign Out]" % user["name"]
@@ -60,5 +60,3 @@ class TestHomepage:
         #Assert.false(home_pg.is_user_logged_in)
         Assert.true(login_page.is_register_visible)
         Assert.true(login_page.is_signin_visible)
-
-        Assert.equal(login_page.account_text, "Sign in or Register")

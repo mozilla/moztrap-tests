@@ -44,10 +44,7 @@ class CaseConductorBasePage(Page):
     _user_name_locator = "css=.meta>ul>li"
     _logout_locator = "css=.meta>ul>li>a"
 
-    def login(self, user="default"):
-        from login_page import CaseConductorLoginPage
-        login_page = CaseConductorLoginPage(self.testsetup)
-        return login_page.login(user)
+
 
     @property
     def is_user_logged_in(self):

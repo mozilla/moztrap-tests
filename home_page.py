@@ -43,7 +43,12 @@ class CaseConductorHomePage(CaseConductorBasePage):
 
     _page_title = "Mozilla Case Conductor"
 
-    def __init__(self, testsetup):
-        CaseConductorBasePage.__init__(self, testsetup)
-        self.open("/")
+    def go_to_homepage_page(self, login=False, user="default"):
+        self.selenium.open('/')
+
+        if login:
+            from login_page import CaseConductorLoginPage
+            login_pg = CaseConductorLoginPage(self.testsetup)
+            login_pg.login(user)
+
         self.is_the_current_page
