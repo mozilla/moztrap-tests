@@ -39,21 +39,26 @@
 from home_page import CaseConductorHomePage
 from unittestzero import Assert
 
+
 class TestHomepage:
 
     def test_that_user_can_login_and_logout(self, mozwebqa):
-        home = CaseConductorHomePage(mozwebqa)
-        home.login()
-        Assert.true(home.is_user_loged_in)
-        user_text = u"Welcome %s [Sign Out]" % home.testsetup.credentials["default"]["name"]
-        Assert.equal(home.users_name_text, user_text)
+        home_pg = CaseConductorHomePage(mozwebqa)
 
-        login_page = home.logout()
+        user = home_pg.testsetup.credentials["default"]
+        # TODO: uncomment when the id's are added
+        #Assert.false(home_pg.is_user_logged_in)
 
+        home_pg.login(user)
+
+        Assert.true(home_pg.is_user_logged_in)
+        welcome_text = u"Welcome %s [Sign Out]" % user["name"]
+        Assert.equal(home_pg.users_name_text, welcome_text)
+
+        login_page = home_pg.logout()
+
+        #Assert.false(home_pg.is_user_logged_in)
         Assert.true(login_page.is_register_visible)
         Assert.true(login_page.is_signin_visible)
 
         Assert.equal(login_page.account_text, "Sign in or Register")
-
-
-

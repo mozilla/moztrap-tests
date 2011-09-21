@@ -51,14 +51,23 @@ class CaseConductorLoginPage(CaseConductorBasePage):
     _password_locator = "id=id_password"
     _submit_locator = "css=div.form-actions>button"
 
-
     def login(self, user="default"):
-        credentials = self.testsetup.credentials[user]
-        self.type(self._email_locator, credentials['email'])
-        self.type(self._password_locator, credentials['password'])
-        self.click(self._submit_locator, True)
-        from home_page import CaseConductorHomePage
-        return CaseConductorHomePage(self.testsetup)
+        if type(user) is str:
+
+            credentials = self.testsetup.credentials[user]
+            self.type(self._email_locator, credentials['email'])
+            self.type(self._password_locator, credentials['password'])
+            self.click(self._submit_locator, True)
+            from home_page import CaseConductorHomePage
+            return CaseConductorHomePage(self.testsetup)
+
+        elif type(user) is dict:
+
+            self.type(self._email_locator, user['email'])
+            self.type(self._password_locator, user['password'])
+            self.click(self._submit_locator, True)
+            from home_page import CaseConductorHomePage
+            return CaseConductorHomePage(self.testsetup)
 
     @property
     def is_register_visible(self):

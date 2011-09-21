@@ -46,3 +46,4 @@ class CaseConductorHomePage(CaseConductorBasePage):
     def __init__(self, testsetup):
         CaseConductorBasePage.__init__(self, testsetup)
         self.open("/")
+        self.is_the_current_page

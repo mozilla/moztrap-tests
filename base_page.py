@@ -38,6 +38,7 @@
 
 from page import Page
 
+
 class CaseConductorBasePage(Page):
 
     _user_name_locator = "css=.meta>ul>li"
@@ -49,7 +50,7 @@ class CaseConductorBasePage(Page):
         return login_page.login(user)
 
     @property
-    def is_user_loged_in(self):
+    def is_user_logged_in(self):
         return self.is_element_visible(self._user_name_locator)
 
     @property
