@@ -41,7 +41,7 @@ from base_page import CaseConductorBasePage
 
 class CaseConductorLoginPage(CaseConductorBasePage):
 
-    _page_tite = "Mozilla Case Conductor"
+    _page_title = "Mozilla Case Conductor"
 
     _signin_locator = "css=nav.meta>ul>li>a:nth(0)"
     _register_locator = "css=nav.meta>ul>li>a:nth(1)"
