@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Matt Brandt <mbrandt@mozilla.com>
+#                 Jonny Gerig Meyer <jonny@oddbird.net>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -93,6 +94,9 @@ class Page(object):
         self.selenium.click(button)
         if(wait_flag):
             self.selenium.wait_for_page_to_load(self.timeout)
+
+    def select(self, select_locator, option_locator):
+        self.selenium.select(select_locator, option_locator)
 
     def get_url_current_page(self):
         return(self.selenium.get_location())
