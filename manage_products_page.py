@@ -42,6 +42,7 @@ from base_page import CaseConductorBasePage
 class CaseConductorManageProductsPage(CaseConductorBasePage):
 
     _page_title = "Mozilla Case Conductor"
+    _delete_product_locator = u"css=#manageproducts article.item .title:contains(%(product_name)s) ~ .controls button[title='delete']"
 
     def go_to_manage_products_page(self, login=False, user="default"):
         self.selenium.open('/manage/products/')
@@ -54,7 +55,7 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         self.is_the_current_page
 
     def delete_product(self, name="Test Product"):
-        _delete_locator = u"css=#manageproducts article.item .title:contains(%s) ~ .controls button[title='delete']" % name
+        _delete_locator = self._delete_product_locator % {"product_name": name}
 
         self.click(_delete_locator)
         self.wait_for_element_not_visible(_delete_locator)
