@@ -47,7 +47,7 @@ class TestManageProductsPage:
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
         create_product_pg = CaseConductorCreateProductPage(mozwebqa)
 
-        create_product_pg.go_to_create_product_page(True)
+        create_product_pg.go_to_create_product_page(login=True)
 
         product_name = create_product_pg.create_product()
         product_locator = u"css=#manageproducts article.item .title:contains(%s)" % product_name

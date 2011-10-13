@@ -67,6 +67,6 @@ class CaseConductorCreateProductPage(CaseConductorBasePage):
         self.type(self._name_locator, product_name)
         self.type(self._description_locator, product_desc)
         self.select(self._profile_locator, profile)
-        self.click(self._submit_locator, True)
+        self.click(self._submit_locator, wait_flag=True)
 
         return product_name
