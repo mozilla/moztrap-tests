@@ -59,3 +59,4 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
 
         self.click(_delete_locator)
         self.wait_for_element_not_visible(_delete_locator)
+

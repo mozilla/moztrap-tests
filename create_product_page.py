@@ -70,3 +70,4 @@ class CaseConductorCreateProductPage(CaseConductorBasePage):
         self.click(self._submit_locator, wait_flag=True)
 
         return product_name
+

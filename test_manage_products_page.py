@@ -57,3 +57,4 @@ class TestManageProductsPage:
         manage_products_pg.delete_product(name=product_name)
 
         Assert.false(manage_products_pg.is_element_present(product_locator))
+
