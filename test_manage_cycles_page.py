@@ -70,3 +70,32 @@ class TestManageCyclesPage:
         manage_products_pg.go_to_manage_products_page()
         manage_products_pg.filter_products_by_name(name=product["name"])
         manage_products_pg.delete_product(name=product["name"])
+
+    def test_that_user_can_filter_cycle_by_name(self, mozwebqa):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
+        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
+        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+
+        create_product_pg.go_to_create_product_page(login=True)
+
+        product = create_product_pg.create_product()
+
+        create_cycle_pg.go_to_create_cycle_page()
+
+        cycle = create_cycle_pg.create_cycle(product=product["name"])
+
+        manage_cycles_pg.filter_cycles_by_name(name="Another Cycle")
+
+        Assert.false(manage_cycles_pg.is_element_present(cycle["locator"]))
+
+        manage_cycles_pg.remove_name_filter(name="Another Cycle")
+        manage_cycles_pg.filter_cycles_by_name(name=cycle["name"])
+
+        Assert.true(manage_cycles_pg.is_element_present(cycle["locator"]))
+
+        manage_cycles_pg.delete_cycle(name=cycle["name"])
+
+        manage_products_pg.go_to_manage_products_page()
+        manage_products_pg.filter_products_by_name(name=product["name"])
+        manage_products_pg.delete_product(name=product["name"])
