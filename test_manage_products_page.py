@@ -43,21 +43,13 @@ from unittestzero import Assert
 
 class TestManageProductsPage:
 
-    def _create_product(self, mozwebqa, login=False, name="Test Product", desc="This is a test product", profile="Browser Testing Environments"):
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
-
-        create_product_pg.go_to_create_product_page(login)
-
-        product = {}
-        product["name"] = create_product_pg.create_product(name=name, desc=desc, profile=profile)
-        product["locator"] = u"css=#manageproducts article.item .title:contains(%s)" % product["name"]
-
-        return product
-
     def test_that_user_can_create_and_delete_product(self, mozwebqa):
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
+        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
 
-        product = self._create_product(mozwebqa, login=True)
+        create_product_pg.go_to_create_product_page(login=True)
+
+        product = create_product_pg.create_product()
 
         manage_products_pg.filter_products_by_name(name=product["name"])
 
@@ -69,8 +61,11 @@ class TestManageProductsPage:
 
     def test_that_user_can_filter_product_by_name(self, mozwebqa):
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
+        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
 
-        product = self._create_product(mozwebqa, login=True)
+        create_product_pg.go_to_create_product_page(login=True)
+
+        product = create_product_pg.create_product()
 
         manage_products_pg.filter_products_by_name(name="Another Product")
 
