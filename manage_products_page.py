@@ -78,6 +78,25 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         self.wait_for_element_visible(self._update_list_locator)
         self.click(self._update_list_locator, wait_flag=True)
 
+    def filter_products_by_name_without_mouse(self, name):
+        _filter_suggestion_locator = self._filter_suggestion_locator % {"filter_name": name}
+        _name_without_last_character = name[:-1]
+        _name_last_character = name[-1]
+
+        self.type(self._input_locator, _name_without_last_character)
+        self.key_down(self._input_locator, _name_last_character)
+        self.key_press(self._input_locator, _name_last_character)
+        self.key_up(self._input_locator, _name_last_character)
+        self.wait_for_element_present(_filter_suggestion_locator)
+        self.key_down(self._input_locator, "\\13")
+        self.key_press(self._input_locator, "\\13")
+        self.key_up(self._input_locator, "\\13")
+        self.wait_for_element_visible(self._update_list_locator)
+        self.key_down(self._input_locator, "\\13")
+        self.key_press(self._input_locator, "\\13")
+        self.key_up(self._input_locator, "\\13")
+        self.wait_for_page_to_load()
+
     def remove_name_filter(self, name):
         _filter_locator = self._filter_locator % {"filter_name": name}
 

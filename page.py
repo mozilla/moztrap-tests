@@ -160,6 +160,9 @@ class Page(object):
                 self.record_error()
                 raise Exception("Sites Page has not loaded")
 
+    def wait_for_page_to_load(self):
+     	self.selenium.wait_for_page_to_load(self.timeout)
+
     def record_error(self):
         ''' Records an error. '''
 
