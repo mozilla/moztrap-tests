@@ -43,10 +43,10 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
 
     _page_title = "Mozilla Case Conductor"
     _delete_product_locator = u"css=#manageproducts article.item .title:contains(%(product_name)s) ~ .controls button[title='delete']"
-    _input_locator = "id=text-filter"
-    _update_list_locator = "css=#filter .visual .content .form-actions button"
-    _filter_suggestion_locator = u"css=#filter .textual .suggest a:contains(%(filter_name)s)"
-    _filter_locator = u"css=#filter .visual .filter-group input[value='%(filter_name)s']"
+    _input_locator = 'id=text-filter'
+    _update_list_locator = 'css=#filter .visual .content .form-actions button'
+    _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
+    _filter_locator = u'css=#filter .visual .filter-group input[value="%(filter_name)s"]'
 
     def go_to_manage_products_page(self, login=False, user="default"):
         self.selenium.open('/manage/products/')
@@ -65,7 +65,7 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         self.wait_for_element_not_visible(_delete_locator)
 
     def filter_products_by_name(self, name):
-        _filter_suggestion_locator = self._filter_suggestion_locator % {"filter_name": name}
+        _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}
         _name_without_last_character = name[:-1]
         _name_last_character = name[-1]
 
@@ -79,7 +79,7 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         self.click(self._update_list_locator, wait_flag=True)
 
     def remove_name_filter(self, name):
-        _filter_locator = self._filter_locator % {"filter_name": name}
+        _filter_locator = self._filter_locator % {'filter_name': name}
 
         self.click(_filter_locator)
         self.wait_for_element_visible(self._update_list_locator)
