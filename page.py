@@ -90,15 +90,6 @@ class Page(object):
     def type(self, locator, str):
         self.selenium.type(locator, str)
 
-    def key_press(self, locator, key_sequence):
-        self.selenium.key_press(locator, key_sequence)
-
-    def key_down(self, locator, key_sequence):
-        self.selenium.key_down(locator, key_sequence)
-
-    def key_up(self, locator, key_sequence):
-        self.selenium.key_up(locator, key_sequence)
-
     def click_button(self, button, wait_flag=False):
         self.selenium.click(button)
         if(wait_flag):
