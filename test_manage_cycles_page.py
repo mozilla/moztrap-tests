@@ -57,16 +57,16 @@ class TestManageCyclesPage:
 
         create_cycle_pg.go_to_create_cycle_page()
 
-        cycle = create_cycle_pg.create_cycle(product=product["name"])
+        cycle = create_cycle_pg.create_cycle(product=product['name'])
 
-        manage_cycles_pg.filter_cycles_by_name(name=cycle["name"])
+        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
-        Assert.true(manage_cycles_pg.is_element_present(cycle["locator"]))
+        Assert.true(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        manage_cycles_pg.delete_cycle(name=cycle["name"])
+        manage_cycles_pg.delete_cycle(name=cycle['name'])
 
-        Assert.false(manage_cycles_pg.is_element_present(cycle["locator"]))
+        Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
 
         manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=product["name"])
-        manage_products_pg.delete_product(name=product["name"])
+        manage_products_pg.filter_products_by_name(name=product['name'])
+        manage_products_pg.delete_product(name=product['name'])

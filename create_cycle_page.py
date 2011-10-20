@@ -42,18 +42,18 @@ from datetime import datetime
 
 class CaseConductorCreateCyclePage(CaseConductorBasePage):
 
-    _page_title = "Mozilla Case Conductor"
+    _page_title = 'Mozilla Case Conductor'
 
-    _name_locator = "id=id_name"
-    _product_select_locator = "id=id_product"
-    _description_locator = "id=id_description"
-    _start_date_locator = "id=id_start_date"
-    _end_date_locator = "id=id_end_date"
-    _submit_locator = "css=#cycle-form .form-actions > button"
-    _cycle_locator = u"css=#managecycles .managelist article.item .title[title='%(cycle_name)s']"
+    _name_locator = 'id=id_name'
+    _product_select_locator = 'id=id_product'
+    _description_locator = 'id=id_description'
+    _start_date_locator = 'id=id_start_date'
+    _end_date_locator = 'id=id_end_date'
+    _submit_locator = 'css=#cycle-form .form-actions > button'
+    _cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"]'
 
-    def go_to_create_cycle_page(self, login=False, user="default"):
-        self.selenium.open("/manage/testcycle/add/")
+    def go_to_create_cycle_page(self, login=False, user='default'):
+        self.selenium.open('/manage/testcycle/add/')
 
         if login:
             from login_page import CaseConductorLoginPage
@@ -62,16 +62,16 @@ class CaseConductorCreateCyclePage(CaseConductorBasePage):
 
         self.is_the_current_page
 
-    def create_cycle(self, name="Test Cycle", product="Test Product", desc="This is a test cycle", start_date="2011-01-01", end_date="2012-12-31"):
+    def create_cycle(self, name='Test Cycle', product='Test Product', desc='This is a test cycle', start_date='2011-01-01', end_date='2012-12-31'):
         dt_string = datetime.utcnow().isoformat()
         cycle = {}
-        cycle["name"] = name + " " + dt_string
-        cycle["desc"] = desc + " created on " + dt_string
-        cycle["locator"] = self._cycle_locator % {"cycle_name": cycle["name"]}
+        cycle['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
+        cycle['desc'] = u'%(desc)s created on %(dt_string)s' % {'desc': desc, 'dt_string': dt_string}
+        cycle['locator'] = self._cycle_locator % {'cycle_name': cycle['name']}
 
-        self.type(self._name_locator, cycle["name"])
+        self.type(self._name_locator, cycle['name'])
         self.select(self._product_select_locator, product)
-        self.type(self._description_locator, cycle["desc"])
+        self.type(self._description_locator, cycle['desc'])
         self.type(self._start_date_locator, start_date)
         self.type(self._end_date_locator, end_date)
         self.click(self._submit_locator, wait_flag=True)
