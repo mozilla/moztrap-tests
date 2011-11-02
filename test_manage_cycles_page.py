@@ -45,15 +45,26 @@ from unittestzero import Assert
 
 class TestManageCyclesPage:
 
-    def test_that_user_can_create_and_delete_cycle(self, mozwebqa):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
+    def setUp(self, mozwebqa):
         create_product_pg = CaseConductorCreateProductPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
         create_product_pg.go_to_create_product_page(login=True)
-
         product = create_product_pg.create_product()
+
+        return product
+
+    def tearDown(self, product, mozwebqa):
+        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
+
+        manage_products_pg.go_to_manage_products_page()
+        manage_products_pg.filter_products_by_name(name=product['name'])
+        manage_products_pg.delete_product(name=product['name'])
+
+    def test_that_user_can_create_and_delete_cycle(self, mozwebqa):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+
+        product = self.setUp(mozwebqa)
 
         create_cycle_pg.go_to_create_cycle_page()
 
@@ -67,6 +78,4 @@ class TestManageCyclesPage:
 
         Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=product['name'])
-        manage_products_pg.delete_product(name=product['name'])
+        self.tearDown(product, mozwebqa)
