@@ -90,7 +90,7 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         self.selenium.wait_for_page_to_load(self.timeout)
 
     def remove_name_filter(self, name):
-        _filter_locator = self._filter_locator % {'filter_name': name}
+        _filter_locator = self._filter_locator % {'filter_name': name.lower()}
 
         self.click(_filter_locator)
         self.wait_for_element_visible(self._update_list_locator)
