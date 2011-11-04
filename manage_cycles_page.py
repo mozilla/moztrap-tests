@@ -80,7 +80,7 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
         self.click(self._update_list_locator, wait_flag=True)
 
     def remove_name_filter(self, name):
-        _filter_locator = self._filter_locator % {'filter_name': name}
+        _filter_locator = self._filter_locator % {'filter_name': name.lower()}
 
         self.click(_filter_locator)
         self.wait_for_element_visible(self._update_list_locator)
