@@ -51,13 +51,13 @@ class TestManageProductsPage:
 
         product = create_product_pg.create_product()
 
-        manage_products_pg.filter_products_by_name(name=product["name"])
+        manage_products_pg.filter_products_by_name(name=product['name'])
 
-        Assert.true(manage_products_pg.is_element_present(product["locator"]))
+        Assert.true(manage_products_pg.is_element_present(product['locator']))
 
-        manage_products_pg.delete_product(name=product["name"])
+        manage_products_pg.delete_product(name=product['name'])
 
-        Assert.false(manage_products_pg.is_element_present(product["locator"]))
+        Assert.false(manage_products_pg.is_element_present(product['locator']))
 
     def test_that_user_can_filter_product_by_name(self, mozwebqa):
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
@@ -67,13 +67,32 @@ class TestManageProductsPage:
 
         product = create_product_pg.create_product()
 
-        manage_products_pg.filter_products_by_name(name="Another Product")
+        manage_products_pg.filter_products_by_name(name='Another Product')
 
-        Assert.false(manage_products_pg.is_element_present(product["locator"]))
+        Assert.false(manage_products_pg.is_element_present(product['locator']))
 
-        manage_products_pg.remove_name_filter(name="Another Product")
-        manage_products_pg.filter_products_by_name(name=product["name"])
+        manage_products_pg.remove_name_filter(name='Another Product')
+        manage_products_pg.filter_products_by_name(name=product['name'])
 
-        Assert.true(manage_products_pg.is_element_present(product["locator"]))
+        Assert.true(manage_products_pg.is_element_present(product['locator']))
 
-        manage_products_pg.delete_product(name=product["name"])
+        manage_products_pg.delete_product(name=product['name'])
+
+    def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa):
+        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
+        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
+
+        create_product_pg.go_to_create_product_page(login=True)
+
+        product = create_product_pg.create_product()
+
+        manage_products_pg.filter_products_by_name_without_mouse(name='Another Product')
+
+        Assert.false(manage_products_pg.is_element_present(product['locator']))
+
+        manage_products_pg.remove_name_filter(name='Another Product')
+        manage_products_pg.filter_products_by_name_without_mouse(name=product['name'])
+
+        Assert.true(manage_products_pg.is_element_present(product['locator']))
+
+        manage_products_pg.delete_product(name=product['name'])
