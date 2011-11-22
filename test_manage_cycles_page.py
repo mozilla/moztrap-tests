@@ -82,13 +82,9 @@ class TestManageCyclesPage:
 
     def test_that_user_can_filter_cycle_by_name(self, mozwebqa):
         manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
         create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
-        create_product_pg.go_to_create_product_page(login=True)
-
-        product = create_product_pg.create_product()
+        product = self.setUp(mozwebqa)
 
         create_cycle_pg.go_to_create_cycle_page()
 
@@ -105,6 +101,4 @@ class TestManageCyclesPage:
 
         manage_cycles_pg.delete_cycle(name=cycle["name"])
 
-        manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=product["name"])
-        manage_products_pg.delete_product(name=product["name"])
+        self.tearDown(product, mozwebqa)
