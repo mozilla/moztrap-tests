@@ -71,9 +71,7 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
         _name_last_character = name[-1]
 
         self.type(self._input_locator, _name_without_last_character)
-        self.selenium.key_down(self._input_locator, _name_last_character)
-        self.selenium.key_press(self._input_locator, _name_last_character)
-        self.selenium.key_up(self._input_locator, _name_last_character)
+        self.key_pressed(self._input_locator, _name_last_character)
         self.wait_for_element_present(_filter_suggestion_locator)
         self.click(_filter_suggestion_locator)
         self.wait_for_element_visible(self._update_list_locator)

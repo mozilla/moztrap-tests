@@ -79,3 +79,26 @@ class TestManageCyclesPage:
         Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
 
         self.tearDown(product, mozwebqa)
+
+    def test_that_user_can_filter_cycle_by_name(self, mozwebqa):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+
+        product = self.setUp(mozwebqa)
+
+        create_cycle_pg.go_to_create_cycle_page()
+
+        cycle = create_cycle_pg.create_cycle(product=product["name"])
+
+        manage_cycles_pg.filter_cycles_by_name(name="Another Cycle")
+
+        Assert.false(manage_cycles_pg.is_element_present(cycle["locator"]))
+
+        manage_cycles_pg.remove_name_filter(name="Another Cycle")
+        manage_cycles_pg.filter_cycles_by_name(name=cycle["name"])
+
+        Assert.true(manage_cycles_pg.is_element_present(cycle["locator"]))
+
+        manage_cycles_pg.delete_cycle(name=cycle["name"])
+
+        self.tearDown(product, mozwebqa)
