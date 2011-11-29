@@ -45,7 +45,10 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
 
     _input_locator = 'id=text-filter'
     _update_list_locator = 'css=#filter .visual .content .form-actions button'
+    _cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"]'
+    _cloned_cycle_locator = u'css=#managecycles .managelist article.item .title[title^="Cloned on"][title$="%(cycle_name)s"]'
     _delete_cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"] ~ .controls button[title="delete"]'
+    _clone_cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"] ~ .controls button[title="clone"]'
     _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
 
@@ -83,3 +86,16 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
         self.click(_filter_locator)
         self.wait_for_element_visible(self._update_list_locator)
         self.click(self._update_list_locator, wait_flag=True)
+
+    def clone_cycle(self, name='Test Cycle'):
+        _clone_cycle_locator = self._clone_cycle_locator % {'cycle_name': name}
+        _cloned_cycle_locator = self._cloned_cycle_locator % {'cycle_name': name}
+        cloned_cycle = {}
+
+        self.click(_clone_cycle_locator)
+        self.wait_for_element_visible(_cloned_cycle_locator)
+
+        cloned_cycle['name'] = self.get_text(_cloned_cycle_locator)
+        cloned_cycle['locator'] = self._cycle_locator % {'cycle_name': cloned_cycle['name']}
+
+        return cloned_cycle
