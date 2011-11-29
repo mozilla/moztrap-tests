@@ -119,10 +119,10 @@ class TestManageCyclesPage:
 
         Assert.true(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
 
-        manage_cycles_pg.delete_cycle(name=cloned_cycle["name"])
+        manage_cycles_pg.delete_cycle(name=cloned_cycle['name'])
 
         Assert.false(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
 
-        manage_cycles_pg.delete_cycle(name=cycle["name"])
+        manage_cycles_pg.delete_cycle(name=cycle['name'])
 
         self.tearDown(product, mozwebqa)
