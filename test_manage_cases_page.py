@@ -38,33 +38,17 @@
 
 from create_case_page import CaseConductorCreateCasePage
 from manage_cases_page import CaseConductorManageCasesPage
-from create_product_page import CaseConductorCreateProductPage
-from manage_products_page import CaseConductorManageProductsPage
+from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestManageCasesPage:
-
-    def create_product(self, mozwebqa):
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
-
-        create_product_pg.go_to_create_product_page(login=True)
-        product = create_product_pg.create_product()
-
-        return product
-
-    def delete_product(self, product, mozwebqa):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-
-        manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=product['name'])
-        manage_products_pg.delete_product(name=product['name'])
+class TestManageCasesPage(BaseTest):
 
     def test_that_user_can_create_and_delete_case(self, mozwebqa):
         manage_cases_pg = CaseConductorManageCasesPage(mozwebqa)
         create_case_pg = CaseConductorCreateCasePage(mozwebqa)
 
-        product = self.create_product(mozwebqa)
+        product = self.create_product(mozwebqa, login=True)
 
         create_case_pg.go_to_create_case_page()
 
@@ -78,4 +62,4 @@ class TestManageCasesPage:
 
         Assert.false(manage_cases_pg.is_element_present(case['locator']))
 
-        self.delete_product(product, mozwebqa)
+        self.delete_product(mozwebqa, product)
