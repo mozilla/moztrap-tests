@@ -38,10 +38,11 @@
 
 from create_product_page import CaseConductorCreateProductPage
 from manage_products_page import CaseConductorManageProductsPage
+from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestManageProductsPage:
+class TestManageProductsPage(BaseTest):
 
     def test_that_user_can_create_and_delete_product(self, mozwebqa):
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa)

@@ -38,44 +38,17 @@
 
 from create_run_page import CaseConductorCreateRunPage
 from manage_runs_page import CaseConductorManageRunsPage
-from create_cycle_page import CaseConductorCreateCyclePage
-from manage_cycles_page import CaseConductorManageCyclesPage
-from create_product_page import CaseConductorCreateProductPage
-from manage_products_page import CaseConductorManageProductsPage
+from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestManageRunsPage:
-
-    def create_cycle(self, mozwebqa):
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
-
-        create_product_pg.go_to_create_product_page(login=True)
-        product = create_product_pg.create_product()
-        create_cycle_pg.go_to_create_cycle_page()
-        cycle = create_cycle_pg.create_cycle(product=product['name'])
-        cycle['product'] = product
-
-        return cycle
-
-    def delete_cycle(self, cycle, mozwebqa):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-
-        manage_cycles_pg.go_to_manage_cycles_page()
-        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
-        manage_cycles_pg.delete_cycle(name=cycle['name'])
-
-        manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=cycle['product']['name'])
-        manage_products_pg.delete_product(name=cycle['product']['name'])
+class TestManageRunsPage(BaseTest):
 
     def test_that_user_can_create_and_delete_run(self, mozwebqa):
         manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
         create_run_pg = CaseConductorCreateRunPage(mozwebqa)
 
-        cycle = self.create_cycle(mozwebqa)
+        cycle = self.create_cycle(mozwebqa, login=True)
 
         create_run_pg.go_to_create_run_page()
 
@@ -89,4 +62,4 @@ class TestManageRunsPage:
 
         Assert.false(manage_runs_pg.is_element_present(run['locator']))
 
-        self.delete_cycle(cycle, mozwebqa)
+        self.delete_cycle(mozwebqa, cycle, delete_product=True)
