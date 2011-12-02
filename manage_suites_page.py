@@ -39,21 +39,18 @@
 from base_page import CaseConductorBasePage
 
 
-class CaseConductorManageCyclesPage(CaseConductorBasePage):
+class CaseConductorManageSuitesPage(CaseConductorBasePage):
 
     _page_title = 'Mozilla Case Conductor'
 
     _input_locator = 'id=text-filter'
     _update_list_locator = 'css=#filter .visual .content .form-actions button'
-    _cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"]'
-    _cloned_cycle_locator = u'css=#managecycles .managelist article.item .title[title^="Cloned on"][title$="%(cycle_name)s"]'
-    _delete_cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"] ~ .controls button[title="delete"]'
-    _clone_cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"] ~ .controls button[title="clone"]'
+    _delete_suite_locator = u'css=#managesuites .managelist article.item .title[title="%(suite_name)s"] ~ .controls button[title="delete"]'
     _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
 
-    def go_to_manage_cycles_page(self, login=False, user='default'):
-        self.selenium.open('/manage/testcycles/')
+    def go_to_manage_suites_page(self, login=False, user='default'):
+        self.selenium.open('/manage/testsuites/')
 
         if login:
             from login_page import CaseConductorLoginPage
@@ -62,13 +59,13 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
 
         self.is_the_current_page
 
-    def delete_cycle(self, name='Test Cycle'):
-        _delete_locator = self._delete_cycle_locator % {'cycle_name': name}
+    def delete_suite(self, name='Test Suite'):
+        _delete_locator = self._delete_suite_locator % {'suite_name': name}
 
         self.click(_delete_locator)
         self.wait_for_element_not_visible(_delete_locator)
 
-    def filter_cycles_by_name(self, name):
+    def filter_suites_by_name(self, name):
         _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}
         _name_without_last_character = name[:-1]
         _name_last_character = name[-1]
@@ -79,23 +76,3 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
         self.click(_filter_suggestion_locator)
         self.wait_for_element_visible(self._update_list_locator)
         self.click(self._update_list_locator, wait_flag=True)
-
-    def remove_name_filter(self, name):
-        _filter_locator = self._filter_locator % {'filter_name': name.lower()}
-
-        self.click(_filter_locator)
-        self.wait_for_element_visible(self._update_list_locator)
-        self.click(self._update_list_locator, wait_flag=True)
-
-    def clone_cycle(self, name='Test Cycle'):
-        _clone_cycle_locator = self._clone_cycle_locator % {'cycle_name': name}
-        _cloned_cycle_locator = self._cloned_cycle_locator % {'cycle_name': name}
-        cloned_cycle = {}
-
-        self.click(_clone_cycle_locator)
-        self.wait_for_element_visible(_cloned_cycle_locator)
-
-        cloned_cycle['name'] = self.get_text(_cloned_cycle_locator)
-        cloned_cycle['locator'] = self._cycle_locator % {'cycle_name': cloned_cycle['name']}
-
-        return cloned_cycle

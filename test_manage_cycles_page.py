@@ -102,3 +102,27 @@ class TestManageCyclesPage:
         manage_cycles_pg.delete_cycle(name=cycle["name"])
 
         self.tearDown(product, mozwebqa)
+
+    def test_that_user_can_clone_cycle(self, mozwebqa):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+
+        product = self.setUp(mozwebqa)
+
+        create_cycle_pg.go_to_create_cycle_page()
+
+        cycle = create_cycle_pg.create_cycle(product=product['name'])
+
+        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
+
+        cloned_cycle = manage_cycles_pg.clone_cycle(name=cycle['name'])
+
+        Assert.true(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
+
+        manage_cycles_pg.delete_cycle(name=cloned_cycle['name'])
+
+        Assert.false(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
+
+        manage_cycles_pg.delete_cycle(name=cycle['name'])
+
+        self.tearDown(product, mozwebqa)
