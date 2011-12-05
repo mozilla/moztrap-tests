@@ -36,7 +36,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from create_case_page import CaseConductorCreateCasePage
 from manage_cases_page import CaseConductorManageCasesPage
 from base_test import BaseTest
 from unittestzero import Assert
@@ -46,13 +45,8 @@ class TestManageCasesPage(BaseTest):
 
     def test_that_user_can_create_and_delete_case(self, mozwebqa):
         manage_cases_pg = CaseConductorManageCasesPage(mozwebqa)
-        create_case_pg = CaseConductorCreateCasePage(mozwebqa)
 
-        product = self.create_product(mozwebqa, login=True)
-
-        create_case_pg.go_to_create_case_page()
-
-        case = create_case_pg.create_case(product=product['name'])
+        case = self.create_case(mozwebqa, login=True)
 
         manage_cases_pg.filter_cases_by_name(name=case['name'])
 
@@ -62,4 +56,4 @@ class TestManageCasesPage(BaseTest):
 
         Assert.false(manage_cases_pg.is_element_present(case['locator']))
 
-        self.delete_product(mozwebqa, product)
+        self.delete_product(mozwebqa, case['product'])

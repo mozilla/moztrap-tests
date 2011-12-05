@@ -36,7 +36,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from create_run_page import CaseConductorCreateRunPage
 from manage_runs_page import CaseConductorManageRunsPage
 from base_test import BaseTest
 from unittestzero import Assert
@@ -46,13 +45,8 @@ class TestManageRunsPage(BaseTest):
 
     def test_that_user_can_create_and_delete_run(self, mozwebqa):
         manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
-        create_run_pg = CaseConductorCreateRunPage(mozwebqa)
 
-        cycle = self.create_cycle(mozwebqa, login=True)
-
-        create_run_pg.go_to_create_run_page()
-
-        run = create_run_pg.create_run(cycle=cycle['name'])
+        run = self.create_run(mozwebqa, login=True)
 
         manage_runs_pg.filter_runs_by_name(name=run['name'])
 
@@ -62,4 +56,4 @@ class TestManageRunsPage(BaseTest):
 
         Assert.false(manage_runs_pg.is_element_present(run['locator']))
 
-        self.delete_cycle(mozwebqa, cycle, delete_product=True)
+        self.delete_cycle(mozwebqa, run['cycle'], delete_product=True)
