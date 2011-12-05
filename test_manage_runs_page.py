@@ -44,11 +44,11 @@ from unittestzero import Assert
 
 class TestManageRunsPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_run(self, mozwebqa):
-        manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
-        create_run_pg = CaseConductorCreateRunPage(mozwebqa)
+    def test_that_user_can_create_and_delete_run(self, mozwebqa_logged_in):
+        manage_runs_pg = CaseConductorManageRunsPage(mozwebqa_logged_in)
+        create_run_pg = CaseConductorCreateRunPage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa, login=True)
+        cycle = self.create_cycle(mozwebqa_logged_in)
 
         create_run_pg.go_to_create_run_page()
 
@@ -62,4 +62,4 @@ class TestManageRunsPage(BaseTest):
 
         Assert.false(manage_runs_pg.is_element_present(run['locator']))
 
-        self.delete_cycle(mozwebqa, cycle, delete_product=True)
+        self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)

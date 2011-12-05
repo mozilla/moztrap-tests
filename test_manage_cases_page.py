@@ -44,11 +44,11 @@ from unittestzero import Assert
 
 class TestManageCasesPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_case(self, mozwebqa):
-        manage_cases_pg = CaseConductorManageCasesPage(mozwebqa)
-        create_case_pg = CaseConductorCreateCasePage(mozwebqa)
+    def test_that_user_can_create_and_delete_case(self, mozwebqa_logged_in):
+        manage_cases_pg = CaseConductorManageCasesPage(mozwebqa_logged_in)
+        create_case_pg = CaseConductorCreateCasePage(mozwebqa_logged_in)
 
-        product = self.create_product(mozwebqa, login=True)
+        product = self.create_product(mozwebqa_logged_in)
 
         create_case_pg.go_to_create_case_page()
 
@@ -62,4 +62,4 @@ class TestManageCasesPage(BaseTest):
 
         Assert.false(manage_cases_pg.is_element_present(case['locator']))
 
-        self.delete_product(mozwebqa, product)
+        self.delete_product(mozwebqa_logged_in, product)

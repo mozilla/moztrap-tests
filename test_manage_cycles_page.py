@@ -44,11 +44,11 @@ from unittestzero import Assert
 
 class TestManageCyclesPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_cycle(self, mozwebqa):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+    def test_that_user_can_create_and_delete_cycle(self, mozwebqa_logged_in):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
+        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa_logged_in)
 
-        product = self.create_product(mozwebqa, login=True)
+        product = self.create_product(mozwebqa_logged_in)
 
         create_cycle_pg.go_to_create_cycle_page()
 
@@ -62,13 +62,13 @@ class TestManageCyclesPage(BaseTest):
 
         Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        self.delete_product(mozwebqa, product)
+        self.delete_product(mozwebqa_logged_in, product)
 
-    def test_that_user_can_filter_cycle_by_name(self, mozwebqa):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+    def test_that_user_can_filter_cycle_by_name(self, mozwebqa_logged_in):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
+        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa_logged_in)
 
-        product = self.create_product(mozwebqa, login=True)
+        product = self.create_product(mozwebqa_logged_in)
 
         create_cycle_pg.go_to_create_cycle_page()
 
@@ -85,13 +85,13 @@ class TestManageCyclesPage(BaseTest):
 
         manage_cycles_pg.delete_cycle(name=cycle["name"])
 
-        self.delete_product(mozwebqa, product)
+        self.delete_product(mozwebqa_logged_in, product)
 
-    def test_that_user_can_clone_cycle(self, mozwebqa):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+    def test_that_user_can_clone_cycle(self, mozwebqa_logged_in):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
+        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa_logged_in)
 
-        product = self.create_product(mozwebqa, login=True)
+        product = self.create_product(mozwebqa_logged_in)
 
         create_cycle_pg.go_to_create_cycle_page()
 
@@ -109,4 +109,4 @@ class TestManageCyclesPage(BaseTest):
 
         manage_cycles_pg.delete_cycle(name=cycle['name'])
 
-        self.delete_product(mozwebqa, product)
+        self.delete_product(mozwebqa_logged_in, product)

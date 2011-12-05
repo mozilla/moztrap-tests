@@ -50,14 +50,8 @@ class CaseConductorCreateProductPage(CaseConductorBasePage):
     _submit_locator = "css=div.form-actions>button"
     _product_locator = u'css=#manageproducts article.item .title:contains(%(product_name)s)'
 
-    def go_to_create_product_page(self, login=False, user="default"):
+    def go_to_create_product_page(self):
         self.selenium.open('/manage/product/add/')
-
-        if login:
-            from login_page import CaseConductorLoginPage
-            login_pg = CaseConductorLoginPage(self.testsetup)
-            login_pg.login(user)
-
         self.is_the_current_page
 
     def create_product(self, name="Test Product", desc="This is a test product", profile="Browser Testing Environments"):

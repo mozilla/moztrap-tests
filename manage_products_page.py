@@ -48,14 +48,8 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
     _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group input[value="%(filter_name)s"]'
 
-    def go_to_manage_products_page(self, login=False, user="default"):
+    def go_to_manage_products_page(self):
         self.selenium.open('/manage/products/')
-
-        if login:
-            from login_page import CaseConductorLoginPage
-            login_pg = CaseConductorLoginPage(self.testsetup)
-            login_pg.login(user)
-
         self.is_the_current_page
 
     def delete_product(self, name="Test Product"):

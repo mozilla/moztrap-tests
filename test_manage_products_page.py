@@ -44,11 +44,11 @@ from unittestzero import Assert
 
 class TestManageProductsPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_product(self, mozwebqa):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
+    def test_that_user_can_create_and_delete_product(self, mozwebqa_logged_in):
+        manage_products_pg = CaseConductorManageProductsPage(mozwebqa_logged_in)
+        create_product_pg = CaseConductorCreateProductPage(mozwebqa_logged_in)
 
-        create_product_pg.go_to_create_product_page(login=True)
+        create_product_pg.go_to_create_product_page()
 
         product = create_product_pg.create_product()
 
@@ -60,11 +60,11 @@ class TestManageProductsPage(BaseTest):
 
         Assert.false(manage_products_pg.is_element_present(product['locator']))
 
-    def test_that_user_can_filter_product_by_name(self, mozwebqa):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
+    def test_that_user_can_filter_product_by_name(self, mozwebqa_logged_in):
+        manage_products_pg = CaseConductorManageProductsPage(mozwebqa_logged_in)
+        create_product_pg = CaseConductorCreateProductPage(mozwebqa_logged_in)
 
-        create_product_pg.go_to_create_product_page(login=True)
+        create_product_pg.go_to_create_product_page()
 
         product = create_product_pg.create_product()
 
@@ -79,11 +79,11 @@ class TestManageProductsPage(BaseTest):
 
         manage_products_pg.delete_product(name=product['name'])
 
-    def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
+    def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa_logged_in):
+        manage_products_pg = CaseConductorManageProductsPage(mozwebqa_logged_in)
+        create_product_pg = CaseConductorCreateProductPage(mozwebqa_logged_in)
 
-        create_product_pg.go_to_create_product_page(login=True)
+        create_product_pg.go_to_create_product_page()
 
         product = create_product_pg.create_product()
 

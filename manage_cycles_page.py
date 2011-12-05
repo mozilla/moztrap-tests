@@ -52,14 +52,8 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
     _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
 
-    def go_to_manage_cycles_page(self, login=False, user='default'):
+    def go_to_manage_cycles_page(self):
         self.selenium.open('/manage/testcycles/')
-
-        if login:
-            from login_page import CaseConductorLoginPage
-            login_pg = CaseConductorLoginPage(self.testsetup)
-            login_pg.login(user)
-
         self.is_the_current_page
 
     def delete_cycle(self, name='Test Cycle'):

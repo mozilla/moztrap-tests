@@ -44,11 +44,11 @@ from unittestzero import Assert
 
 class TestHomepage(BaseTest):
 
-    def test_that_user_can_login_and_logout(self, mozwebqa):
-        home_pg = CaseConductorHomePage(mozwebqa)
+    def test_that_user_can_login_and_logout(self, mozwebqa_logged_in):
+        home_pg = CaseConductorHomePage(mozwebqa_logged_in)
 
         user = home_pg.testsetup.credentials["default"]
-        home_pg.go_to_homepage_page(True, user)
+        home_pg.go_to_homepage_page()
 
         # TODO: uncomment when the id's are added
         #Assert.false(home_pg.is_user_logged_in)

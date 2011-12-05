@@ -52,14 +52,8 @@ class CaseConductorCreateCyclePage(CaseConductorBasePage):
     _submit_locator = 'css=#cycle-form .form-actions > button'
     _cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"]'
 
-    def go_to_create_cycle_page(self, login=False, user='default'):
+    def go_to_create_cycle_page(self):
         self.selenium.open('/manage/testcycle/add/')
-
-        if login:
-            from login_page import CaseConductorLoginPage
-            login_pg = CaseConductorLoginPage(self.testsetup)
-            login_pg.login(user)
-
         self.is_the_current_page
 
     def create_cycle(self, name='Test Cycle', product='Test Product', desc='This is a test cycle', start_date='2011-01-01', end_date='2012-12-31'):

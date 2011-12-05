@@ -47,10 +47,10 @@ class BaseTest(object):
     Base class for all Tests
     '''
 
-    def create_product(self, mozwebqa, login=False):
+    def create_product(self, mozwebqa):
         create_product_pg = CaseConductorCreateProductPage(mozwebqa)
 
-        create_product_pg.go_to_create_product_page(login=login)
+        create_product_pg.go_to_create_product_page()
         product = create_product_pg.create_product()
 
         return product
@@ -62,14 +62,13 @@ class BaseTest(object):
         manage_products_pg.filter_products_by_name(name=product['name'])
         manage_products_pg.delete_product(name=product['name'])
 
-    def create_cycle(self, mozwebqa, product=None, login=False):
+    def create_cycle(self, mozwebqa, product=None):
         create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
         if product is None:
-            product = self.create_product(mozwebqa, login=login)
-            login = False
+            product = self.create_product(mozwebqa)
 
-        create_cycle_pg.go_to_create_cycle_page(login=login)
+        create_cycle_pg.go_to_create_cycle_page()
         cycle = create_cycle_pg.create_cycle(product=product['name'])
         cycle['product'] = product
 
