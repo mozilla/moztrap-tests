@@ -36,6 +36,12 @@
 #
 # ***** END LICENSE BLOCK *****
 
+from create_case_page import CaseConductorCreateCasePage
+from manage_cases_page import CaseConductorManageCasesPage
+from create_suite_page import CaseConductorCreateSuitePage
+from manage_suites_page import CaseConductorManageSuitesPage
+from create_run_page import CaseConductorCreateRunPage
+from manage_runs_page import CaseConductorManageRunsPage
 from create_cycle_page import CaseConductorCreateCyclePage
 from manage_cycles_page import CaseConductorManageCyclesPage
 from create_product_page import CaseConductorCreateProductPage
@@ -83,3 +89,69 @@ class BaseTest(object):
 
         if delete_product:
             self.delete_product(mozwebqa, cycle['product'])
+
+    def create_run(self, mozwebqa, cycle=None):
+        create_run_pg = CaseConductorCreateRunPage(mozwebqa)
+
+        if cycle is None:
+            cycle = self.create_cycle(mozwebqa)
+
+        create_run_pg.go_to_create_run_page()
+        run = create_run_pg.create_run(cycle=cycle['name'])
+        run['cycle'] = cycle
+
+        return run
+
+    def delete_run(self, mozwebqa, run, delete_cycle=False, delete_product=False):
+        manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
+
+        manage_runs_pg.go_to_manage_runs_page()
+        manage_runs_pg.filter_runs_by_name(name=run['name'])
+        manage_runs_pg.delete_run(name=run['name'])
+
+        if delete_cycle:
+            self.delete_cycle(mozwebqa, run['cycle'], delete_product=delete_product)
+
+    def create_suite(self, mozwebqa, product=None):
+        create_suite_pg = CaseConductorCreateSuitePage(mozwebqa)
+
+        if product is None:
+            product = self.create_product(mozwebqa)
+
+        create_suite_pg.go_to_create_suite_page()
+        suite = create_suite_pg.create_suite(product=product['name'])
+        suite['product'] = product
+
+        return suite
+
+    def delete_suite(self, mozwebqa, suite, delete_product=False):
+        manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa)
+
+        manage_suites_pg.go_to_manage_suites_page()
+        manage_suites_pg.filter_suites_by_name(name=suite['name'])
+        manage_suites_pg.delete_suite(name=suite['name'])
+
+        if delete_product:
+            self.delete_product(mozwebqa, suite['product'])
+
+    def create_case(self, mozwebqa, product=None):
+        create_case_pg = CaseConductorCreateCasePage(mozwebqa)
+
+        if product is None:
+            product = self.create_product(mozwebqa)
+
+        create_case_pg.go_to_create_case_page()
+        case = create_case_pg.create_case(product=product['name'])
+        case['product'] = product
+
+        return case
+
+    def delete_case(self, mozwebqa, case, delete_product=False):
+        manage_cases_pg = CaseConductorManageCasesPage(mozwebqa)
+
+        manage_cases_pg.go_to_manage_cases_page()
+        manage_cases_pg.filter_cases_by_name(name=case['name'])
+        manage_cases_pg.delete_case(name=case['name'])
+
+        if delete_product:
+            self.delete_product(mozwebqa, case['product'])

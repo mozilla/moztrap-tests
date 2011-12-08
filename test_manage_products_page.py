@@ -36,7 +36,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from create_product_page import CaseConductorCreateProductPage
 from manage_products_page import CaseConductorManageProductsPage
 from base_test import BaseTest
 from unittestzero import Assert
@@ -46,11 +45,8 @@ class TestManageProductsPage(BaseTest):
 
     def test_that_user_can_create_and_delete_product(self, mozwebqa_logged_in):
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa_logged_in)
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa_logged_in)
 
-        create_product_pg.go_to_create_product_page()
-
-        product = create_product_pg.create_product()
+        product = self.create_product(mozwebqa_logged_in)
 
         manage_products_pg.filter_products_by_name(name=product['name'])
 
@@ -62,11 +58,8 @@ class TestManageProductsPage(BaseTest):
 
     def test_that_user_can_filter_product_by_name(self, mozwebqa_logged_in):
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa_logged_in)
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa_logged_in)
 
-        create_product_pg.go_to_create_product_page()
-
-        product = create_product_pg.create_product()
+        product = self.create_product(mozwebqa_logged_in)
 
         manage_products_pg.filter_products_by_name(name='Another Product')
 
@@ -81,11 +74,8 @@ class TestManageProductsPage(BaseTest):
 
     def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa_logged_in):
         manage_products_pg = CaseConductorManageProductsPage(mozwebqa_logged_in)
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa_logged_in)
 
-        create_product_pg.go_to_create_product_page()
-
-        product = create_product_pg.create_product()
+        product = self.create_product(mozwebqa_logged_in)
 
         manage_products_pg.filter_products_by_name_without_mouse(name='Another Product')
 
