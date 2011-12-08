@@ -36,24 +36,24 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from manage_runs_page import CaseConductorManageRunsPage
+from manage_cases_page import CaseConductorManageCasesPage
 from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestManageRunsPage(BaseTest):
+class TestManageCasesPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_run(self, mozwebqa):
-        manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
+    def test_that_user_can_create_and_delete_case(self, mozwebqa):
+        manage_cases_pg = CaseConductorManageCasesPage(mozwebqa)
 
-        run = self.create_run(mozwebqa, login=True)
+        case = self.create_case(mozwebqa, login=True)
 
-        manage_runs_pg.filter_runs_by_name(name=run['name'])
+        manage_cases_pg.filter_cases_by_name(name=case['name'])
 
-        Assert.true(manage_runs_pg.is_element_present(run['locator']))
+        Assert.true(manage_cases_pg.is_element_present(case['locator']))
 
-        manage_runs_pg.delete_run(name=run['name'])
+        manage_cases_pg.delete_case(name=case['name'])
 
-        Assert.false(manage_runs_pg.is_element_present(run['locator']))
+        Assert.false(manage_cases_pg.is_element_present(case['locator']))
 
-        self.delete_cycle(mozwebqa, run['cycle'], delete_product=True)
+        self.delete_product(mozwebqa, case['product'])

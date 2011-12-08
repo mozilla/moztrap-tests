@@ -36,39 +36,17 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from create_cycle_page import CaseConductorCreateCyclePage
 from manage_cycles_page import CaseConductorManageCyclesPage
-from create_product_page import CaseConductorCreateProductPage
-from manage_products_page import CaseConductorManageProductsPage
+from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestManageCyclesPage:
-
-    def setUp(self, mozwebqa):
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
-
-        create_product_pg.go_to_create_product_page(login=True)
-        product = create_product_pg.create_product()
-
-        return product
-
-    def tearDown(self, product, mozwebqa):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-
-        manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=product['name'])
-        manage_products_pg.delete_product(name=product['name'])
+class TestManageCyclesPage(BaseTest):
 
     def test_that_user_can_create_and_delete_cycle(self, mozwebqa):
         manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
-        product = self.setUp(mozwebqa)
-
-        create_cycle_pg.go_to_create_cycle_page()
-
-        cycle = create_cycle_pg.create_cycle(product=product['name'])
+        cycle = self.create_cycle(mozwebqa, login=True)
 
         manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
@@ -78,40 +56,28 @@ class TestManageCyclesPage:
 
         Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        self.tearDown(product, mozwebqa)
+        self.delete_product(mozwebqa, cycle['product'])
 
     def test_that_user_can_filter_cycle_by_name(self, mozwebqa):
         manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
-        product = self.setUp(mozwebqa)
+        cycle = self.create_cycle(mozwebqa, login=True)
 
-        create_cycle_pg.go_to_create_cycle_page()
+        manage_cycles_pg.filter_cycles_by_name(name='Another Cycle')
 
-        cycle = create_cycle_pg.create_cycle(product=product["name"])
+        Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        manage_cycles_pg.filter_cycles_by_name(name="Another Cycle")
+        manage_cycles_pg.remove_name_filter(name='Another Cycle')
+        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
-        Assert.false(manage_cycles_pg.is_element_present(cycle["locator"]))
+        Assert.true(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        manage_cycles_pg.remove_name_filter(name="Another Cycle")
-        manage_cycles_pg.filter_cycles_by_name(name=cycle["name"])
-
-        Assert.true(manage_cycles_pg.is_element_present(cycle["locator"]))
-
-        manage_cycles_pg.delete_cycle(name=cycle["name"])
-
-        self.tearDown(product, mozwebqa)
+        self.delete_cycle(mozwebqa, cycle, delete_product=True)
 
     def test_that_user_can_clone_cycle(self, mozwebqa):
         manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
-        product = self.setUp(mozwebqa)
-
-        create_cycle_pg.go_to_create_cycle_page()
-
-        cycle = create_cycle_pg.create_cycle(product=product['name'])
+        cycle = self.create_cycle(mozwebqa, login=True)
 
         manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
@@ -123,6 +89,4 @@ class TestManageCyclesPage:
 
         Assert.false(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
 
-        manage_cycles_pg.delete_cycle(name=cycle['name'])
-
-        self.tearDown(product, mozwebqa)
+        self.delete_cycle(mozwebqa, cycle, delete_product=True)

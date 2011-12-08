@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe
+#                 Jonny Gerig Meyer <jonny@oddbird.net>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -37,10 +38,11 @@
 # ***** END LICENSE BLOCK *****
 
 from home_page import CaseConductorHomePage
+from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestHomepage:
+class TestHomepage(BaseTest):
 
     def test_that_user_can_login_and_logout(self, mozwebqa):
         home_pg = CaseConductorHomePage(mozwebqa)

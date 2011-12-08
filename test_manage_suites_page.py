@@ -36,39 +36,17 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from create_suite_page import CaseConductorCreateSuitePage
 from manage_suites_page import CaseConductorManageSuitesPage
-from create_product_page import CaseConductorCreateProductPage
-from manage_products_page import CaseConductorManageProductsPage
+from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestManageSuitesPage:
-
-    def create_product(self, mozwebqa):
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
-
-        create_product_pg.go_to_create_product_page(login=True)
-        product = create_product_pg.create_product()
-
-        return product
-
-    def delete_product(self, product, mozwebqa):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
-
-        manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=product['name'])
-        manage_products_pg.delete_product(name=product['name'])
+class TestManageSuitesPage(BaseTest):
 
     def test_that_user_can_create_and_delete_suite(self, mozwebqa):
         manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa)
-        create_suite_pg = CaseConductorCreateSuitePage(mozwebqa)
 
-        product = self.create_product(mozwebqa)
-
-        create_suite_pg.go_to_create_suite_page()
-
-        suite = create_suite_pg.create_suite(product=product['name'])
+        suite = self.create_suite(mozwebqa, login=True)
 
         manage_suites_pg.filter_suites_by_name(name=suite['name'])
 
@@ -78,4 +56,4 @@ class TestManageSuitesPage:
 
         Assert.false(manage_suites_pg.is_element_present(suite['locator']))
 
-        self.delete_product(product, mozwebqa)
+        self.delete_product(mozwebqa, suite['product'])
