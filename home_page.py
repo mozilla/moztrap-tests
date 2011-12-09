@@ -42,7 +42,14 @@ from base_page import CaseConductorBasePage
 class CaseConductorHomePage(CaseConductorBasePage):
 
     _page_title = "Mozilla Case Conductor"
+    _select_locator = u"css=.selectruns .finder .carousel .colcontent .title:contains(%(item_name)s)"
 
     def go_to_homepage_page(self):
         self.selenium.open('/')
         self.is_the_current_page
+
+    def select_item(self, name):
+        _select_locator = self._select_locator % {"item_name": name}
+
+        self.click(_select_locator)
+        self.wait_for_ajax()

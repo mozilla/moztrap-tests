@@ -57,7 +57,7 @@ class CaseConductorManageSuitesPage(CaseConductorBasePage):
         _delete_locator = self._delete_suite_locator % {'suite_name': name}
 
         self.click(_delete_locator)
-        self.wait_for_element_not_visible(_delete_locator)
+        self.wait_for_ajax()
 
     def filter_suites_by_name(self, name):
         _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}

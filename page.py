@@ -156,6 +156,13 @@ class Page(object):
                 self.record_error()
                 raise Exception("Sites Page has not loaded")
 
+    def wait_for_ajax(self, timeout=None):
+        if timeout is None:
+            timeout = self.timeout
+
+        js_condition = 'self.selenium.browserbot.getCurrentWindow().$.active == 0'
+        self.selenium.wait_for_condition(js_condition, timeout)
+
     def record_error(self):
         ''' Records an error. '''
 

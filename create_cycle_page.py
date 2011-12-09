@@ -50,7 +50,8 @@ class CaseConductorCreateCyclePage(CaseConductorBasePage):
     _start_date_locator = 'id=id_start_date'
     _end_date_locator = 'id=id_end_date'
     _submit_locator = 'css=#cycle-form .form-actions > button'
-    _cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"]'
+    _cycle_manage_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"]'
+    _cycle_homepage_locator = u"css=.selectruns .finder .carousel .cycles .colcontent .title:contains(%(cycle_name)s)"
 
     def go_to_create_cycle_page(self):
         self.selenium.open('/manage/testcycle/add/')
@@ -61,7 +62,8 @@ class CaseConductorCreateCyclePage(CaseConductorBasePage):
         cycle = {}
         cycle['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
         cycle['desc'] = u'%(desc)s created on %(dt_string)s' % {'desc': desc, 'dt_string': dt_string}
-        cycle['locator'] = self._cycle_locator % {'cycle_name': cycle['name']}
+        cycle['manage_locator'] = self._cycle_manage_locator % {'cycle_name': cycle['name']}
+        cycle['homepage_locator'] = self._cycle_homepage_locator % {'cycle_name': cycle['name']}
 
         self.type(self._name_locator, cycle['name'])
         self.select(self._product_select_locator, product)

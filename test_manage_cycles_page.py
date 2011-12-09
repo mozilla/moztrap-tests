@@ -50,11 +50,11 @@ class TestManageCyclesPage(BaseTest):
 
         manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
-        Assert.true(manage_cycles_pg.is_element_present(cycle['locator']))
+        Assert.true(manage_cycles_pg.is_element_present(cycle['manage_locator']))
 
         manage_cycles_pg.delete_cycle(name=cycle['name'])
 
-        Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
+        Assert.false(manage_cycles_pg.is_element_present(cycle['manage_locator']))
 
         self.delete_product(mozwebqa_logged_in, cycle['product'])
 
@@ -65,12 +65,12 @@ class TestManageCyclesPage(BaseTest):
 
         manage_cycles_pg.filter_cycles_by_name(name='Another Cycle')
 
-        Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
+        Assert.false(manage_cycles_pg.is_element_present(cycle['manage_locator']))
 
         manage_cycles_pg.remove_name_filter(name='Another Cycle')
         manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
-        Assert.true(manage_cycles_pg.is_element_present(cycle['locator']))
+        Assert.true(manage_cycles_pg.is_element_present(cycle['manage_locator']))
 
         self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)
 
@@ -83,10 +83,10 @@ class TestManageCyclesPage(BaseTest):
 
         cloned_cycle = manage_cycles_pg.clone_cycle(name=cycle['name'])
 
-        Assert.true(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
+        Assert.true(manage_cycles_pg.is_element_present(cloned_cycle['manage_locator']))
 
         manage_cycles_pg.delete_cycle(name=cloned_cycle['name'])
 
-        Assert.false(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
+        Assert.false(manage_cycles_pg.is_element_present(cloned_cycle['manage_locator']))
 
         self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)

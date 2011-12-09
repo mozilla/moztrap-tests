@@ -46,6 +46,7 @@ class CaseConductorManageRunsPage(CaseConductorBasePage):
     _input_locator = 'id=text-filter'
     _update_list_locator = 'css=#filter .visual .content .form-actions button'
     _delete_run_locator = u'css=#manageruns .managelist article.item .title[title="%(run_name)s"] ~ .controls button[title="delete"]'
+    _run_status_locator = u'xpath=//section[@id="manageruns"]//article[contains(@class,"item")]//h3[@title="%(run_name)s"]/../p[@class="status"]/button'
     _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
 
@@ -57,7 +58,7 @@ class CaseConductorManageRunsPage(CaseConductorBasePage):
         _delete_locator = self._delete_run_locator % {'run_name': name}
 
         self.click(_delete_locator)
-        self.wait_for_element_not_visible(_delete_locator)
+        self.wait_for_ajax()
 
     def filter_runs_by_name(self, name):
         _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}
@@ -77,3 +78,9 @@ class CaseConductorManageRunsPage(CaseConductorBasePage):
         self.click(_filter_locator)
         self.wait_for_element_visible(self._update_list_locator)
         self.click(self._update_list_locator, wait_flag=True)
+
+    def activate_run(self, name='Test Run'):
+        _run_status_locator = self._run_status_locator % {'run_name': name}
+
+        self.click(_run_status_locator)
+        self.wait_for_ajax()
