@@ -68,7 +68,7 @@ class BaseTest(object):
         manage_products_pg.filter_products_by_name(name=product['name'])
         manage_products_pg.delete_product(name=product['name'])
 
-    def create_cycle(self, mozwebqa, product=None):
+    def create_cycle(self, mozwebqa, activate=False, product=None):
         create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
         if product is None:
@@ -77,6 +77,11 @@ class BaseTest(object):
         create_cycle_pg.go_to_create_cycle_page()
         cycle = create_cycle_pg.create_cycle(product=product['name'])
         cycle['product'] = product
+
+        if activate:
+            manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+            manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
+            manage_cycles_pg.activate_cycle(name=cycle['name'])
 
         return cycle
 
@@ -90,15 +95,20 @@ class BaseTest(object):
         if delete_product:
             self.delete_product(mozwebqa, cycle['product'])
 
-    def create_run(self, mozwebqa, cycle=None):
+    def create_run(self, mozwebqa, activate=False, cycle=None):
         create_run_pg = CaseConductorCreateRunPage(mozwebqa)
 
         if cycle is None:
-            cycle = self.create_cycle(mozwebqa)
+            cycle = self.create_cycle(mozwebqa, activate=activate)
 
         create_run_pg.go_to_create_run_page()
         run = create_run_pg.create_run(cycle=cycle['name'])
         run['cycle'] = cycle
+
+        if activate:
+            manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
+            manage_runs_pg.filter_runs_by_name(name=run['name'])
+            manage_runs_pg.activate_run(name=run['name'])
 
         return run
 

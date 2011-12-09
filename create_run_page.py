@@ -50,7 +50,9 @@ class CaseConductorCreateRunPage(CaseConductorBasePage):
     _start_date_locator = 'id=id_start_date'
     _end_date_locator = 'id=id_end_date'
     _submit_locator = 'css=#run-form .form-actions > button'
-    _run_locator = u'css=#manageruns .managelist article.item .title[title="%(run_name)s"]'
+    _run_manage_locator = u'css=#manageruns .managelist article.item .title[title="%(run_name)s"]'
+    _run_homepage_locator = u"css=.selectruns .finder .carousel .runs .colcontent .title:contains(%(run_name)s)"
+    _run_tests_button_locator = u"css=.environment .form-actions button:contains(run tests in %(run_name)s!)"
 
     def go_to_create_run_page(self):
         self.selenium.open('/manage/testrun/add/')
@@ -61,7 +63,9 @@ class CaseConductorCreateRunPage(CaseConductorBasePage):
         run = {}
         run['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
         run['desc'] = u'%(desc)s created on %(dt_string)s' % {'desc': desc, 'dt_string': dt_string}
-        run['locator'] = self._run_locator % {'run_name': run['name']}
+        run['manage_locator'] = self._run_manage_locator % {'run_name': run['name']}
+        run['homepage_locator'] = self._run_homepage_locator % {'run_name': run['name']}
+        run['run_tests_locator'] = self._run_tests_button_locator % {'run_name': run['name']}
 
         self.type(self._name_locator, run['name'])
         self.select(self._cycle_select_locator, cycle)

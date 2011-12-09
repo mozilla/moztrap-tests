@@ -50,10 +50,10 @@ class TestManageRunsPage(BaseTest):
 
         manage_runs_pg.filter_runs_by_name(name=run['name'])
 
-        Assert.true(manage_runs_pg.is_element_present(run['locator']))
+        Assert.true(manage_runs_pg.is_element_present(run['manage_locator']))
 
         manage_runs_pg.delete_run(name=run['name'])
 
-        Assert.false(manage_runs_pg.is_element_present(run['locator']))
+        Assert.false(manage_runs_pg.is_element_present(run['manage_locator']))
 
         self.delete_cycle(mozwebqa_logged_in, run['cycle'], delete_product=True)
