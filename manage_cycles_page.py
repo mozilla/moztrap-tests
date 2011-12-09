@@ -60,7 +60,7 @@ class CaseConductorManageCyclesPage(CaseConductorBasePage):
         _delete_locator = self._delete_cycle_locator % {'cycle_name': name}
 
         self.click(_delete_locator)
-        self.wait_for_element_not_visible(_delete_locator)
+        self.wait_for_ajax()
 
     def filter_cycles_by_name(self, name):
         _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}

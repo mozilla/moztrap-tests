@@ -56,7 +56,7 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         _delete_locator = self._delete_product_locator % {"product_name": name}
 
         self.click(_delete_locator)
-        self.wait_for_element_not_visible(_delete_locator)
+        self.wait_for_ajax()
 
     def filter_products_by_name(self, name):
         _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}
