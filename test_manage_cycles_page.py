@@ -43,10 +43,10 @@ from unittestzero import Assert
 
 class TestManageCyclesPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_cycle(self, mozwebqa):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+    def test_that_user_can_create_and_delete_cycle(self, mozwebqa_logged_in):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa, login=True)
+        cycle = self.create_cycle(mozwebqa_logged_in)
 
         manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
@@ -56,12 +56,12 @@ class TestManageCyclesPage(BaseTest):
 
         Assert.false(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        self.delete_product(mozwebqa, cycle['product'])
+        self.delete_product(mozwebqa_logged_in, cycle['product'])
 
-    def test_that_user_can_filter_cycle_by_name(self, mozwebqa):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+    def test_that_user_can_filter_cycle_by_name(self, mozwebqa_logged_in):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa, login=True)
+        cycle = self.create_cycle(mozwebqa_logged_in)
 
         manage_cycles_pg.filter_cycles_by_name(name='Another Cycle')
 
@@ -72,12 +72,12 @@ class TestManageCyclesPage(BaseTest):
 
         Assert.true(manage_cycles_pg.is_element_present(cycle['locator']))
 
-        self.delete_cycle(mozwebqa, cycle, delete_product=True)
+        self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)
 
-    def test_that_user_can_clone_cycle(self, mozwebqa):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
+    def test_that_user_can_clone_cycle(self, mozwebqa_logged_in):
+        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa, login=True)
+        cycle = self.create_cycle(mozwebqa_logged_in)
 
         manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
 
@@ -89,4 +89,4 @@ class TestManageCyclesPage(BaseTest):
 
         Assert.false(manage_cycles_pg.is_element_present(cloned_cycle['locator']))
 
-        self.delete_cycle(mozwebqa, cycle, delete_product=True)
+        self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)

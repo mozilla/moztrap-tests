@@ -43,10 +43,10 @@ from unittestzero import Assert
 
 class TestManageSuitesPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_suite(self, mozwebqa):
-        manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa)
+    def test_that_user_can_create_and_delete_suite(self, mozwebqa_logged_in):
+        manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa_logged_in)
 
-        suite = self.create_suite(mozwebqa, login=True)
+        suite = self.create_suite(mozwebqa_logged_in)
 
         manage_suites_pg.filter_suites_by_name(name=suite['name'])
 
@@ -56,4 +56,4 @@ class TestManageSuitesPage(BaseTest):
 
         Assert.false(manage_suites_pg.is_element_present(suite['locator']))
 
-        self.delete_product(mozwebqa, suite['product'])
+        self.delete_product(mozwebqa_logged_in, suite['product'])

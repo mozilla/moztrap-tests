@@ -53,10 +53,10 @@ class BaseTest(object):
     Base class for all Tests
     '''
 
-    def create_product(self, mozwebqa, login=False):
+    def create_product(self, mozwebqa):
         create_product_pg = CaseConductorCreateProductPage(mozwebqa)
 
-        create_product_pg.go_to_create_product_page(login=login)
+        create_product_pg.go_to_create_product_page()
         product = create_product_pg.create_product()
 
         return product
@@ -68,14 +68,13 @@ class BaseTest(object):
         manage_products_pg.filter_products_by_name(name=product['name'])
         manage_products_pg.delete_product(name=product['name'])
 
-    def create_cycle(self, mozwebqa, product=None, login=False):
+    def create_cycle(self, mozwebqa, product=None):
         create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
 
         if product is None:
-            product = self.create_product(mozwebqa, login=login)
-            login = False
+            product = self.create_product(mozwebqa)
 
-        create_cycle_pg.go_to_create_cycle_page(login=login)
+        create_cycle_pg.go_to_create_cycle_page()
         cycle = create_cycle_pg.create_cycle(product=product['name'])
         cycle['product'] = product
 
@@ -91,14 +90,13 @@ class BaseTest(object):
         if delete_product:
             self.delete_product(mozwebqa, cycle['product'])
 
-    def create_run(self, mozwebqa, cycle=None, login=False):
+    def create_run(self, mozwebqa, cycle=None):
         create_run_pg = CaseConductorCreateRunPage(mozwebqa)
 
         if cycle is None:
-            cycle = self.create_cycle(mozwebqa, login=login)
-            login = False
+            cycle = self.create_cycle(mozwebqa)
 
-        create_run_pg.go_to_create_run_page(login=login)
+        create_run_pg.go_to_create_run_page()
         run = create_run_pg.create_run(cycle=cycle['name'])
         run['cycle'] = cycle
 
@@ -114,14 +112,13 @@ class BaseTest(object):
         if delete_cycle:
             self.delete_cycle(mozwebqa, run['cycle'], delete_product=delete_product)
 
-    def create_suite(self, mozwebqa, product=None, login=False):
+    def create_suite(self, mozwebqa, product=None):
         create_suite_pg = CaseConductorCreateSuitePage(mozwebqa)
 
         if product is None:
-            product = self.create_product(mozwebqa, login=login)
-            login = False
+            product = self.create_product(mozwebqa)
 
-        create_suite_pg.go_to_create_suite_page(login=login)
+        create_suite_pg.go_to_create_suite_page()
         suite = create_suite_pg.create_suite(product=product['name'])
         suite['product'] = product
 
@@ -137,14 +134,13 @@ class BaseTest(object):
         if delete_product:
             self.delete_product(mozwebqa, suite['product'])
 
-    def create_case(self, mozwebqa, product=None, login=False):
+    def create_case(self, mozwebqa, product=None):
         create_case_pg = CaseConductorCreateCasePage(mozwebqa)
 
         if product is None:
-            product = self.create_product(mozwebqa, login=login)
-            login = False
+            product = self.create_product(mozwebqa)
 
-        create_case_pg.go_to_create_case_page(login=login)
+        create_case_pg.go_to_create_case_page()
         case = create_case_pg.create_case(product=product['name'])
         case['product'] = product
 

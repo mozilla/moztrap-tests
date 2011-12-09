@@ -52,14 +52,8 @@ class CaseConductorCreateCasePage(CaseConductorBasePage):
     _submit_locator = 'css=#single-case-form .form-actions > button'
     _case_locator = u'css=#managecases .managelist article.item .title[title="%(case_name)s"]'
 
-    def go_to_create_case_page(self, login=False, user='default'):
+    def go_to_create_case_page(self):
         self.selenium.open('/manage/testcase/add/')
-
-        if login:
-            from login_page import CaseConductorLoginPage
-            login_pg = CaseConductorLoginPage(self.testsetup)
-            login_pg.login(user)
-
         self.is_the_current_page
 
     def create_case(self, name='Test Case', product='Test Product', desc='This is a test case', step1_instruction='Test Case step 1 instruction', step1_result='Test Case step 1 expected result'):

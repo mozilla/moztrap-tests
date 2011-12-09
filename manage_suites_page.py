@@ -49,14 +49,8 @@ class CaseConductorManageSuitesPage(CaseConductorBasePage):
     _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
 
-    def go_to_manage_suites_page(self, login=False, user='default'):
+    def go_to_manage_suites_page(self):
         self.selenium.open('/manage/testsuites/')
-
-        if login:
-            from login_page import CaseConductorLoginPage
-            login_pg = CaseConductorLoginPage(self.testsetup)
-            login_pg.login(user)
-
         self.is_the_current_page
 
     def delete_suite(self, name='Test Suite'):
