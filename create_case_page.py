@@ -46,6 +46,7 @@ class CaseConductorCreateCasePage(CaseConductorBasePage):
 
     _name_locator = 'id=id_name'
     _product_select_locator = 'id=id_product'
+    _suite_select_locator = 'id=id_suite'
     _description_locator = 'id=id_description'
     _step1_instruction_locator = 'id=id_steps-0-instruction'
     _step1_result_locator = 'id=id_steps-0-expected_result'
@@ -56,7 +57,7 @@ class CaseConductorCreateCasePage(CaseConductorBasePage):
         self.selenium.open('/manage/testcase/add/')
         self.is_the_current_page
 
-    def create_case(self, name='Test Case', product='Test Product', desc='This is a test case', step1_instruction='Test Case step 1 instruction', step1_result='Test Case step 1 expected result'):
+    def create_case(self, name='Test Case', product='Test Product', suite=None, desc='This is a test case', step1_instruction='Test Case step 1 instruction', step1_result='Test Case step 1 expected result'):
         dt_string = datetime.utcnow().isoformat()
         case = {}
         case['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
@@ -65,6 +66,8 @@ class CaseConductorCreateCasePage(CaseConductorBasePage):
 
         self.type(self._name_locator, case['name'])
         self.select(self._product_select_locator, product)
+        if suite:
+            self.select(self._suite_select_locator, suite)
         self.type(self._description_locator, case['desc'])
         self.type(self._step1_instruction_locator, step1_instruction)
         self.type(self._step1_result_locator, step1_result)

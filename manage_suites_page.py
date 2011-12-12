@@ -46,6 +46,7 @@ class CaseConductorManageSuitesPage(CaseConductorBasePage):
     _input_locator = 'id=text-filter'
     _update_list_locator = 'css=#filter .visual .content .form-actions button'
     _delete_suite_locator = u'css=#managesuites .managelist article.item .title[title="%(suite_name)s"] ~ .controls button[title="delete"]'
+    _suite_status_locator = u'xpath=//section[@id="managesuites"]//article[contains(@class,"item")]//h3[@title="%(suite_name)s"]/../p[@class="status"]/button'
     _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
 
@@ -70,3 +71,9 @@ class CaseConductorManageSuitesPage(CaseConductorBasePage):
         self.click(_filter_suggestion_locator)
         self.wait_for_element_visible(self._update_list_locator)
         self.click(self._update_list_locator, wait_flag=True)
+
+    def activate_suite(self, name='Test Suite'):
+        _suite_status_locator = self._suite_status_locator % {'suite_name': name}
+
+        self.click(_suite_status_locator)
+        self.wait_for_ajax()

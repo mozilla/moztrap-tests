@@ -46,6 +46,7 @@ class CaseConductorManageCasesPage(CaseConductorBasePage):
     _input_locator = 'id=text-filter'
     _update_list_locator = 'css=#filter .visual .content .form-actions button'
     _delete_case_locator = u'css=#managecases .managelist article.item .title[title="%(case_name)s"] ~ .controls button[title="delete"]'
+    _case_status_locator = u'xpath=//section[@id="managecases"]//article[contains(@class,"item")]//h3[@title="%(case_name)s"]/../p[@class="status"]/button'
     _filter_suggestion_locator = u'css=#filter .textual .suggest a[data-type="name"]:contains(%(filter_name)s)'
     _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
 
@@ -70,3 +71,9 @@ class CaseConductorManageCasesPage(CaseConductorBasePage):
         self.click(_filter_suggestion_locator)
         self.wait_for_element_visible(self._update_list_locator)
         self.click(self._update_list_locator, wait_flag=True)
+
+    def activate_case(self, name='Test Case'):
+        _case_status_locator = self._case_status_locator % {'case_name': name}
+
+        self.click(_case_status_locator)
+        self.wait_for_ajax()
