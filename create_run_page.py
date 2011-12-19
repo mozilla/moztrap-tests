@@ -49,6 +49,7 @@ class CaseConductorCreateRunPage(CaseConductorBasePage):
     _description_locator = 'id=id_description'
     _start_date_locator = 'id=id_start_date'
     _end_date_locator = 'id=id_end_date'
+    _suite_select_locator = 'id=id_suites'
     _submit_locator = 'css=#run-form .form-actions > button'
     _run_manage_locator = u'css=#manageruns .managelist article.item .title[title="%(run_name)s"]'
     _run_homepage_locator = u"css=.selectruns .finder .carousel .runs .colcontent .title:contains(%(run_name)s)"
@@ -58,7 +59,7 @@ class CaseConductorCreateRunPage(CaseConductorBasePage):
         self.selenium.open('/manage/testrun/add/')
         self.is_the_current_page
 
-    def create_run(self, name='Test Run', cycle='Test Cycle', desc='This is a test run', start_date='2011-01-01', end_date='2012-12-31'):
+    def create_run(self, name='Test Run', cycle='Test Cycle', desc='This is a test run', start_date='2011-01-01', end_date='2012-12-31', suite=None):
         dt_string = datetime.utcnow().isoformat()
         run = {}
         run['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
@@ -72,6 +73,8 @@ class CaseConductorCreateRunPage(CaseConductorBasePage):
         self.type(self._description_locator, run['desc'])
         self.type(self._start_date_locator, start_date)
         self.type(self._end_date_locator, end_date)
+        if suite:
+            self.selenium.add_selection(self._suite_select_locator, suite)
         self.click(self._submit_locator, wait_flag=True)
 
         return run

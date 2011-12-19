@@ -39,24 +39,25 @@
 from base_page import CaseConductorBasePage
 
 
-class CaseConductorHomePage(CaseConductorBasePage):
+class CaseConductorRunTestsPage(CaseConductorBasePage):
 
     _page_title = 'Mozilla Case Conductor'
-    _select_locator = u'css=.selectruns .finder .carousel .colcontent .title:contains(%(item_name)s)'
-    _submit_locator = u'css=.drilldown .environment .form-actions button'
+    _test_action_locator = u'xpath=//section[@id="run"]//article[contains(@class,"item")]//h3[@title="%(case_name)s"]/../div[@class="status"]/button[@class="%(action)s"]'
+    _test_passed_locator = u'xpath=//section[@id="run"]//article[contains(@class,"item")]//h3[@title="%(case_name)s"]/../div[@class="status"]/span[@class="passed"]'
 
-    def go_to_homepage_page(self):
-        self.selenium.open('/')
-        self.is_the_current_page
+    def start_test(self, case_name):
+        _start_test_locator = self._test_action_locator % {'case_name': case_name, 'action': 'start'}
 
-    def select_item(self, name):
-        _select_locator = self._select_locator % {'item_name': name}
-
-        self.click(_select_locator)
+        self.click(_start_test_locator)
         self.wait_for_ajax()
 
-    def go_to_run_test(self, product_name, cycle_name, run_name):
-        self.select_item(product_name)
-        self.select_item(cycle_name)
-        self.select_item(run_name)
-        self.click(self._submit_locator, wait_flag=True)
+    def pass_test(self, case_name):
+        _pass_test_locator = self._test_action_locator % {'case_name': case_name, 'action': 'pass'}
+
+        self.click(_pass_test_locator)
+        self.wait_for_ajax()
+
+    def is_test_passed(self, case_name):
+        _test_passed_locator = self._test_passed_locator % {'case_name': case_name}
+
+        return self.is_element_present(_test_passed_locator)

@@ -20,7 +20,7 @@
 # Portions created by the Initial Developer are Copyright (C) 2011
 # the Initial Developer. All Rights Reserved.
 #
-# Contributor(s): Bebe
+# Contributor(s): Jonny Gerig Meyer <jonny@oddbird.net>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -36,27 +36,23 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from base_page import CaseConductorBasePage
+from run_tests_page import CaseConductorRunTestsPage
+from base_test import BaseTest
+from unittestzero import Assert
 
 
-class CaseConductorHomePage(CaseConductorBasePage):
+class TestRunTestsPage(BaseTest):
 
-    _page_title = 'Mozilla Case Conductor'
-    _select_locator = u'css=.selectruns .finder .carousel .colcontent .title:contains(%(item_name)s)'
-    _submit_locator = u'css=.drilldown .environment .form-actions button'
+    def test_that_user_can_pass_test(self, mozwebqa_logged_in):
+        run_tests_pg = CaseConductorRunTestsPage(mozwebqa_logged_in)
 
-    def go_to_homepage_page(self):
-        self.selenium.open('/')
-        self.is_the_current_page
+        case = self.create_and_run_test(mozwebqa_logged_in)
 
-    def select_item(self, name):
-        _select_locator = self._select_locator % {'item_name': name}
+        Assert.false(run_tests_pg.is_test_passed(case_name=case['name']))
 
-        self.click(_select_locator)
-        self.wait_for_ajax()
+        run_tests_pg.start_test(case_name=case['name'])
+        run_tests_pg.pass_test(case_name=case['name'])
 
-    def go_to_run_test(self, product_name, cycle_name, run_name):
-        self.select_item(product_name)
-        self.select_item(cycle_name)
-        self.select_item(run_name)
-        self.click(self._submit_locator, wait_flag=True)
+        Assert.true(run_tests_pg.is_test_passed(case_name=case['name']))
+
+        # TODO: cleanup when platform allows for deleting activated items
