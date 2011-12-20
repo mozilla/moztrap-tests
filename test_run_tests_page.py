@@ -56,3 +56,18 @@ class TestRunTestsPage(BaseTest):
         Assert.true(run_tests_pg.is_test_passed(case_name=case['name']))
 
         # TODO: cleanup when platform allows for deleting activated items
+
+    def test_that_user_can_fail_test(self, mozwebqa_logged_in):
+        run_tests_pg = CaseConductorRunTestsPage(mozwebqa_logged_in)
+
+        case = self.create_and_run_test(mozwebqa_logged_in)
+
+        run_tests_pg.start_test(case_name=case['name'])
+
+        Assert.false(run_tests_pg.is_test_failed(case_name=case['name']))
+
+        run_tests_pg.fail_test(case_name=case['name'])
+
+        Assert.true(run_tests_pg.is_test_failed(case_name=case['name']))
+
+        # TODO: cleanup when platform allows for deleting activated items
