@@ -4,5 +4,5 @@
 selenium
 pytest
 pytest-xdist
-pytest-mozwebqa
+pytest-mozwebqa==0.7.1
 unittestzero
