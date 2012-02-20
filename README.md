@@ -2,7 +2,7 @@ CaseConductor Tests
 ===================
 
 Automated tests for the Case Conductor web application.
-The following contributors have submitted pull requests to Addon-Tests:
+The following contributors have submitted pull requests to caseconductor-tests:
 
 https://github.com/mozilla/caseconductor-tests/contributors
 
