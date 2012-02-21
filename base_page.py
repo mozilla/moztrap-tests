@@ -21,6 +21,7 @@
 # the Initial Developer. All Rights Reserved.
 #
 # Contributor(s): Bebe
+#                 Jonny Gerig Meyer <jonny@oddbird.net>
 #
 # Alternatively, the contents of this file may be used under the terms of
 # either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -41,10 +42,8 @@ from page import Page
 
 class CaseConductorBasePage(Page):
 
-    _user_name_locator = "css=.meta>ul>li"
-    _logout_locator = "css=.meta>ul>li>a"
-
-
+    _user_name_locator = 'css=#accountnav .account-welcome .fn'
+    _logout_locator = 'css=#accountnav .account-links .signout'
 
     @property
     def is_user_logged_in(self):
