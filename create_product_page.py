@@ -42,26 +42,29 @@ from datetime import datetime
 
 class CaseConductorCreateProductPage(CaseConductorBasePage):
 
-    _page_title = "Mozilla Case Conductor"
+    _page_title = 'Mozilla Case Conductor'
 
-    _name_locator = "id=id_name"
-    _profile_locator = "id=id_profile"
-    _description_locator = "id=id_description"
-    _submit_locator = "css=div.form-actions>button"
-    _product_locator = u'css=#manageproducts article.item .title:contains(%(product_name)s)'
+    _name_locator = 'id=id_name'
+    _version_locator = 'id=id_version'
+    _profile_locator = 'id=id_profile'
+    _description_locator = 'id=id_description'
+    _submit_locator = 'css=#product-add-form .form-actions > button'
+    _product_locator = u'css=#manageproducts .listitem .title:contains(%(product_name)s)'
 
     def go_to_create_product_page(self):
         self.selenium.open('/manage/product/add/')
         self.is_the_current_page
 
-    def create_product(self, name="Test Product", desc="This is a test product", profile="Browser Testing Environments"):
+    def create_product(self, name='Test Product', version='0.1', desc='This is a test product', profile='Browser Testing Environments'):
         dt_string = datetime.utcnow().isoformat()
         product = {}
         product['name'] = name + ' ' + dt_string
         product['desc'] = desc + ' created on ' + dt_string
+        product['version'] = version
         product['locator'] = self._product_locator % {'product_name': product['name']}
 
         self.type(self._name_locator, product['name'])
+        self.type(self._version_locator, version)
         self.type(self._description_locator, product['desc'])
         self.select(self._profile_locator, profile)
         self.click(self._submit_locator, wait_flag=True)
