@@ -43,7 +43,7 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
 
     _page_title = 'Mozilla Case Conductor'
     _delete_product_locator = u'css=#manageproducts .listitem .controls .action-delete[title="delete %(product_name)s"]'
-    _input_locator = 'id=text-filter'
+    _filter_input_locator = 'id=text-filter'
     _filter_suggestion_locator = u'css=#filter .textual .suggest .suggestion[data-name="%(filter_name)s"]'
     _filter_locator = u'css=#filterform .filter-group input[value="%(filter_name)s"]'
 
@@ -63,8 +63,8 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         _name_without_last_character = name[:-1]
         _name_last_character = name[-1]
 
-        self.type(self._input_locator, _name_without_last_character)
-        self.key_pressed(self._input_locator, _name_last_character)
+        self.type(self._filter_input_locator, _name_without_last_character)
+        self.key_pressed(self._filter_input_locator, _name_last_character)
         self.wait_for_element_present(_filter_suggestion_locator)
         self.click(_filter_suggestion_locator)
         self.wait_for_element_present(_filter_locator)
@@ -76,10 +76,10 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
         _name_without_last_character = name[:-1]
         _name_last_character = name[-1]
 
-        self.type(self._input_locator, _name_without_last_character)
-        self.key_pressed(self._input_locator, _name_last_character)
+        self.type(self._filter_input_locator, _name_without_last_character)
+        self.key_pressed(self._filter_input_locator, _name_last_character)
         self.wait_for_element_present(_filter_suggestion_locator)
-        self.key_pressed(self._input_locator, '13')
+        self.key_pressed(self._filter_input_locator, '13')
         self.wait_for_element_present(_filter_locator)
         self.wait_for_ajax()
 
