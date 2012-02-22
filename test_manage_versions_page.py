@@ -36,7 +36,7 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from manage_cycles_page import CaseConductorManageVersionsPage
+from manage_versions_page import CaseConductorManageVersionsPage
 from base_test import BaseTest
 from unittestzero import Assert
 
