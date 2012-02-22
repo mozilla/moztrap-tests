@@ -75,9 +75,13 @@ class BaseTest(object):
 
         if product is None:
             product = self.create_product(mozwebqa)
+            version = product['version']
+            manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa)
+            manage_versions_pg.go_to_manage_versions_page()
+        else:
+            create_version_pg.go_to_create_version_page()
+            version = create_version_pg.create_version(product_name=product['name'])
 
-        create_version_pg.go_to_create_version_page()
-        version = create_version_pg.create_version(product_name=product['name'])
         version['product'] = product
 
         return version
@@ -87,7 +91,7 @@ class BaseTest(object):
 
         manage_versions_pg.go_to_manage_versions_page()
         manage_versions_pg.filter_versions_by_name(name=version['name'])
-        manage_versions_pg.delete_version(name=version['name'])
+        manage_versions_pg.delete_version(name=version['name'], product_name=version['product']['name'])
 
         if delete_product:
             self.delete_product(mozwebqa, version['product'])
