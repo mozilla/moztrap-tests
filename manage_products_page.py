@@ -44,8 +44,8 @@ class CaseConductorManageProductsPage(CaseConductorBasePage):
     _page_title = 'Mozilla Case Conductor'
     _delete_product_locator = u'css=#manageproducts .listitem .controls .action-delete[title="delete %(product_name)s"]'
     _filter_input_locator = 'id=text-filter'
-    _filter_suggestion_locator = u'css=#filter .textual .suggest .suggestion[data-name="%(filter_name)s"]'
-    _filter_locator = u'css=#filterform .filter-group input[value="%(filter_name)s"]'
+    _filter_suggestion_locator = u'css=#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]'
+    _filter_locator = u'css=#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]'
 
     def go_to_manage_products_page(self):
         self.selenium.open('/manage/products/')
