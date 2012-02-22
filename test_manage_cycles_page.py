@@ -81,11 +81,11 @@ class TestManageVersionsPage(BaseTest):
 
         manage_versions_pg.filter_versions_by_name(name=version['name'])
 
-        cloned_version = manage_versions_pg.clone_version(name=version['name'])
+        cloned_version = manage_versions_pg.clone_version(name=version['name'], product_name=version['product']['name'])
 
         Assert.true(manage_versions_pg.is_element_present(cloned_version['manage_locator']))
 
-        manage_versions_pg.delete_version(name=cloned_version['name'])
+        manage_versions_pg.delete_version(name=cloned_version['name'], product_name=cloned_version['product_name'])
 
         Assert.false(manage_versions_pg.is_element_present(cloned_version['manage_locator']))
 
