@@ -36,57 +36,57 @@
 #
 # ***** END LICENSE BLOCK *****
 
-from manage_cycles_page import CaseConductorManageCyclesPage
+from manage_cycles_page import CaseConductorManageVersionsPage
 from base_test import BaseTest
 from unittestzero import Assert
 
 
-class TestManageCyclesPage(BaseTest):
+class TestManageVersionsPage(BaseTest):
 
-    def test_that_user_can_create_and_delete_cycle(self, mozwebqa_logged_in):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
+    def test_that_user_can_create_and_delete_version(self, mozwebqa_logged_in):
+        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa_logged_in)
+        version = self.create_version(mozwebqa_logged_in)
 
-        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
+        manage_versions_pg.filter_versions_by_name(name=version['name'])
 
-        Assert.true(manage_cycles_pg.is_element_present(cycle['manage_locator']))
+        Assert.true(manage_versions_pg.is_element_present(version['manage_locator']))
 
-        manage_cycles_pg.delete_cycle(name=cycle['name'])
+        manage_versions_pg.delete_version(name=version['name'], product_name=version['product']['name'])
 
-        Assert.false(manage_cycles_pg.is_element_present(cycle['manage_locator']))
+        Assert.false(manage_versions_pg.is_element_present(version['manage_locator']))
 
-        self.delete_product(mozwebqa_logged_in, cycle['product'])
+        self.delete_product(mozwebqa_logged_in, version['product'])
 
-    def test_that_user_can_filter_cycle_by_name(self, mozwebqa_logged_in):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
+    def test_that_user_can_filter_version_by_name(self, mozwebqa_logged_in):
+        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa_logged_in)
+        version = self.create_version(mozwebqa_logged_in)
 
-        manage_cycles_pg.filter_cycles_by_name(name='Another Cycle')
+        manage_versions_pg.filter_versions_by_name(name='Another Version')
 
-        Assert.false(manage_cycles_pg.is_element_present(cycle['manage_locator']))
+        Assert.false(manage_versions_pg.is_element_present(version['manage_locator']))
 
-        manage_cycles_pg.remove_name_filter(name='Another Cycle')
-        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
+        manage_versions_pg.remove_name_filter(name='Another Version')
+        manage_versions_pg.filter_versions_by_name(name=version['name'])
 
-        Assert.true(manage_cycles_pg.is_element_present(cycle['manage_locator']))
+        Assert.true(manage_versions_pg.is_element_present(version['manage_locator']))
 
-        self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)
+        self.delete_version(mozwebqa_logged_in, version, delete_product=True)
 
-    def test_that_user_can_clone_cycle(self, mozwebqa_logged_in):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa_logged_in)
+    def test_that_user_can_clone_version(self, mozwebqa_logged_in):
+        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa_logged_in)
+        version = self.create_version(mozwebqa_logged_in)
 
-        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
+        manage_versions_pg.filter_versions_by_name(name=version['name'])
 
-        cloned_cycle = manage_cycles_pg.clone_cycle(name=cycle['name'])
+        cloned_version = manage_versions_pg.clone_version(name=version['name'])
 
-        Assert.true(manage_cycles_pg.is_element_present(cloned_cycle['manage_locator']))
+        Assert.true(manage_versions_pg.is_element_present(cloned_version['manage_locator']))
 
-        manage_cycles_pg.delete_cycle(name=cloned_cycle['name'])
+        manage_versions_pg.delete_version(name=cloned_version['name'])
 
-        Assert.false(manage_cycles_pg.is_element_present(cloned_cycle['manage_locator']))
+        Assert.false(manage_versions_pg.is_element_present(cloned_version['manage_locator']))
 
-        self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)
+        self.delete_version(mozwebqa_logged_in, version, delete_product=True)

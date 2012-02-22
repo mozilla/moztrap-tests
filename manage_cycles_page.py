@@ -39,66 +39,57 @@
 from base_page import CaseConductorBasePage
 
 
-class CaseConductorManageCyclesPage(CaseConductorBasePage):
+class CaseConductorManageVersionsPage(CaseConductorBasePage):
 
     _page_title = 'Mozilla Case Conductor'
 
-    _input_locator = 'id=text-filter'
-    _update_list_locator = 'css=#filter .visual .content .form-actions button'
-    _cycle_manage_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"]'
-    _cycle_homepage_locator = u"css=.selectruns .finder .carousel .cycles .colcontent .title:contains(%(cycle_name)s)"
-    _cloned_cycle_locator = u'css=#managecycles .managelist article.item .title[title^="Cloned on"][title$="%(cycle_name)s"]'
-    _delete_cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"] ~ .controls button[title="delete"]'
-    _clone_cycle_locator = u'css=#managecycles .managelist article.item .title[title="%(cycle_name)s"] ~ .controls button[title="clone"]'
-    _cycle_status_locator = u'xpath=//section[@id="managecycles"]//article[contains(@class,"item")]//h3[@title="%(cycle_name)s"]/../p[@class="status"]/button'
-    _filter_suggestion_locator = u'css=#filter .textual .suggest a:contains(%(filter_name)s)'
-    _filter_locator = u'css=#filter .visual .filter-group.keyword input[value="%(filter_name)s"]'
+    _version_manage_locator = u'css=#manageproductversions .listitem .title[title="%(product_name)s %(version_name)s"]'
+    _version_homepage_locator = u'css=.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"])'
+    _delete_version_locator = u'css=#manageproductversions .listitem .action-delete[title="delete %(product_name)s %(version_name)s"]'
+    _clone_version_locator = u'css=#manageproductversions .listitem .action-clone[title="clone %(product_name)s %(version_name)s"]'
+    _filter_input_locator = 'id=text-filter'
+    _filter_suggestion_locator = u'css=#filter .textual .suggest .suggestion[data-type="version"][data-name="%(filter_name)s"]'
+    _filter_locator = u'css=#filterform .filter-group input[data-name="version"][value="%(filter_name)s"]'
 
-    def go_to_manage_cycles_page(self):
-        self.selenium.open('/manage/testcycles/')
+    def go_to_manage_versions_page(self):
+        self.selenium.open('/manage/productversions/')
         self.is_the_current_page
 
-    def delete_cycle(self, name='Test Cycle'):
-        _delete_locator = self._delete_cycle_locator % {'cycle_name': name}
+    def delete_version(self, name='Test Version', product_name='Test Product'):
+        _delete_locator = self._delete_version_locator % {'product_name': product_name, 'version_name': name}
 
         self.click(_delete_locator)
         self.wait_for_ajax()
 
-    def filter_cycles_by_name(self, name):
+    def filter_versions_by_name(self, name):
+        _filter_locator = self._filter_locator % {'filter_name': name.lower()}
         _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}
         _name_without_last_character = name[:-1]
         _name_last_character = name[-1]
 
-        self.type(self._input_locator, _name_without_last_character)
-        self.key_pressed(self._input_locator, _name_last_character)
+        self.type(self._filter_input_locator, _name_without_last_character)
+        self.key_pressed(self._filter_input_locator, _name_last_character)
         self.wait_for_element_present(_filter_suggestion_locator)
         self.click(_filter_suggestion_locator)
-        self.wait_for_element_visible(self._update_list_locator)
-        self.click(self._update_list_locator, wait_flag=True)
+        self.wait_for_element_present(_filter_locator)
+        self.wait_for_ajax()
 
     def remove_name_filter(self, name):
         _filter_locator = self._filter_locator % {'filter_name': name.lower()}
 
         self.click(_filter_locator)
-        self.wait_for_element_visible(self._update_list_locator)
-        self.click(self._update_list_locator, wait_flag=True)
-
-    def clone_cycle(self, name='Test Cycle'):
-        _clone_cycle_locator = self._clone_cycle_locator % {'cycle_name': name}
-        _cloned_cycle_locator = self._cloned_cycle_locator % {'cycle_name': name}
-        cloned_cycle = {}
-
-        self.click(_clone_cycle_locator)
-        self.wait_for_element_visible(_cloned_cycle_locator)
-
-        cloned_cycle['name'] = self.get_text(_cloned_cycle_locator)
-        cloned_cycle['manage_locator'] = self._cycle_manage_locator % {'cycle_name': cloned_cycle['name']}
-        cloned_cycle['homepage_locator'] = self._cycle_homepage_locator % {'cycle_name': cloned_cycle['name']}
-
-        return cloned_cycle
-
-    def activate_cycle(self, name='Test Cycle'):
-        _cycle_status_locator = self._cycle_status_locator % {'cycle_name': name}
-
-        self.click(_cycle_status_locator)
         self.wait_for_ajax()
+
+    def clone_version(self, name='Test Version', product_name='Test Product'):
+        _clone_version_locator = self._clone_version_locator % {'product_name': product_name, 'version_name': name}
+        cloned_version = {}
+
+        self.click(_clone_version_locator)
+        self.wait_for_ajax()
+
+        cloned_version['product_name'] = product_name
+        cloned_version['name'] = name + '.next'
+        cloned_version['manage_locator'] = self._version_manage_locator % {'product_name': cloned_version['product_name'], 'version_name': cloned_version['name']}
+        cloned_version['homepage_locator'] = self._version_homepage_locator % {'product_name': cloned_version['product_name'], 'version_name': cloned_version['name']}
+
+        return cloned_version

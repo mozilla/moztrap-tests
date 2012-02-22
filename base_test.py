@@ -44,8 +44,8 @@ from create_suite_page import CaseConductorCreateSuitePage
 from manage_suites_page import CaseConductorManageSuitesPage
 from create_run_page import CaseConductorCreateRunPage
 from manage_runs_page import CaseConductorManageRunsPage
-from create_cycle_page import CaseConductorCreateCyclePage
-from manage_cycles_page import CaseConductorManageCyclesPage
+from create_cycle_page import CaseConductorCreateVersionPage
+from manage_cycles_page import CaseConductorManageVersionsPage
 from create_product_page import CaseConductorCreateProductPage
 from manage_products_page import CaseConductorManageProductsPage
 
@@ -70,32 +70,27 @@ class BaseTest(object):
         manage_products_pg.filter_products_by_name(name=product['name'])
         manage_products_pg.delete_product(name=product['name'])
 
-    def create_cycle(self, mozwebqa, activate=False, product=None):
-        create_cycle_pg = CaseConductorCreateCyclePage(mozwebqa)
+    def create_version(self, mozwebqa, product=None):
+        create_version_pg = CaseConductorCreateVersionPage(mozwebqa)
 
         if product is None:
             product = self.create_product(mozwebqa)
 
-        create_cycle_pg.go_to_create_cycle_page()
-        cycle = create_cycle_pg.create_cycle(product=product['name'])
-        cycle['product'] = product
+        create_version_pg.go_to_create_version_page()
+        version = create_version_pg.create_version(product_name=product['name'])
+        version['product'] = product
 
-        if activate:
-            manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-            manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
-            manage_cycles_pg.activate_cycle(name=cycle['name'])
+        return version
 
-        return cycle
+    def delete_version(self, mozwebqa, version, delete_product=False):
+        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa)
 
-    def delete_cycle(self, mozwebqa, cycle, delete_product=False):
-        manage_cycles_pg = CaseConductorManageCyclesPage(mozwebqa)
-
-        manage_cycles_pg.go_to_manage_cycles_page()
-        manage_cycles_pg.filter_cycles_by_name(name=cycle['name'])
-        manage_cycles_pg.delete_cycle(name=cycle['name'])
+        manage_versions_pg.go_to_manage_versions_page()
+        manage_versions_pg.filter_versions_by_name(name=version['name'])
+        manage_versions_pg.delete_version(name=version['name'])
 
         if delete_product:
-            self.delete_product(mozwebqa, cycle['product'])
+            self.delete_product(mozwebqa, version['product'])
 
     def create_run(self, mozwebqa, activate=False, cycle=None, suite_name=None):
         create_run_pg = CaseConductorCreateRunPage(mozwebqa)
