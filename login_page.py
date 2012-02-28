@@ -9,21 +9,18 @@ from base_page import CaseConductorBasePage
 
 class CaseConductorLoginPage(CaseConductorBasePage):
 
-    _page_title = "Mozilla Case Conductor"
+    _page_title = 'Mozilla Case Conductor'
 
-    _signin_locator = "css=nav.meta>ul>li>a:nth(0)"
-    _register_locator = "css=nav.meta>ul>li>a:nth(1)"
-    _account_locator = "css=nav.meta>ul"
+    _username_locator = 'id=id_username'
+    _password_locator = 'id=id_password'
+    _submit_locator = 'css=#loginform .form-actions > button'
+    _register_locator = 'css=#loginform .form-actions > a'
 
-    _email_locator = "id=id_email"
-    _password_locator = "id=id_password"
-    _submit_locator = "css=div.form-actions>button"
-
-    def login(self, user="default"):
+    def login(self, user='default'):
         if type(user) is str:
             user = self.testsetup.credentials[user]
 
-        self.type(self._email_locator, user['email'])
+        self.type(self._username_locator, user['username'])
         self.type(self._password_locator, user['password'])
         self.click(self._submit_locator, True)
         from home_page import CaseConductorHomePage
@@ -35,8 +32,4 @@ class CaseConductorLoginPage(CaseConductorBasePage):
 
     @property
     def is_signin_visible(self):
-        return self.is_element_visible(self._signin_locator)
-
-    @property
-    def account_text(self):
-        return self.get_text(self._account_locator)
+        return self.is_element_visible(self._submit_locator)

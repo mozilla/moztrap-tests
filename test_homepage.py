@@ -17,16 +17,13 @@ class TestHomepage(BaseTest):
         user = home_pg.testsetup.credentials['default']
         home_pg.go_to_homepage_page()
 
-        # TODO: uncomment when the id's are added
-        #Assert.false(home_pg.is_user_logged_in)
-
         Assert.true(home_pg.is_user_logged_in)
-        welcome_text = u'Welcome %s [Sign Out]' % user['name']
-        Assert.equal(home_pg.users_name_text, welcome_text)
+        users_name_text = user['name']
+        Assert.equal(home_pg.users_name_text, users_name_text)
 
         login_page = home_pg.logout()
 
-        #Assert.false(home_pg.is_user_logged_in)
+        Assert.false(home_pg.is_user_logged_in)
         Assert.true(login_page.is_register_visible)
         Assert.true(login_page.is_signin_visible)
 
