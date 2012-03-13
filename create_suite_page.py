@@ -15,14 +15,17 @@ class CaseConductorCreateSuitePage(CaseConductorBasePage):
     _name_locator = 'id=id_name'
     _product_select_locator = 'id=id_product'
     _description_locator = 'id=id_description'
-    _submit_locator = 'css=#suite-form .form-actions > button'
-    _suite_locator = u'css=#managesuites .managelist article.item .title[title="%(suite_name)s"]'
+    _status_select_locator = 'id=id_status'
+    _submit_locator = 'css=#suite-add-form .form-actions button[type="submit"]'
+    _case_select_locator = u'css=#suite-add-form .multiunselected .itemlist .selectitem[data-title="%(case_name)s"] input.bulk-value'
+    _include_selected_cases_locator = 'css=#suite-add-form .multiunselected .itemlist .listordering .byinclude .action-include'
+    _suite_locator = u'css=#managesuites .itemlist .listitem .title[title="%(suite_name)s"]'
 
     def go_to_create_suite_page(self):
-        self.selenium.open('/manage/testsuite/add/')
+        self.selenium.open('/manage/suite/add/')
         self.is_the_current_page
 
-    def create_suite(self, name='Test Suite', product='Test Product', desc='This is a test suite'):
+    def create_suite(self, name='Test Suite', product='Test Product', desc='This is a test suite', status='active', case_list=None):
         dt_string = datetime.utcnow().isoformat()
         suite = {}
         suite['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
@@ -32,6 +35,12 @@ class CaseConductorCreateSuitePage(CaseConductorBasePage):
         self.type(self._name_locator, suite['name'])
         self.select(self._product_select_locator, product)
         self.type(self._description_locator, suite['desc'])
+        self.select(self._status_select_locator, status)
+        if case_list:
+            for case in case_list:
+                _case_select_locator = self._case_select_locator % {'case_name': case}
+                self.selenium.check(_case_select_locator)
+            self.click(self._include_selected_cases_locator)
         self.click(self._submit_locator, wait_flag=True)
 
         return suite
