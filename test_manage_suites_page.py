@@ -24,4 +24,4 @@ class TestManageSuitesPage(BaseTest):
 
         Assert.false(manage_suites_pg.is_element_present(suite['locator']))
 
-        self.delete_product(mozwebqa_logged_in, suite['product'])
+        self.delete_product(mozwebqa_logged_in, product=suite['product'])

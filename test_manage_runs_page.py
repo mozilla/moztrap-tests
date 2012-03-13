@@ -24,4 +24,4 @@ class TestManageRunsPage(BaseTest):
 
         Assert.false(manage_runs_pg.is_element_present(run['manage_locator']))
 
-        self.delete_cycle(mozwebqa_logged_in, run['cycle'], delete_product=True)
+        self.delete_version(mozwebqa_logged_in, version=run['version'], delete_product=True)

@@ -25,7 +25,7 @@ class CaseConductorCreateProductPage(CaseConductorBasePage):
         self.selenium.open('/manage/product/add/')
         self.is_the_current_page
 
-    def create_product(self, name='Test Product', version='Test Version', desc='This is a test product', profile='Browser Testing Environments'):
+    def create_product(self, name='Test Product', version='Test Version', desc='This is a test product', profile=None):
         dt_string = datetime.utcnow().isoformat()
         product = {}
         product['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
@@ -39,7 +39,8 @@ class CaseConductorCreateProductPage(CaseConductorBasePage):
         self.type(self._name_locator, product['name'])
         self.type(self._version_locator, product['version']['name'])
         self.type(self._description_locator, product['desc'])
-        self.select(self._profile_locator, profile)
+        if profile:
+            self.select(self._profile_locator, profile)
         self.click(self._submit_locator, wait_flag=True)
 
         return product
