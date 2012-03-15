@@ -114,20 +114,18 @@ class BaseTest(object):
         if delete_product:
             self.delete_product(mozwebqa, product=suite['product'])
 
-    def create_case(self, mozwebqa, activate=False, product=None, suite_name=None):
+    def create_case(self, mozwebqa, status='active', product=None, version=None, suite_name=None):
         create_case_pg = CaseConductorCreateCasePage(mozwebqa)
 
         if product is None:
             product = self.create_product(mozwebqa)
+            version = product['version']
+        elif version is None:
+            version = product['version']
 
         create_case_pg.go_to_create_case_page()
-        case = create_case_pg.create_case(product=product['name'], suite=suite_name)
+        case = create_case_pg.create_case(product=product['name'], version=version['name'], status=status, suite=suite_name)
         case['product'] = product
-
-        if activate:
-            manage_cases_pg = CaseConductorManageCasesPage(mozwebqa)
-            manage_cases_pg.filter_cases_by_name(name=case['name'])
-            manage_cases_pg.activate_case(name=case['name'])
 
         return case
 
@@ -139,7 +137,7 @@ class BaseTest(object):
         manage_cases_pg.delete_case(name=case['name'])
 
         if delete_product:
-            self.delete_product(mozwebqa, case['product'])
+            self.delete_product(mozwebqa, product=case['product'])
 
     def create_and_run_test(self, mozwebqa):
         home_pg = CaseConductorHomePage(mozwebqa)
