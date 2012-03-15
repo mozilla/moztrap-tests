@@ -24,4 +24,4 @@ class TestManageCasesPage(BaseTest):
 
         Assert.false(manage_cases_pg.is_element_present(case['locator']))
 
-        self.delete_product(mozwebqa_logged_in, case['product'])
+        self.delete_product(mozwebqa_logged_in, product=case['product'])
