@@ -30,18 +30,17 @@ class TestHomepage(BaseTest):
     def test_that_user_can_select_product(self, mozwebqa_logged_in):
         home_pg = CaseConductorHomePage(mozwebqa_logged_in)
 
-        cycle = self.create_cycle(mozwebqa_logged_in, activate=True)
+        product = self.create_product(mozwebqa_logged_in)
 
         home_pg.go_to_homepage_page()
 
-        Assert.false(home_pg.is_element_visible(cycle['homepage_locator']))
+        Assert.false(home_pg.is_element_visible(product['version']['homepage_locator']))
 
-        home_pg.select_item(cycle['product']['name'])
+        home_pg.select_item(product['name'])
 
-        Assert.true(home_pg.is_element_visible(cycle['homepage_locator']))
+        Assert.true(home_pg.is_element_visible(product['version']['homepage_locator']))
 
-        # TODO: uncomment when platform allows for deleting activated cycles/runs
-        #self.delete_cycle(mozwebqa_logged_in, cycle, delete_product=True)
+        self.delete_product(mozwebqa_logged_in, product=product)
 
     def test_that_user_can_select_cycle(self, mozwebqa_logged_in):
         home_pg = CaseConductorHomePage(mozwebqa_logged_in)

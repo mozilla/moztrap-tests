@@ -19,7 +19,7 @@ class CaseConductorCreateProductPage(CaseConductorBasePage):
     _submit_locator = 'css=#product-add-form .form-actions > button'
     _product_locator = u'css=#manageproducts .listitem .title:contains(%(product_name)s)'
     _version_manage_locator = u'css=#manageproductversions .listitem .title[title="%(product_name)s %(version_name)s"]'
-    _version_homepage_locator = u'css=.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"])'
+    _version_homepage_locator = u'css=.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"]'
 
     def go_to_create_product_page(self):
         self.selenium.open('/manage/product/add/')

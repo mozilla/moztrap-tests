@@ -10,8 +10,12 @@ from base_page import CaseConductorBasePage
 class CaseConductorHomePage(CaseConductorBasePage):
 
     _page_title = 'Mozilla Case Conductor'
-    _select_locator = u'css=.selectruns .finder .carousel .colcontent .title:contains(%(item_name)s)'
-    _submit_locator = u'css=.drilldown .environment .form-actions button'
+
+    _select_locator = u'css=.runsdrill .runsfinder .carousel .colcontent .title[title="%(item_name)s"]'
+    _browser_locator = 'css=#runtests-environment-form .browser-field select'
+    _language_locator = 'css=#runtests-environment-form .language-field select'
+    _os_locator = 'css=#runtests-environment-form .operating-system-field select'
+    _submit_locator = 'css=#runtests-environment-form .form-actions button[type="submit"]'
 
     def go_to_homepage_page(self):
         self.selenium.open('/')
@@ -23,8 +27,11 @@ class CaseConductorHomePage(CaseConductorBasePage):
         self.click(_select_locator)
         self.wait_for_ajax()
 
-    def go_to_run_test(self, product_name, cycle_name, run_name):
+    def go_to_run_test(self, product_name, version_name, run_name, browser='Firefox', language='English', os='OS X'):
         self.select_item(product_name)
-        self.select_item(cycle_name)
+        self.select_item(version_name)
         self.select_item(run_name)
+        self.select(self._browser_locator, browser)
+        self.select(self._language_locator, language)
+        self.select(self._os_locator, os)
         self.click(self._submit_locator, wait_flag=True)
