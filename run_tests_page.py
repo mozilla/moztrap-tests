@@ -14,7 +14,7 @@ class CaseConductorRunTestsPage(CaseConductorBasePage):
     _test_action_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itemhead .results .result-action.%(action)s'
     _test_is_passed_locator = u'css=#runtests .itemlist .listitem.passed[data-title="%(case_name)s"]'
     _test_is_failed_locator = u'css=#runtests .itemlist .listitem.failed[data-title="%(case_name)s"]'
-    _test_is_invalid_locator = u'css=#runtests .itemlist .listitem.invalid[data-title="%(case_name)s"]'
+    _test_is_invalid_locator = u'css=#runtests .itemlist .listitem.invalidated[data-title="%(case_name)s"]'
     _test_summary_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .item-summary'
     _step_fail_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-summary'
     _step_fail_result_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-content .fail-field .fail-input'

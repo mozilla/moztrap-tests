@@ -53,4 +53,4 @@ class TestRunTestsPage(BaseTest):
 
         Assert.true(run_tests_pg.is_test_invalid(case_name=case['name']))
 
-        # TODO: cleanup when platform allows for deleting activated items
+        self.delete_product(mozwebqa_logged_in, product=case['product'])
