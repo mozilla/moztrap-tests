@@ -64,8 +64,8 @@ class TestHomepage(BaseTest):
         run = self.create_run(mozwebqa_logged_in, activate=True)
 
         home_pg.go_to_homepage_page()
-        home_pg.select_item(run['cycle']['product']['name'])
-        home_pg.select_item(run['cycle']['name'])
+        home_pg.select_item(run['version']['product']['name'])
+        home_pg.select_item(run['version']['name'])
 
         Assert.false(home_pg.is_element_visible(run['run_tests_locator']))
 
@@ -73,5 +73,4 @@ class TestHomepage(BaseTest):
 
         Assert.true(home_pg.is_element_visible(run['run_tests_locator']))
 
-        # TODO: uncomment when platform allows for deleting activated cycles/runs
-        #self.delete_run(mozwebqa_logged_in, run, delete_cycle=True, delete_product=True)
+        self.delete_product(mozwebqa_logged_in, product=run['version']['product'])
