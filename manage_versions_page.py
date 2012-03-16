@@ -17,7 +17,7 @@ class CaseConductorManageVersionsPage(CaseConductorBasePage):
     _clone_version_locator = u'css=#manageproductversions .listitem .action-clone[title="clone %(product_name)s %(version_name)s"]'
     _filter_input_locator = 'id=text-filter'
     _filter_suggestion_locator = u'css=#filter .textual .suggest .suggestion[data-type="version"][data-name="%(filter_name)s"]'
-    _filter_locator = u'css=#filterform .filter-group input[data-name="version"][value="%(filter_name)s"]'
+    _filter_locator = u'css=#filterform .filter-group input[data-name="version"][value="%(filter_name)s"]:checked'
 
     def go_to_manage_versions_page(self):
         self.selenium.open('/manage/productversions/')
