@@ -15,7 +15,7 @@ class CaseConductorManageSuitesPage(CaseConductorBasePage):
     _suite_status_locator = u'css=#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .status-action'
     _filter_input_locator = 'id=text-filter'
     _filter_suggestion_locator = u'css=#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]'
-    _filter_locator = u'css=#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]'
+    _filter_locator = u'css=#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked'
 
     def go_to_manage_suites_page(self):
         self.selenium.open('/manage/suites/')
