@@ -23,11 +23,11 @@ class BaseTest(object):
     Base class for all Tests
     '''
 
-    def create_product(self, mozwebqa):
+    def create_product(self, mozwebqa, profile=None):
         create_product_pg = CaseConductorCreateProductPage(mozwebqa)
 
         create_product_pg.go_to_create_product_page()
-        product = create_product_pg.create_product()
+        product = create_product_pg.create_product(profile=profile)
 
         return product
 
@@ -64,14 +64,16 @@ class BaseTest(object):
         if delete_product:
             self.delete_product(mozwebqa, product=version['product'])
 
-    def create_run(self, mozwebqa, activate=False, version=None, suite_name_list=None):
+    def create_run(self, mozwebqa, activate=False, product=None, version=None, suite_name_list=None):
         create_run_pg = CaseConductorCreateRunPage(mozwebqa)
 
         if version is None:
-            version = self.create_version(mozwebqa)
+            version = self.create_version(mozwebqa, product=product)
+        if product is None:
+            product = version['product']
 
         create_run_pg.go_to_create_run_page()
-        product_version = u'%(product_name)s %(version_name)s' % {'product_name': version['product']['name'], 'version_name': version['name']}
+        product_version = u'%(product_name)s %(version_name)s' % {'product_name': product['name'], 'version_name': version['name']}
         run = create_run_pg.create_run(product_version=product_version, suite_list=suite_name_list)
         run['version'] = version
 
@@ -144,17 +146,12 @@ class BaseTest(object):
         manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa)
         run_tests_pg = CaseConductorRunTestsPage(mozwebqa)
 
-        suite = self.create_suite(mozwebqa)
-        case = self.create_case(mozwebqa, activate=True, product=suite['product'], suite_name=suite['name'])
-
-        manage_suites_pg.go_to_manage_suites_page()
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
-        manage_suites_pg.activate_suite(name=suite['name'])
-
-        cycle = self.create_cycle(mozwebqa, activate=True, product=suite['product'])
-        run = self.create_run(mozwebqa, activate=True, cycle=cycle, suite_name=suite['name'])
+        product = self.create_product(mozwebqa, profile='Website Testing Environments')
+        suite = self.create_suite(mozwebqa, product=product)
+        case = self.create_case(mozwebqa, product=product, version=product['version'], suite_name=suite['name'])
+        run = self.create_run(mozwebqa, activate=True, product=product, version=product['version'], suite_name_list=[suite['name']])
 
         home_pg.go_to_homepage_page()
-        home_pg.go_to_run_test(product_name=run['cycle']['product']['name'], cycle_name=run['cycle']['name'], run_name=run['name'])
+        home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'])
 
         return case
