@@ -18,7 +18,6 @@ class TestRunTestsPage(BaseTest):
 
         Assert.false(run_tests_pg.is_test_passed(case_name=case['name']))
 
-        run_tests_pg.start_test(case_name=case['name'])
         run_tests_pg.pass_test(case_name=case['name'])
 
         Assert.true(run_tests_pg.is_test_passed(case_name=case['name']))
@@ -29,8 +28,6 @@ class TestRunTestsPage(BaseTest):
         run_tests_pg = CaseConductorRunTestsPage(mozwebqa_logged_in)
 
         case = self.create_and_run_test(mozwebqa_logged_in)
-
-        run_tests_pg.start_test(case_name=case['name'])
 
         Assert.false(run_tests_pg.is_test_failed(case_name=case['name']))
 
@@ -44,8 +41,6 @@ class TestRunTestsPage(BaseTest):
         run_tests_pg = CaseConductorRunTestsPage(mozwebqa_logged_in)
 
         case = self.create_and_run_test(mozwebqa_logged_in)
-
-        run_tests_pg.start_test(case_name=case['name'])
 
         Assert.false(run_tests_pg.is_test_invalid(case_name=case['name']))
 
