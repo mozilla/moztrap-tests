@@ -18,7 +18,7 @@ class CaseConductorCreateRunPage(CaseConductorBasePage):
     _start_date_locator = 'id=id_start'
     _end_date_locator = 'id=id_end'
     _suite_select_locator = u'css=#run-add-form .multiunselected .itemlist article.selectitem[data-title="%(suite_name)s"] input.bulk-value'
-    _include_selected_suites_locator = 'css=#run-add-form .multiunselected .itemlist .listordering .byinclude .action-include'
+    _include_selected_suites_locator = 'css=#run-add-form .multiselect .include-exclude .action-include'
     _submit_locator = 'css=#run-add-form .form-actions > button'
     _run_manage_locator = u'css=#manageruns .itemlist .listitem .title[title="%(run_name)s"]'
     _run_homepage_locator = u'css=.runsdrill .runsfinder .runs .colcontent .title[title="%(run_name)s"]'

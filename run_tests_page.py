@@ -11,26 +11,20 @@ class CaseConductorRunTestsPage(CaseConductorBasePage):
 
     _page_title = 'Mozilla Case Conductor'
 
-    _test_action_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itemhead .results .result-action.%(action)s'
+    _test_pass_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .action-pass'
     _test_is_passed_locator = u'css=#runtests .itemlist .listitem.passed[data-title="%(case_name)s"]'
     _test_is_failed_locator = u'css=#runtests .itemlist .listitem.failed[data-title="%(case_name)s"]'
     _test_is_invalid_locator = u'css=#runtests .itemlist .listitem.invalidated[data-title="%(case_name)s"]'
     _test_summary_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .item-summary'
     _step_fail_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-summary'
-    _step_fail_result_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-content .fail-field .fail-input'
+    _step_fail_result_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-content .fail-field textarea[name="comment"]'
     _step_fail_submit_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-content .form-actions .fail'
-    _test_invalid_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itemhead .testinvalid .invalid-summary'
-    _test_invalid_desc_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itemhead .testinvalid .invalid-form .invalid-input'
-    _test_invalid_submit_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itemhead .testinvalid .invalid-form .form-actions .invalid'
-
-    def start_test(self, case_name):
-        _start_test_locator = self._test_action_locator % {'case_name': case_name, 'action': 'start'}
-
-        self.click(_start_test_locator)
-        self.wait_for_ajax()
+    _test_invalid_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-summary'
+    _test_invalid_desc_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-form .invalid-input'
+    _test_invalid_submit_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-form .form-actions .invalid'
 
     def pass_test(self, case_name):
-        _pass_test_locator = self._test_action_locator % {'case_name': case_name, 'action': 'pass'}
+        _pass_test_locator = self._test_pass_locator % {'case_name': case_name}
 
         self.click(_pass_test_locator)
         self.wait_for_ajax()
