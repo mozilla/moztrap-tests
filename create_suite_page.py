@@ -18,7 +18,7 @@ class CaseConductorCreateSuitePage(CaseConductorBasePage):
     _status_select_locator = 'id=id_status'
     _submit_locator = 'css=#suite-add-form .form-actions button[type="submit"]'
     _case_select_locator = u'css=#suite-add-form .multiunselected .itemlist .selectitem[data-title="%(case_name)s"] input.bulk-value'
-    _include_selected_cases_locator = 'css=#suite-add-form .multiunselected .itemlist .listordering .byinclude .action-include'
+    _include_selected_cases_locator = 'css=#suite-add-form .multiselect .include-exclude .action-include'
     _suite_locator = u'css=#managesuites .itemlist .listitem .title[title="%(suite_name)s"]'
 
     def go_to_create_suite_page(self):
