@@ -23,6 +23,7 @@ class TestRunTestsPage(BaseTest):
         Assert.true(run_tests_pg.is_test_passed(case_name=case['name']))
 
         self.delete_product(mozwebqa_logged_in, product=case['product'])
+        self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
 
     def test_that_user_can_fail_test(self, mozwebqa_logged_in):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
@@ -36,6 +37,7 @@ class TestRunTestsPage(BaseTest):
         Assert.true(run_tests_pg.is_test_failed(case_name=case['name']))
 
         self.delete_product(mozwebqa_logged_in, product=case['product'])
+        self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
 
     def test_that_user_can_mark_test_invalid(self, mozwebqa_logged_in):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
@@ -49,3 +51,4 @@ class TestRunTestsPage(BaseTest):
         Assert.true(run_tests_pg.is_test_invalid(case_name=case['name']))
 
         self.delete_product(mozwebqa_logged_in, product=case['product'])
+        self.delete_profile(mozwebqa_logged_in, profile=case['profile'])

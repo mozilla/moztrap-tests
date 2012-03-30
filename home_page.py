@@ -12,7 +12,7 @@ class MozTrapHomePage(MozTrapBasePage):
     _page_title = 'MozTrap'
 
     _select_locator = u'css=.runsdrill .runsfinder .carousel .colcontent .title[title="%(item_name)s"]'
-    _browser_locator = 'css=#runtests-environment-form .browser-field select'
+    _env_select_locator = 'css=#runtests-environment-form .formfield[data-title="%(env_category)s"] select'
     _language_locator = 'css=#runtests-environment-form .language-field select'
     _os_locator = 'css=#runtests-environment-form .operating-system-field select'
     _submit_locator = 'css=#runtests-environment-form .form-actions button[type="submit"]'
@@ -27,11 +27,11 @@ class MozTrapHomePage(MozTrapBasePage):
         self.click(_select_locator)
         self.wait_for_ajax()
 
-    def go_to_run_test(self, product_name, version_name, run_name, browser='Firefox', language='English', os='OS X'):
+    def go_to_run_test(self, product_name, version_name, run_name, env_category, env_element):
+        _env_select_locator = self._env_select_locator % {'env_category': env_category}
+
         self.select_item(product_name)
         self.select_item(version_name)
         self.select_item(run_name)
-        self.select(self._browser_locator, browser)
-        self.select(self._language_locator, language)
-        self.select(self._os_locator, os)
+        self.select(_env_select_locator, env_element)
         self.click(self._submit_locator, wait_flag=True)
