@@ -34,10 +34,10 @@ class CaseConductorLoginPage(CaseConductorBasePage):
         if type(user) is str:
             user = self.testsetup.credentials[user]
 
-        browser_id = BrowserID(self.selenium)
-
         self.click(self._browserid_locator)
-        self.selenium.wait_for_pop_up(windowID='null', timeout=self.timeout)
+
+        browser_id = BrowserID(self.selenium, timeout=self.timeout)
+
         browser_id.sign_in(user['email'], user['password'])
         self.selenium.wait_for_page_to_load(timeout=self.timeout)
 
