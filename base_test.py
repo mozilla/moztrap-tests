@@ -16,6 +16,8 @@ from create_version_page import MozTrapCreateVersionPage
 from manage_versions_page import MozTrapManageVersionsPage
 from create_product_page import MozTrapCreateProductPage
 from manage_products_page import MozTrapManageProductsPage
+from create_profile_page import MozTrapCreateProfilePage
+from manage_profiles_page import MozTrapManageProfilesPage
 
 
 class BaseTest(object):
@@ -140,6 +142,24 @@ class BaseTest(object):
 
         if delete_product:
             self.delete_product(mozwebqa, product=case['product'])
+
+    def create_profile(self, mozwebqa):
+        create_profile_pg = MozTrapCreateProfilePage(mozwebqa)
+
+        create_profile_pg.go_to_create_profile_page()
+        profile = create_profile_pg.create_profile()
+
+        return profile
+
+    def delete_profile(self, mozwebqa, profile):
+        create_profile_pg = MozTrapCreateProfilePage(mozwebqa)
+        manage_profiles_pg = MozTrapManageProfilesPage(mozwebqa)
+
+        manage_profiles_pg.go_to_manage_profiles_page()
+        manage_profiles_pg.filter_profiles_by_name(name=profile['name'])
+        manage_profiles_pg.delete_profile(name=profile['name'])
+        create_profile_pg.go_to_create_profile_page()
+        create_profile_pg.delete_environment_category(category_name=profile['category'])
 
     def create_and_run_test(self, mozwebqa):
         home_pg = MozTrapHomePage(mozwebqa)
