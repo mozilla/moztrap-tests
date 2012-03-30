@@ -9,10 +9,11 @@ from base_page import CaseConductorBasePage
 
 class CaseConductorLoginPage(CaseConductorBasePage):
 
-    _page_title = 'Mozilla Case Conductor'
+    _page_title = 'Login | Mozilla Case Conductor'
 
     _username_locator = 'id=id_username'
     _password_locator = 'id=id_password'
+    _browserid_locator = 'id=browserid'
     _submit_locator = 'css=#loginform .form-actions > button'
     _register_locator = 'css=#loginform .form-actions > a'
 
@@ -24,6 +25,22 @@ class CaseConductorLoginPage(CaseConductorBasePage):
         self.type(self._password_locator, user['password'])
         self.click(self._submit_locator, True)
         from home_page import CaseConductorHomePage
+        return CaseConductorHomePage(self.testsetup)
+
+    def login_using_browserid(self, user='default'):
+        from browserid import BrowserID
+        from home_page import CaseConductorHomePage
+
+        if type(user) is str:
+            user = self.testsetup.credentials[user]
+
+        self.click(self._browserid_locator)
+
+        browser_id = BrowserID(self.selenium, timeout=self.timeout)
+
+        browser_id.sign_in(user['email'], user['password'])
+        self.selenium.wait_for_page_to_load(timeout=self.timeout)
+
         return CaseConductorHomePage(self.testsetup)
 
     @property
