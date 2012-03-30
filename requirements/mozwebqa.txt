@@ -1,5 +1,5 @@
 # This pulls in all the libraries needed to run Selenium tests
-# on the Mozilla CaseConductor project
+# on the Mozilla MozTrap project
 
 selenium
 pytest

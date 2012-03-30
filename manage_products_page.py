@@ -4,12 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from base_page import CaseConductorBasePage
+from base_page import MozTrapBasePage
 
 
-class CaseConductorManageProductsPage(CaseConductorBasePage):
+class MozTrapManageProductsPage(MozTrapBasePage):
 
-    _page_title = 'Mozilla Case Conductor'
+    _page_title = 'MozTrap'
     _delete_product_locator = u'css=#manageproducts .listitem .controls .action-delete[title="delete %(product_name)s"]'
     _filter_input_locator = 'id=text-filter'
     _filter_suggestion_locator = u'css=#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]'

@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from run_tests_page import CaseConductorRunTestsPage
+from run_tests_page import MozTrapRunTestsPage
 from base_test import BaseTest
 from unittestzero import Assert
 
@@ -12,7 +12,7 @@ from unittestzero import Assert
 class TestRunTestsPage(BaseTest):
 
     def test_that_user_can_pass_test(self, mozwebqa_logged_in):
-        run_tests_pg = CaseConductorRunTestsPage(mozwebqa_logged_in)
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
         case = self.create_and_run_test(mozwebqa_logged_in)
 
@@ -25,7 +25,7 @@ class TestRunTestsPage(BaseTest):
         self.delete_product(mozwebqa_logged_in, product=case['product'])
 
     def test_that_user_can_fail_test(self, mozwebqa_logged_in):
-        run_tests_pg = CaseConductorRunTestsPage(mozwebqa_logged_in)
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
         case = self.create_and_run_test(mozwebqa_logged_in)
 
@@ -38,7 +38,7 @@ class TestRunTestsPage(BaseTest):
         self.delete_product(mozwebqa_logged_in, product=case['product'])
 
     def test_that_user_can_mark_test_invalid(self, mozwebqa_logged_in):
-        run_tests_pg = CaseConductorRunTestsPage(mozwebqa_logged_in)
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
         case = self.create_and_run_test(mozwebqa_logged_in)
 

@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from manage_versions_page import CaseConductorManageVersionsPage
+from manage_versions_page import MozTrapManageVersionsPage
 from base_test import BaseTest
 from unittestzero import Assert
 
@@ -12,7 +12,7 @@ from unittestzero import Assert
 class TestManageVersionsPage(BaseTest):
 
     def test_that_user_can_create_and_delete_version(self, mozwebqa_logged_in):
-        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa_logged_in)
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
         version = self.create_version(mozwebqa_logged_in)
 
@@ -27,7 +27,7 @@ class TestManageVersionsPage(BaseTest):
         self.delete_product(mozwebqa_logged_in, version['product'])
 
     def test_that_user_can_filter_version_by_name(self, mozwebqa_logged_in):
-        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa_logged_in)
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
         version = self.create_version(mozwebqa_logged_in)
 
@@ -43,7 +43,7 @@ class TestManageVersionsPage(BaseTest):
         self.delete_version(mozwebqa_logged_in, version, delete_product=True)
 
     def test_that_user_can_clone_version(self, mozwebqa_logged_in):
-        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa_logged_in)
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
         version = self.create_version(mozwebqa_logged_in)
 

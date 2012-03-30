@@ -4,12 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from base_page import CaseConductorBasePage
+from base_page import MozTrapBasePage
 
 
-class CaseConductorManageVersionsPage(CaseConductorBasePage):
+class MozTrapManageVersionsPage(MozTrapBasePage):
 
-    _page_title = 'Mozilla Case Conductor'
+    _page_title = 'MozTrap'
 
     _version_manage_locator = u'css=#manageproductversions .listitem .title[title="%(product_name)s %(version_name)s"]'
     _version_homepage_locator = u'css=.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"])'

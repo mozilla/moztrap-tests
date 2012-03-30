@@ -7,7 +7,7 @@
 from page import Page
 
 
-class CaseConductorBasePage(Page):
+class MozTrapBasePage(Page):
 
     _user_name_locator = 'css=#accountnav .account-welcome .fn'
     _logout_locator = 'css=#accountnav .account-links .signout'
@@ -22,5 +22,5 @@ class CaseConductorBasePage(Page):
 
     def logout(self):
         self.click(self._logout_locator, True)
-        from login_page import CaseConductorLoginPage
-        return CaseConductorLoginPage(self.testsetup)
+        from login_page import MozTrapLoginPage
+        return MozTrapLoginPage(self.testsetup)

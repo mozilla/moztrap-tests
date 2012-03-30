@@ -4,12 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from base_page import CaseConductorBasePage
+from base_page import MozTrapBasePage
 
 
-class CaseConductorHomePage(CaseConductorBasePage):
+class MozTrapHomePage(MozTrapBasePage):
 
-    _page_title = 'Mozilla Case Conductor'
+    _page_title = 'MozTrap'
 
     _select_locator = u'css=.runsdrill .runsfinder .carousel .colcontent .title[title="%(item_name)s"]'
     _browser_locator = 'css=#runtests-environment-form .browser-field select'

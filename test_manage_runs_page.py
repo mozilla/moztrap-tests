@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from manage_runs_page import CaseConductorManageRunsPage
+from manage_runs_page import MozTrapManageRunsPage
 from base_test import BaseTest
 from unittestzero import Assert
 
@@ -12,7 +12,7 @@ from unittestzero import Assert
 class TestManageRunsPage(BaseTest):
 
     def test_that_user_can_create_and_delete_run(self, mozwebqa_logged_in):
-        manage_runs_pg = CaseConductorManageRunsPage(mozwebqa_logged_in)
+        manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
 
         run = self.create_run(mozwebqa_logged_in)
 

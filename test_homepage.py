@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from home_page import CaseConductorHomePage
+from home_page import MozTrapHomePage
 from base_test import BaseTest
 from unittestzero import Assert
 
@@ -12,7 +12,7 @@ from unittestzero import Assert
 class TestHomepage(BaseTest):
 
     def test_that_user_can_login_and_logout(self, mozwebqa_logged_in):
-        home_pg = CaseConductorHomePage(mozwebqa_logged_in)
+        home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
         user = home_pg.testsetup.credentials['default']
         home_pg.go_to_homepage_page()
@@ -28,9 +28,9 @@ class TestHomepage(BaseTest):
         Assert.true(login_page.is_signin_visible)
 
     def test_that_user_can_login_using_browserid(self, mozwebqa):
-        from login_page import CaseConductorLoginPage
-        login_pg = CaseConductorLoginPage(mozwebqa)
-        home_pg = CaseConductorHomePage(mozwebqa)
+        from login_page import MozTrapLoginPage
+        login_pg = MozTrapLoginPage(mozwebqa)
+        home_pg = MozTrapHomePage(mozwebqa)
 
         mozwebqa.selenium.open('/')
 
@@ -49,7 +49,7 @@ class TestHomepage(BaseTest):
         home_pg.logout()
 
     def test_that_user_can_select_product(self, mozwebqa_logged_in):
-        home_pg = CaseConductorHomePage(mozwebqa_logged_in)
+        home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
         product = self.create_product(mozwebqa_logged_in)
 
@@ -64,7 +64,7 @@ class TestHomepage(BaseTest):
         self.delete_product(mozwebqa_logged_in, product=product)
 
     def test_that_user_can_select_version(self, mozwebqa_logged_in):
-        home_pg = CaseConductorHomePage(mozwebqa_logged_in)
+        home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
         run = self.create_run(mozwebqa_logged_in, activate=True)
 
@@ -80,7 +80,7 @@ class TestHomepage(BaseTest):
         self.delete_product(mozwebqa_logged_in, product=run['version']['product'])
 
     def test_that_user_can_select_run(self, mozwebqa_logged_in):
-        home_pg = CaseConductorHomePage(mozwebqa_logged_in)
+        home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
         run = self.create_run(mozwebqa_logged_in, activate=True)
 

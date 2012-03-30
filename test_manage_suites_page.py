@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from manage_suites_page import CaseConductorManageSuitesPage
+from manage_suites_page import MozTrapManageSuitesPage
 from base_test import BaseTest
 from unittestzero import Assert
 
@@ -12,7 +12,7 @@ from unittestzero import Assert
 class TestManageSuitesPage(BaseTest):
 
     def test_that_user_can_create_and_delete_suite(self, mozwebqa_logged_in):
-        manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa_logged_in)
+        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
 
         suite = self.create_suite(mozwebqa_logged_in)
 

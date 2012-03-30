@@ -1,10 +1,10 @@
-CaseConductor Tests
+MozTrap Tests
 ===================
 
-Automated tests for the Case Conductor web application.
-The following contributors have submitted pull requests to caseconductor-tests:
+Automated tests for the MozTrap web application.
+The following contributors have submitted pull requests to moztrap-tests:
 
-https://github.com/mozilla/caseconductor-tests/contributors
+https://github.com/mozilla/moztrap-tests/contributors
 
 Running Tests
 -------------
@@ -24,7 +24,7 @@ global Python installation. If you work on multiple Python projects that might
 end up needing different versions of the same libraries, you might want to
 follow `sudo easy_install pip` with `sudo pip install virtualenv`, and then
 create and activate a [virtualenv](http://www.virtualenv.org) (e.g. `virtualenv
-caseconductor-tests-env; source case-conductor-tests-env/bin/activate`) to
+moztrap-tests-env; source moztrap-tests-env/bin/activate`) to
 create a clean "virtual environment" for just this project. Then you can `pip
 install -r requiremenst/mozwebqa.txt` in your virtual environment without
 needing to use `sudo`.
@@ -59,13 +59,13 @@ Change the path/name to the downloaded Selenium server file.
 ### Running tests locally
 
 To run tests locally it's a simple case of calling py.test from the
-caseconductor-tests directory. You should specify the following argument for
+moztrap-tests directory. You should specify the following argument for
 Selenium RC: --api=rc
 
-The base URL should be a valid instance of CaseConductor: the staging env is
-currently https://cc.oddsites.net
+The base URL should be a valid instance of MozTrap: the staging env is
+currently https://moztrap.allizom.org
 
-    py.test --api=rc --baseurl=https://cc.oddsites.net
+    py.test --api=rc --baseurl=https://moztrap.allizom.org
 
 For other possible options, type py.test --help .
 

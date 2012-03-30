@@ -4,12 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from base_page import CaseConductorBasePage
+from base_page import MozTrapBasePage
 
 
-class CaseConductorRunTestsPage(CaseConductorBasePage):
+class MozTrapRunTestsPage(MozTrapBasePage):
 
-    _page_title = 'Mozilla Case Conductor'
+    _page_title = 'MozTrap'
 
     _test_pass_locator = u'css=#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .action-pass'
     _test_is_passed_locator = u'css=#runtests .itemlist .listitem.passed[data-title="%(case_name)s"]'

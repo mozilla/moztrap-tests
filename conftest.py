@@ -7,8 +7,8 @@
 def pytest_funcarg__mozwebqa_logged_in(request):
     mozwebqa = request.getfuncargvalue('mozwebqa')
 
-    from login_page import CaseConductorLoginPage
-    login_pg = CaseConductorLoginPage(mozwebqa)
+    from login_page import MozTrapLoginPage
+    login_pg = MozTrapLoginPage(mozwebqa)
     mozwebqa.selenium.open('/')
     login_pg.login()
 
