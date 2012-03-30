@@ -27,6 +27,27 @@ class TestHomepage(BaseTest):
         Assert.true(login_page.is_register_visible)
         Assert.true(login_page.is_signin_visible)
 
+    def test_that_user_can_login_using_browserid(self, mozwebqa):
+        from login_page import CaseConductorLoginPage
+        login_pg = CaseConductorLoginPage(mozwebqa)
+        home_pg = CaseConductorHomePage(mozwebqa)
+
+        mozwebqa.selenium.open('/')
+
+        Assert.false(home_pg.is_user_logged_in)
+        Assert.true(login_pg.is_register_visible)
+        Assert.true(login_pg.is_signin_visible)
+
+        login_pg.login_using_browserid()
+
+        user = home_pg.testsetup.credentials['default']
+        users_name_text = user['name']
+
+        Assert.true(home_pg.is_user_logged_in)
+        Assert.equal(home_pg.users_name_text, users_name_text)
+
+        home_pg.logout()
+
     def test_that_user_can_select_product(self, mozwebqa_logged_in):
         home_pg = CaseConductorHomePage(mozwebqa_logged_in)
 
