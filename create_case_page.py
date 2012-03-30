@@ -33,11 +33,10 @@ class CaseConductorCreateCasePage(CaseConductorBasePage):
         case['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
         case['desc'] = u'%(desc)s created on %(dt_string)s' % {'desc': desc, 'dt_string': dt_string}
         case['locator'] = self._case_locator % {'case_name': case['name']}
-        product_version = u'%(product_name)s %(version_name)s' % {'product_name': product, 'version_name': version}
 
         self.type(self._name_locator, case['name'])
         self.select(self._product_select_locator, product)
-        self.select(self._version_select_locator, product_version)
+        self.select(self._version_select_locator, version)
         if suite:
             self.select(self._suite_select_locator, suite)
         self.type(self._description_locator, case['desc'])
