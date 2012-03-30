@@ -161,17 +161,21 @@ class BaseTest(object):
         create_profile_pg.go_to_create_profile_page()
         create_profile_pg.delete_environment_category(category_name=profile['category'])
 
-    def create_and_run_test(self, mozwebqa):
+    def create_and_run_test(self, mozwebqa, profile=None):
         home_pg = MozTrapHomePage(mozwebqa)
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
         run_tests_pg = MozTrapRunTestsPage(mozwebqa)
 
-        product = self.create_product(mozwebqa, profile='Website Testing Environments')
+        if profile is None:
+            profile = self.create_profile(mozwebqa)
+
+        product = self.create_product(mozwebqa, profile=profile['name'])
         suite = self.create_suite(mozwebqa, product=product)
         case = self.create_case(mozwebqa, product=product, version=product['version'], suite_name=suite['name'])
+        case['profile'] = profile
         run = self.create_run(mozwebqa, activate=True, product=product, version=product['version'], suite_name_list=[suite['name']])
 
         home_pg.go_to_homepage_page()
-        home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'])
+        home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'], env_category=profile['category'], env_element=profile['element'])
 
         return case
