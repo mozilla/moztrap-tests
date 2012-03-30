@@ -4,18 +4,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from home_page import CaseConductorHomePage
-from run_tests_page import CaseConductorRunTestsPage
-from create_case_page import CaseConductorCreateCasePage
-from manage_cases_page import CaseConductorManageCasesPage
-from create_suite_page import CaseConductorCreateSuitePage
-from manage_suites_page import CaseConductorManageSuitesPage
-from create_run_page import CaseConductorCreateRunPage
-from manage_runs_page import CaseConductorManageRunsPage
-from create_version_page import CaseConductorCreateVersionPage
-from manage_versions_page import CaseConductorManageVersionsPage
-from create_product_page import CaseConductorCreateProductPage
-from manage_products_page import CaseConductorManageProductsPage
+from home_page import MozTrapHomePage
+from run_tests_page import MozTrapRunTestsPage
+from create_case_page import MozTrapCreateCasePage
+from manage_cases_page import MozTrapManageCasesPage
+from create_suite_page import MozTrapCreateSuitePage
+from manage_suites_page import MozTrapManageSuitesPage
+from create_run_page import MozTrapCreateRunPage
+from manage_runs_page import MozTrapManageRunsPage
+from create_version_page import MozTrapCreateVersionPage
+from manage_versions_page import MozTrapManageVersionsPage
+from create_product_page import MozTrapCreateProductPage
+from manage_products_page import MozTrapManageProductsPage
 
 
 class BaseTest(object):
@@ -24,7 +24,7 @@ class BaseTest(object):
     '''
 
     def create_product(self, mozwebqa, profile=None):
-        create_product_pg = CaseConductorCreateProductPage(mozwebqa)
+        create_product_pg = MozTrapCreateProductPage(mozwebqa)
 
         create_product_pg.go_to_create_product_page()
         product = create_product_pg.create_product(profile=profile)
@@ -32,19 +32,19 @@ class BaseTest(object):
         return product
 
     def delete_product(self, mozwebqa, product):
-        manage_products_pg = CaseConductorManageProductsPage(mozwebqa)
+        manage_products_pg = MozTrapManageProductsPage(mozwebqa)
 
         manage_products_pg.go_to_manage_products_page()
         manage_products_pg.filter_products_by_name(name=product['name'])
         manage_products_pg.delete_product(name=product['name'])
 
     def create_version(self, mozwebqa, product=None):
-        create_version_pg = CaseConductorCreateVersionPage(mozwebqa)
+        create_version_pg = MozTrapCreateVersionPage(mozwebqa)
 
         if product is None:
             product = self.create_product(mozwebqa)
             version = product['version']
-            manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa)
+            manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
             manage_versions_pg.go_to_manage_versions_page()
         else:
             create_version_pg.go_to_create_version_page()
@@ -55,7 +55,7 @@ class BaseTest(object):
         return version
 
     def delete_version(self, mozwebqa, version, delete_product=False):
-        manage_versions_pg = CaseConductorManageVersionsPage(mozwebqa)
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
 
         manage_versions_pg.go_to_manage_versions_page()
         manage_versions_pg.filter_versions_by_name(name=version['name'])
@@ -65,7 +65,7 @@ class BaseTest(object):
             self.delete_product(mozwebqa, product=version['product'])
 
     def create_run(self, mozwebqa, activate=False, product=None, version=None, suite_name_list=None):
-        create_run_pg = CaseConductorCreateRunPage(mozwebqa)
+        create_run_pg = MozTrapCreateRunPage(mozwebqa)
 
         if version is None:
             version = self.create_version(mozwebqa, product=product)
@@ -78,14 +78,14 @@ class BaseTest(object):
         run['version'] = version
 
         if activate:
-            manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
+            manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
             manage_runs_pg.filter_runs_by_name(name=run['name'])
             manage_runs_pg.activate_run(name=run['name'])
 
         return run
 
     def delete_run(self, mozwebqa, run, delete_version=False, delete_product=False):
-        manage_runs_pg = CaseConductorManageRunsPage(mozwebqa)
+        manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
 
         manage_runs_pg.go_to_manage_runs_page()
         manage_runs_pg.filter_runs_by_name(name=run['name'])
@@ -95,7 +95,7 @@ class BaseTest(object):
             self.delete_version(mozwebqa, version=run['version'], delete_product=delete_product)
 
     def create_suite(self, mozwebqa, status='active', product=None, case_name_list=None):
-        create_suite_pg = CaseConductorCreateSuitePage(mozwebqa)
+        create_suite_pg = MozTrapCreateSuitePage(mozwebqa)
 
         if product is None:
             product = self.create_product(mozwebqa)
@@ -107,7 +107,7 @@ class BaseTest(object):
         return suite
 
     def delete_suite(self, mozwebqa, suite, delete_product=False):
-        manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa)
+        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
 
         manage_suites_pg.go_to_manage_suites_page()
         manage_suites_pg.filter_suites_by_name(name=suite['name'])
@@ -117,7 +117,7 @@ class BaseTest(object):
             self.delete_product(mozwebqa, product=suite['product'])
 
     def create_case(self, mozwebqa, status='active', product=None, version=None, suite_name=None):
-        create_case_pg = CaseConductorCreateCasePage(mozwebqa)
+        create_case_pg = MozTrapCreateCasePage(mozwebqa)
 
         if product is None:
             product = self.create_product(mozwebqa)
@@ -132,7 +132,7 @@ class BaseTest(object):
         return case
 
     def delete_case(self, mozwebqa, case, delete_product=False):
-        manage_cases_pg = CaseConductorManageCasesPage(mozwebqa)
+        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
 
         manage_cases_pg.go_to_manage_cases_page()
         manage_cases_pg.filter_cases_by_name(name=case['name'])
@@ -142,9 +142,9 @@ class BaseTest(object):
             self.delete_product(mozwebqa, product=case['product'])
 
     def create_and_run_test(self, mozwebqa):
-        home_pg = CaseConductorHomePage(mozwebqa)
-        manage_suites_pg = CaseConductorManageSuitesPage(mozwebqa)
-        run_tests_pg = CaseConductorRunTestsPage(mozwebqa)
+        home_pg = MozTrapHomePage(mozwebqa)
+        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa)
 
         product = self.create_product(mozwebqa, profile='Website Testing Environments')
         suite = self.create_suite(mozwebqa, product=product)

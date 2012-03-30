@@ -4,12 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from base_page import CaseConductorBasePage
+from base_page import MozTrapBasePage
 
 
-class CaseConductorLoginPage(CaseConductorBasePage):
+class MozTrapLoginPage(MozTrapBasePage):
 
-    _page_title = 'Login | Mozilla Case Conductor'
+    _page_title = 'Login | MozTrap'
 
     _username_locator = 'id=id_username'
     _password_locator = 'id=id_password'
@@ -24,12 +24,12 @@ class CaseConductorLoginPage(CaseConductorBasePage):
         self.type(self._username_locator, user['username'])
         self.type(self._password_locator, user['password'])
         self.click(self._submit_locator, True)
-        from home_page import CaseConductorHomePage
-        return CaseConductorHomePage(self.testsetup)
+        from home_page import MozTrapHomePage
+        return MozTrapHomePage(self.testsetup)
 
     def login_using_browserid(self, user='default'):
         from browserid import BrowserID
-        from home_page import CaseConductorHomePage
+        from home_page import MozTrapHomePage
 
         if type(user) is str:
             user = self.testsetup.credentials[user]
@@ -41,7 +41,7 @@ class CaseConductorLoginPage(CaseConductorBasePage):
         browser_id.sign_in(user['email'], user['password'])
         self.selenium.wait_for_page_to_load(timeout=self.timeout)
 
-        return CaseConductorHomePage(self.testsetup)
+        return MozTrapHomePage(self.testsetup)
 
     @property
     def is_register_visible(self):

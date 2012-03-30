@@ -4,12 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from base_page import CaseConductorBasePage
+from base_page import MozTrapBasePage
 
 
-class CaseConductorManageSuitesPage(CaseConductorBasePage):
+class MozTrapManageSuitesPage(MozTrapBasePage):
 
-    _page_title = 'Mozilla Case Conductor'
+    _page_title = 'MozTrap'
 
     _delete_suite_locator = u'css=#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .action-delete'
     _suite_status_locator = u'css=#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .status-action'
