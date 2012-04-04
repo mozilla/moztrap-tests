@@ -17,6 +17,10 @@ class MozTrapLoginPage(MozTrapBasePage):
     _submit_locator = 'css=#loginform .form-actions > button'
     _register_locator = 'css=#loginform .form-actions > a'
 
+    def go_to_login_page(self):
+        self.open('/users/login/')
+        self.is_the_current_page
+
     def login(self, user='default'):
         from home_page import MozTrapHomePage
 

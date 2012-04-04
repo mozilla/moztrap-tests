@@ -20,6 +20,7 @@ class TestHomepage(BaseTest):
 
         Assert.false(home_pg.is_user_logged_in)
 
+        login_pg.go_to_login_page()
         login_pg.login()
 
         user = home_pg.testsetup.credentials['default']
@@ -29,6 +30,7 @@ class TestHomepage(BaseTest):
         Assert.equal(home_pg.users_name_text, users_name_text)
 
         home_pg.logout()
+        mozwebqa.selenium.open('/')
 
         Assert.false(home_pg.is_user_logged_in)
 
