@@ -17,31 +17,32 @@ class MozTrapLoginPage(MozTrapBasePage):
     _submit_locator = 'css=#loginform .form-actions > button'
     _register_locator = 'css=#loginform .form-actions > a'
 
+    def go_to_login_page(self):
+        self.open('/users/login/')
+        self.is_the_current_page
+
     def login(self, user='default'):
-        if type(user) is str:
-            user = self.testsetup.credentials[user]
-
-        self.type(self._username_locator, user['username'])
-        self.type(self._password_locator, user['password'])
-        self.click(self._submit_locator, True)
-        from home_page import MozTrapHomePage
-        return MozTrapHomePage(self.testsetup)
-
-    def login_using_browserid(self, user='default'):
-        from browserid import BrowserID
         from home_page import MozTrapHomePage
 
         if type(user) is str:
             user = self.testsetup.credentials[user]
 
-        self.click(self._browserid_locator)
-
-        browser_id = BrowserID(self.selenium, timeout=self.timeout)
-
-        browser_id.sign_in(user['email'], user['password'])
-        self.selenium.wait_for_page_to_load(timeout=self.timeout)
+        if self.is_browserid_visible:
+            from browserid import BrowserID
+            self.click(self._browserid_locator)
+            browser_id = BrowserID(self.selenium, timeout=self.timeout)
+            browser_id.sign_in(user['email'], user['password'])
+            self.selenium.wait_for_page_to_load(timeout=self.timeout)
+        else:
+            self.type(self._username_locator, user['username'])
+            self.type(self._password_locator, user['password'])
+            self.click(self._submit_locator, True)
 
         return MozTrapHomePage(self.testsetup)
+
+    @property
+    def is_browserid_visible(self):
+        return self.is_element_visible(self._browserid_locator)
 
     @property
     def is_register_visible(self):

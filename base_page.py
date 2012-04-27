@@ -14,7 +14,7 @@ class MozTrapBasePage(Page):
 
     @property
     def is_user_logged_in(self):
-        return self.is_element_visible(self._user_name_locator)
+        return self.is_element_visible(self._logout_locator)
 
     @property
     def users_name_text(self):
