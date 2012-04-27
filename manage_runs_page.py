@@ -30,11 +30,9 @@ class MozTrapManageRunsPage(MozTrapBasePage):
     def filter_runs_by_name(self, name):
         _filter_locator = self._filter_locator % {'filter_name': name.lower()}
         _filter_suggestion_locator = self._filter_suggestion_locator % {'filter_name': name}
-        _name_without_last_character = name[:-1]
-        _name_last_character = name[-1]
 
-        self.type(self._filter_input_locator, _name_without_last_character)
-        self.key_pressed(self._filter_input_locator, _name_last_character)
+        self.type(self._filter_input_locator, name)
+        self.selenium.type_keys(self._filter_input_locator, name)
         self.wait_for_element_present(_filter_suggestion_locator)
         self.click(_filter_suggestion_locator)
         self.wait_for_element_present(_filter_locator)
