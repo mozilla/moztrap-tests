@@ -4,23 +4,33 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from selenium.webdriver.common.by import By
+
 from pages.page import Page
 
 
 class MozTrapBasePage(Page):
 
-    _user_name_locator = 'css=#accountnav .account-welcome .fn'
-    _logout_locator = 'css=#accountnav .account-links .signout'
+    _user_name_locator = (By.CSS_SELECTOR, '#accountnav .account-welcome .fn')
+    _logout_locator = (By.CSS_SELECTOR, '#accountnav .account-links .signout')
 
     @property
     def is_user_logged_in(self):
-        return self.is_element_visible(self._logout_locator)
+        return self.is_element_visible(*self._logout_locator)
 
     @property
     def users_name_text(self):
-        return self.get_text(self._user_name_locator)
+        return self.selenium.find_element(*self._user_name_locator).text
 
     def logout(self):
-        self.click(self._logout_locator, True)
+        self.selenium.find_element(*self._logout_locator).click()
         from login_page import MozTrapLoginPage
         return MozTrapLoginPage(self.testsetup)
+
+    @property
+    def header(self):
+        return self.Header(testsetup)
+
+    class Header(Page):
+        
+        pass
