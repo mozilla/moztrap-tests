@@ -4,15 +4,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from home_page import MozTrapHomePage
-from base_test import BaseTest
+from pages.home_page import MozTrapHomePage
+from pages.base_test import BaseTest
 from unittestzero import Assert
 
 
 class TestHomepage(BaseTest):
 
     def test_that_user_can_login_and_logout(self, mozwebqa):
-        from login_page import MozTrapLoginPage
+        from pages.login_page import MozTrapLoginPage
         login_pg = MozTrapLoginPage(mozwebqa)
         home_pg = MozTrapHomePage(mozwebqa)
 

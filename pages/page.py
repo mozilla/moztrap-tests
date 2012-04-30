@@ -129,17 +129,17 @@ class Page(object):
     def record_error(self):
         ''' Records an error. '''
 
-        http_matches = http_regex.match(self.base_url)
-        file_name = http_matches.group(1)
-
-        print '-------------------'
-        print 'Error at ' + self.selenium.get_location()
-        print 'Page title ' + self.selenium.get_title()
-        print '-------------------'
-        filename = file_name + '_' + str(time.time()).split('.')[0] + '.png'
-
-        print 'Screenshot of error in file ' + filename
-        f = open(filename, 'wb')
-        f.write(base64.decodestring(
-            self.selenium.capture_entire_page_screenshot_to_string('')))
-        f.close()
+        #http_matches = http_regex.match(self.base_url)
+        #file_name = http_matches.group(1)
+        #
+        #print '-------------------'
+        #print 'Error at ' + self.selenium.get_location()
+        #print 'Page title ' + self.selenium.get_title()
+        #print '-------------------'
+        #filename = file_name + '_' + str(time.time()).split('.')[0] + '.png'
+        #
+        #print 'Screenshot of error in file ' + filename
+        #f = open(filename, 'wb')
+        #f.write(base64.decodestring(
+        #    self.selenium.capture_entire_page_screenshot_to_string('')))
+        #f.close()

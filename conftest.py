@@ -7,7 +7,7 @@
 def pytest_funcarg__mozwebqa_logged_in(request):
     mozwebqa = request.getfuncargvalue('mozwebqa')
 
-    from login_page import MozTrapLoginPage
+    from pages.login_page import MozTrapLoginPage
     login_pg = MozTrapLoginPage(mozwebqa)
     login_pg.go_to_login_page()
     login_pg.login()
