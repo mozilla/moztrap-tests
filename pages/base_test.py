@@ -4,20 +4,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from home_page import MozTrapHomePage
-from run_tests_page import MozTrapRunTestsPage
-from create_case_page import MozTrapCreateCasePage
-from manage_cases_page import MozTrapManageCasesPage
-from create_suite_page import MozTrapCreateSuitePage
-from manage_suites_page import MozTrapManageSuitesPage
-from create_run_page import MozTrapCreateRunPage
-from manage_runs_page import MozTrapManageRunsPage
-from create_version_page import MozTrapCreateVersionPage
-from manage_versions_page import MozTrapManageVersionsPage
-from create_product_page import MozTrapCreateProductPage
-from manage_products_page import MozTrapManageProductsPage
-from create_profile_page import MozTrapCreateProfilePage
-from manage_profiles_page import MozTrapManageProfilesPage
+from pages.home_page import MozTrapHomePage
+from pages.run_tests_page import MozTrapRunTestsPage
+from pages.create_case_page import MozTrapCreateCasePage
+from pages.manage_cases_page import MozTrapManageCasesPage
+from pages.create_suite_page import MozTrapCreateSuitePage
+from pages.manage_suites_page import MozTrapManageSuitesPage
+from pages.create_run_page import MozTrapCreateRunPage
+from pages.manage_runs_page import MozTrapManageRunsPage
+from pages.create_version_page import MozTrapCreateVersionPage
+from pages.manage_versions_page import MozTrapManageVersionsPage
+from pages.create_product_page import MozTrapCreateProductPage
+from pages.manage_products_page import MozTrapManageProductsPage
+from pages.create_profile_page import MozTrapCreateProfilePage
+from pages.manage_profiles_page import MozTrapManageProfilesPage
 
 
 class BaseTest(object):
