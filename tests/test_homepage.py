@@ -18,21 +18,21 @@ class TestHomepage(BaseTest):
 
         mozwebqa.selenium.open('/')
 
-        Assert.false(home_pg.is_user_logged_in)
+        Assert.false(home_pg.header.is_user_logged_in)
 
         login_pg.go_to_login_page()
         login_pg.login()
 
         user = home_pg.testsetup.credentials['default']
-        users_name_text = user['name']
+        users_name = user['name']
 
-        Assert.true(home_pg.is_user_logged_in)
-        Assert.equal(home_pg.users_name_text, users_name_text)
+        Assert.true(home_pg.header.is_user_logged_in)
+        Assert.equal(home_pg.header.username_text, users_name)
 
-        home_pg.logout()
+        home_pg.header.click_logout()
         mozwebqa.selenium.open('/')
 
-        Assert.false(home_pg.is_user_logged_in)
+        Assert.false(home_pg.header.is_user_logged_in)
 
     def test_that_user_can_select_product(self, mozwebqa_logged_in):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
