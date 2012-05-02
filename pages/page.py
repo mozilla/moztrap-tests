@@ -58,3 +58,7 @@ class Page(object):
         except NoSuchElementException, ElementNotVisibleException:
             # this will return a snapshot, which takes time.
             return False
+
+    def wait_for_ajax(self):
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.execute_script("return $.active == 0"),
+                    "Wait for AJAX timed out after %s seconds" % self.timeout)
