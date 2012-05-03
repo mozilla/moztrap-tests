@@ -17,7 +17,7 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
 
     _profile_name_locator = (By.ID, 'id_name')
     _select_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .bulk-value')
-    _delete_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem .action-delete[title="delete %(category_name)s"]')    
+    _delete_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem .action-delete[title="delete %(category_name)s"]')
     _add_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .add-item .itemhead')
     _add_category_input_locator = (By.ID, 'new-category-name')
     _add_element_input_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .listitem .add-element input[name="new-element-name"]')
@@ -42,9 +42,9 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
 
         profile_name_field = self.selenium.find_element(*self._profile_name_locator)
         profile_name_field.send_keys(profile['name'])
-        
+
         add_category = self.selenium.find_element(*self._add_category_locator)
-        add_category.click(add a category)
+        add_category.click
 
         profile_category_field = self.selenium.find_element(*self.add_category_input_locator)
         profile_category_field.send_keys(profile['category'])
@@ -54,7 +54,7 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
 
         element_field = self.selenium.find_element(*self._add_element_input_locator)
         element_field.send_keys(profile['element'])
-        
+
         from selenium.webdriver.common.keys import Keys
         element_field.send_keys(Keys.RETURN)
 
@@ -62,13 +62,9 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
         self.wait_for_element_visible(_new_element_locator)
 
         select_category = Select(self.selenium.find_element(*self._select_category_locator))
-        select_category.select_by_visible_text(select category)
+        select_category.select_by_visible_text("select category")
 
         return profile
 
     def delete_environment_category(self, category_name='Test Category'):
-        _delete_category_locator = self._delete_category_locator % {'category_name': category_name}
-
-        self.click(_delete_category_locator)
-        self.wait_for_ajax()
-
+        find_element(*self._delete_category_locator).click()
