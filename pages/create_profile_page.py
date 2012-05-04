@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.keys import Keys
 from datetime import datetime
 
 from base_page import MozTrapBasePage
@@ -44,18 +45,14 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
         profile_name_field.send_keys(profile['name'])
 
         add_category = self.selenium.find_element(*self._add_category_locator)
-        add_category.click
+        add_category.click()
 
         profile_category_field = self.selenium.find_element(*self.add_category_input_locator)
         profile_category_field.send_keys(profile['category'])
-
-        from selenium.webdriver.common.keys import Keys
         profile_category_field.send_keys(Keys.RETURN)
 
         element_field = self.selenium.find_element(*self._add_element_input_locator)
         element_field.send_keys(profile['element'])
-
-        from selenium.webdriver.common.keys import Keys
         element_field.send_keys(Keys.RETURN)
 
         self.selenium.key_down(_add_element_input_locator, '13')
@@ -67,4 +64,5 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
         return profile
 
     def delete_environment_category(self, category_name='Test Category'):
-        find_element(*self._delete_category_locator).click()
+        _delete_category_locator = self._delete_category_locator % {'category_name': category_name}
+        self.selenium.find_element._delete_category_locator.click()
