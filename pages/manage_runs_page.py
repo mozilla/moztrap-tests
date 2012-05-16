@@ -22,7 +22,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
     _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
 
     def go_to_manage_runs_page(self):
-        self.selenium.open(self.base_url + '/manage/runs/')
+        self.selenium.get(self.base_url + '/manage/runs/')
         self.is_the_current_page
 
     def delete_run(self, name='Test Run'):
