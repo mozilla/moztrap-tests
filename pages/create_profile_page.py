@@ -4,26 +4,30 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from pages.base_page import MozTrapBasePage
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.keys import Keys
 from datetime import datetime
+
+from base_page import MozTrapBasePage
 
 
 class MozTrapCreateProfilePage(MozTrapBasePage):
 
     _page_title = 'MozTrap'
 
-    _profile_name_locator = 'id=id_name'
-    _select_category_locator = u'css=#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .bulk-value'
-    _delete_category_locator = u'css=#profile-add-form .itemlist .bulkselectitem .action-delete[title="delete %(category_name)s"]'
-    _add_category_locator = 'css=#profile-add-form .itemlist .add-item .itemhead'
-    _add_category_input_locator = 'id=new-category-name'
-    _add_element_input_locator = u'css=#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .listitem .add-element input[name="new-element-name"]'
-    _new_element_locator = u'css=#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .listitem .itembody .element[data-title="%(element_name)s"]'
-    _submit_locator = 'css=#profile-add-form .form-actions > button'
-    _profile_locator = u'css=#manageprofiles .listitem .title[title="%(profile_name)s"]'
+    _profile_name_locator = (By.ID, 'id_name')
+    _select_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .bulk-value')
+    _delete_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem .action-delete[title="delete %(category_name)s"]')
+    _add_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .add-item .itemhead')
+    _add_category_input_locator = (By.ID, 'new-category-name')
+    _add_element_input_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .listitem .add-element input[name="new-element-name"]')
+    _new_element_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .listitem .itembody .element[data-title="%(element_name)s"]')
+    _submit_locator = (By.CSS_SELECTOR, '#profile-add-form .form-actions > button')
+    _profile_locator = (By.CSS_SELECTOR, '#manageprofiles .listitem .title[title="%(profile_name)s"]')
 
     def go_to_create_profile_page(self):
-        self.open('/manage/profile/add/')
+        self.selenium.get(self.base_url + '/manage/profile/add/')
         self.is_the_current_page
 
     def create_profile(self, name='Test Profile', category_name='Test Category', element_name='Test Element'):
@@ -32,26 +36,33 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
         profile['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
         profile['category'] = u'%(category_name)s %(dt_string)s' % {'category_name': category_name, 'dt_string': dt_string}
         profile['element'] = u'%(element_name)s %(dt_string)s' % {'element_name': element_name, 'dt_string': dt_string}
-        profile['locator'] = self._profile_locator % {'profile_name': profile['name']}
-        _select_category_locator = self._select_category_locator % {'category_name': profile['category']}
-        _add_element_input_locator = self._add_element_input_locator % {'category_name': profile['category']}
-        _new_element_locator = self._new_element_locator % {'category_name': profile['category'], 'element_name': profile['element']}
+        profile['locator'] = (self._profile_locator[0], self._profile_locator[1] % {'profile_name': profile['name']})
+        _select_category_locator = (self._select_category_locator[0], self._select_category_locator[1] % {'category_name': profile['category']})
+        _add_element_input_locator = (self._add_element_input_locator[0], self._add_element_input_locator[1] % {'category_name': profile['category']})
+        _new_element_locator = (self._new_element_locator[0], self._new_element_locator[1] % {'category_name': profile['category'], 'element_name': profile['element']})
 
-        self.type(self._profile_name_locator, profile['name'])
-        self.click(self._add_category_locator)
-        self.type(self._add_category_input_locator, profile['category'])
-        self.selenium.key_down(self._add_category_input_locator, '13')
-        self.wait_for_element_visible(_add_element_input_locator)
-        self.type(_add_element_input_locator, profile['element'])
+        profile_name_field = self.selenium.find_element(*self._profile_name_locator)
+        profile_name_field.send_keys(profile['name'])
+
+        add_category = self.selenium.find_element(*self._add_category_locator)
+        add_category.click()
+
+        profile_category_field = self.selenium.find_element(*self.add_category_input_locator)
+        profile_category_field.send_keys(profile['category'])
+        profile_category_field.send_keys(Keys.RETURN)
+
+        element_field = self.selenium.find_element(*self._add_element_input_locator)
+        element_field.send_keys(profile['element'])
+        element_field.send_keys(Keys.RETURN)
+
         self.selenium.key_down(_add_element_input_locator, '13')
         self.wait_for_element_visible(_new_element_locator)
-        self.click(_select_category_locator)
-        self.click(self._submit_locator, wait_flag=True)
+
+        select_category = Select(self.selenium.find_element(*self._select_category_locator))
+        select_category.select_by_visible_text("select category")
 
         return profile
 
     def delete_environment_category(self, category_name='Test Category'):
         _delete_category_locator = self._delete_category_locator % {'category_name': category_name}
-
-        self.click(_delete_category_locator)
-        self.wait_for_ajax()
+        self.selenium.find_element._delete_category_locator.click()
