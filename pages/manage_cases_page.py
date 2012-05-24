@@ -5,8 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
-
+from selenium.webdriver.common.keys import Keys
 from pages.base_page import MozTrapBasePage
 
 
@@ -25,16 +24,24 @@ class MozTrapManageCasesPage(MozTrapBasePage):
         self.is_the_current_page
 
     def delete_case(self, name='Test Case'):
-        find_element(*self._delect_case_locator).click()
+        _delete_locator = (self._delete_case_locator[0], self._delete_case_locator[1] % {'case_name': name})
+
+        self.selenium.find_element(*_delete_locator).click()
+        self.wait_for_ajax()
 
     def filter_cases_by_name(self, name):
-        self.selenium.find_element(*self._filter_locator % {'filter_name': name.lower()})
-        self.selenium.find_element(*self._filter_suggestion_locator % {'filter_name': name})
+        '''
+        Types the name into the input field and then clicks the item in the search suggestions
+        '''
+        _filter_locator = (self._filter_locator[0], self._filter_locator[1] % {'filter_name': name.lower()})
+        _filter_suggestion_locator = (self._filter_suggestion_locator[0], self._filter_suggestion_locator[1] % {'filter_name': name})
 
-        name_field = self.selenium.find_element(*self._filter_input_locator)
-        name_field.send_keys(name)
-
-        self.selenium.find_element(*self._filter_suggestion_locator).click()
+        self.selenium.find_element(*self._filter_input_locator).send_keys(name)
+        self.selenium.find_element(*_filter_suggestion_locator).click()
+        self.wait_for_ajax()
 
     def activate_case(self, name='Test Case'):
-        find_element(*self._case_status_locator).click()
+        _case_status_locator = (self._case_status_locator[0], self._case_status_locator[1] % {'case_name': name})
+
+        self.selenium.find_element(*_case_status_locator).click()
+        self.wait_for_ajax()
