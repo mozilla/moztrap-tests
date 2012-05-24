@@ -60,10 +60,5 @@ class Page(object):
             return False
 
     def wait_for_ajax(self):
-        count = 0
-        while count < self.timeout:
-            time.sleep(1)
-            count += 1
-            if self.selenium.execute_script("return jQuery.active == 0"):
-                return
-        raise Exception("Wait for AJAX timed out after %s seconds" % count)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.execute_script("return $.active == 0"),
+                    "Wait for AJAX timed out after %s seconds" % self.timeout)
