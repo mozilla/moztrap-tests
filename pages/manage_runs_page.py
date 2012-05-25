@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -6,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from pages.base_page import MozTrapBasePage
 
@@ -28,7 +26,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
     def delete_run(self, name='Test Run'):
         _delete_locator = (self._delete_run_locator[0], self._delete_run_locator[1] % {'run_name': name})
 
-        self.selenium.find_element(*_delete_locator).click()
+        self.selenium.find_element(*self._delete_locator).click()
         self.wait_for_ajax()
 
     def filter_runs_by_name(self, name):
@@ -42,11 +40,11 @@ class MozTrapManageRunsPage(MozTrapBasePage):
     def remove_name_filter(self, name):
         _filter_locator = (self._filter_locator[0], self._filter_locator[1] % {'filter_name': name.lower()})
 
-        self.selenium.find_element(*_filter_locator).click()
+        self.selenium.find_element(*self._filter_locator).click()
         self.wait_for_ajax()
 
     def activate_run(self, name='Test Run'):
         _run_status_locator = (self._run_status_locator[0], self._run_status_locator[1] % {'run_name': name})
 
-        self.selenium.find_element(*_run_status_locator).click()
+        self.selenium.find_element(*self._run_status_locator).click()
         self.wait_for_ajax()
