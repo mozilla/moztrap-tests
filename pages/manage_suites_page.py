@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -6,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from pages.base_page import MozTrapBasePage
 
@@ -28,7 +26,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     def delete_suite(self, name='Test Suite'):
         _delete_locator = (self._delete_suite_locator[0], self._delete_product_locator[1] % {'suite_name': name})
 
-        self.selenium.find_element(*_delete_locator).click()
+        self.selenium.find_element(*self._delete_locator).click()
         self.wait_for_ajax()
 
     def filter_suites_by_name(self, name):
@@ -42,5 +40,5 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     def activate_suite(self, name='Test Suite'):
         _suite_status_locator = (self._suite_status_locator[0], self._suite_status_locator[1] % {'suite_name': name})
 
-        self.selenium.find_element(*_suite_status_locator).click()
+        self.selenium.find_element(*self._suite_status_locator).click()
         self.wait_for_ajax()
