@@ -3,3 +3,7 @@
 *.komodoproject
 *.idea
 selenium-server-standalone-*.jar
+credentials.yaml
+/results
+tests/results
+.DS_Store
