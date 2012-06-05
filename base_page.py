@@ -10,7 +10,7 @@ from page import Page
 class MozTrapBasePage(Page):
 
     _user_name_locator = 'css=#accountnav .account-welcome .fn'
-    _logout_locator = 'css=#accountnav .account-links .signout'
+    _logout_locator = 'css=#logoutform > button'
 
     @property
     def is_user_logged_in(self):
