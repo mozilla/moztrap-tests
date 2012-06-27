@@ -40,6 +40,9 @@ class Page(object):
         WebDriverWait(self.selenium, self.timeout).until(lambda s: s.title)
         return self.selenium.title
 
+    def get_relative_path(self, url):
+        self.selenium.get(self.base_url + url)
+
     def is_element_present(self, *locator):
         self.selenium.implicitly_wait(0)
         try:
@@ -51,7 +54,7 @@ class Page(object):
         finally:
             # set back to where you once belonged
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
-            
+
     def is_element_visible(self, *locator):
         try:
             return self.selenium.find_element(*locator).is_displayed()
