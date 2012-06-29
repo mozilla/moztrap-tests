@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base_page import MozTrapBasePage
 
@@ -42,6 +43,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
 
         filter_input_locator = self.selenium.find_element(*self._filter_input_locator)
         filter_input_locator.send_keys(name)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_suggestion_locator))
         filter_input_locator.send_keys(Keys.RETURN)
         self.wait_for_ajax()
 
