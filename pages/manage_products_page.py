@@ -19,7 +19,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
     _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
 
     def go_to_manage_products_page(self):
-        self.selenium.get(self.base_url + '/manage/products/')
+        self.get_relative_path('/manage/products/')
         self.is_the_current_page
 
     def delete_product(self, name='Test Product'):
