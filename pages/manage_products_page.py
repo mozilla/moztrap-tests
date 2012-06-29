@@ -35,6 +35,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
 
         self.selenium.find_element(*self._filter_input_locator).send_keys(name)
         self.selenium.find_element(*_filter_suggestion_locator).click()
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_locator))
         self.wait_for_ajax()
 
     def filter_products_by_name_without_mouse(self, name):
@@ -43,8 +44,8 @@ class MozTrapManageProductsPage(MozTrapBasePage):
 
         filter_input_locator = self.selenium.find_element(*self._filter_input_locator)
         filter_input_locator.send_keys(name)
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_suggestion_locator))
         filter_input_locator.send_keys(Keys.RETURN)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_locator))
         self.wait_for_ajax()
 
     def remove_name_filter(self, name):

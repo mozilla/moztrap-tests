@@ -43,10 +43,10 @@ class Page(object):
     def get_relative_path(self, url):
         self.selenium.get(self.base_url + url)
 
-    def is_element_present(self, *locator):
+    def is_element_present(self, by, value):
         self.selenium.implicitly_wait(0)
         try:
-            self.selenium.find_element(*locator)
+            self.selenium.find_element(by, value)
             return True
         except NoSuchElementException:
             # this will return a snapshot, which takes time.
@@ -55,9 +55,9 @@ class Page(object):
             # set back to where you once belonged
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
-    def is_element_visible(self, *locator):
+    def is_element_visible(self, by, value):
         try:
-            return self.selenium.find_element(*locator).is_displayed()
+            return self.selenium.find_element(by, value).is_displayed()
         except NoSuchElementException, ElementNotVisibleException:
             # this will return a snapshot, which takes time.
             return False
