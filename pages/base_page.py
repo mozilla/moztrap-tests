@@ -14,7 +14,7 @@ class MozTrapBasePage(Page):
 
     @property
     def header(self):
-        return self.Header(testsetup)
+        return self.Header(self.testsetup)
 
     class Header(Page):
 
@@ -22,7 +22,7 @@ class MozTrapBasePage(Page):
         _manage_locator = (By.CSS_SELECTOR, 'li.manage-nav > a')
 
         _user_name_locator = (By.CSS_SELECTOR, '#accountnav .account-welcome .fn')
-        _logout_locator = (By.CSS_SELECTOR, '#accountnav .account-links .signout')
+        _logout_locator = (By.CSS_SELECTOR, '#logoutform > button')
 
         _drilldown_locator = (By.CSS_SELECTOR, 'nav.drilldown > h2')
 
@@ -33,7 +33,7 @@ class MozTrapBasePage(Page):
         @property
         def username_text(self):
             return self.selenium.find_element(*self._user_name_locator).text
-            
+
         def click_logout(self):
             self.selenium.find_element(*self._logout_locator).click()
             from pages.login_page import MozTrapLoginPage

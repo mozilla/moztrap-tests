@@ -16,7 +16,7 @@ class TestHomepage(BaseTest):
         login_pg = MozTrapLoginPage(mozwebqa)
         home_pg = MozTrapHomePage(mozwebqa)
 
-        mozwebqa.selenium.open('/')
+        home_pg.get_relative_path('/')
 
         Assert.false(home_pg.header.is_user_logged_in)
 
@@ -30,7 +30,7 @@ class TestHomepage(BaseTest):
         Assert.equal(home_pg.header.username_text, users_name)
 
         home_pg.header.click_logout()
-        mozwebqa.selenium.open('/')
+        home_pg.get_relative_path('/')
 
         Assert.false(home_pg.header.is_user_logged_in)
 
