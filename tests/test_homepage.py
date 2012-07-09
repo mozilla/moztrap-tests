@@ -7,10 +7,11 @@
 from pages.home_page import MozTrapHomePage
 from pages.base_test import BaseTest
 from unittestzero import Assert
-
+import pytest
 
 class TestHomepage(BaseTest):
 
+    @pytest.mark.nondestructive
     def test_that_user_can_login_and_logout(self, mozwebqa):
         from pages.login_page import MozTrapLoginPage
         login_pg = MozTrapLoginPage(mozwebqa)
@@ -34,6 +35,7 @@ class TestHomepage(BaseTest):
 
         Assert.false(home_pg.header.is_user_logged_in)
 
+    @pytest.mark.nondestructive
     def test_that_user_can_select_product(self, mozwebqa_logged_in):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
@@ -49,6 +51,7 @@ class TestHomepage(BaseTest):
 
         self.delete_product(mozwebqa_logged_in, product=product)
 
+    @pytest.mark.nondestructive
     def test_that_user_can_select_version(self, mozwebqa_logged_in):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
@@ -65,6 +68,7 @@ class TestHomepage(BaseTest):
 
         self.delete_product(mozwebqa_logged_in, product=run['version']['product'])
 
+    @pytest.mark.nondestructive
     def test_that_user_can_select_run(self, mozwebqa_logged_in):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
