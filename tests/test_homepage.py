@@ -42,11 +42,11 @@ class TestHomepage(BaseTest):
 
         home_pg.go_to_homepage_page()
 
-        Assert.false(home_pg.is_element_visible(product['version']['homepage_locator']))
+        Assert.false(home_pg.is_element_visible(*product['version']['homepage_locator']))
 
         home_pg.select_item(product['name'])
 
-        Assert.true(home_pg.is_element_visible(product['version']['homepage_locator']))
+        Assert.true(home_pg.is_element_visible(*product['version']['homepage_locator']))
 
         self.delete_product(mozwebqa_logged_in, product=product)
 
@@ -58,11 +58,11 @@ class TestHomepage(BaseTest):
         home_pg.go_to_homepage_page()
         home_pg.select_item(run['version']['product']['name'])
 
-        Assert.false(home_pg.is_element_visible(run['homepage_locator']))
+        Assert.false(home_pg.is_element_visible(*run['homepage_locator']))
 
         home_pg.select_item(run['version']['name'])
 
-        Assert.true(home_pg.is_element_visible(run['homepage_locator']))
+        Assert.true(home_pg.is_element_visible(*run['homepage_locator']))
 
         self.delete_product(mozwebqa_logged_in, product=run['version']['product'])
 
@@ -75,10 +75,10 @@ class TestHomepage(BaseTest):
         home_pg.select_item(run['version']['product']['name'])
         home_pg.select_item(run['version']['name'])
 
-        Assert.false(home_pg.is_element_visible(run['run_tests_locator']))
+        Assert.false(home_pg.is_element_visible(*run['run_tests_locator']))
 
         home_pg.select_item(run['name'])
 
-        Assert.true(home_pg.is_element_visible(run['run_tests_locator']))
+        Assert.true(home_pg.is_element_visible(*run['run_tests_locator']))
 
         self.delete_product(mozwebqa_logged_in, product=run['version']['product'])
