@@ -40,7 +40,7 @@ class MozTrapLoginPage(MozTrapBasePage):
             self.selenium.find_element(*self._password_locator).send_keys(user['password'])
             self.selenium.find_element(*self._submit_locator).click()
 
-        WebDriverWait(self.selenium, 10).until(lambda s: self.header.is_user_logged_in)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.header.is_user_logged_in)
 
         return MozTrapHomePage(self.testsetup)
 

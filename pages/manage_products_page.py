@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base_page import MozTrapBasePage
 
@@ -19,7 +20,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
     _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
 
     def go_to_manage_products_page(self):
-        self.selenium.get(self.base_url + '/manage/products/')
+        self.get_relative_path('/manage/products/')
         self.is_the_current_page
 
     def delete_product(self, name='Test Product'):
@@ -34,6 +35,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
 
         self.selenium.find_element(*self._filter_input_locator).send_keys(name)
         self.selenium.find_element(*_filter_suggestion_locator).click()
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_locator))
         self.wait_for_ajax()
 
     def filter_products_by_name_without_mouse(self, name):
@@ -43,6 +45,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
         filter_input_locator = self.selenium.find_element(*self._filter_input_locator)
         filter_input_locator.send_keys(name)
         filter_input_locator.send_keys(Keys.RETURN)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_locator))
         self.wait_for_ajax()
 
     def remove_name_filter(self, name):

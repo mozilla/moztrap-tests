@@ -20,12 +20,12 @@ class MozTrapCreateProductPage(MozTrapBasePage):
     _profile_locator = (By.ID, 'id_profile')
     _description_locator = (By.ID, 'id_description')
     _submit_locator = (By.CSS_SELECTOR, '#product-add-form .form-actions > button')
-    _product_locator = (By.XPATH, "//article[@class='listitem']//h3[text()='%(product_name)s)")
+    _product_locator = (By.CSS_SELECTOR, '#manageproducts .listitem .title[title="%(product_name)s"]')
     _version_manage_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .title[title="%(product_name)s %(version_name)s"]')
     _version_homepage_locator = (By.CSS_SELECTOR, '.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"]')
 
     def go_to_create_product_page(self):
-        self.selenium.get(self.base_url + '/manage/product/add/')
+        self.get_relative_path('/manage/product/add/')
         self.is_the_current_page
 
     def create_product(self, name='Test Product', version='Test Version', desc='This is a test product', profile=None):
