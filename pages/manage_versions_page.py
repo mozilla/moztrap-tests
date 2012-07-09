@@ -20,7 +20,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
     _filter_locator = u'css=#filterform .filter-group input[data-name="version"][value="%(filter_name)s"]:checked'
 
     def go_to_manage_versions_page(self):
-        self.selenium.open('/manage/productversions/')
+        self.get_relative_path('/manage/productversions/')
         self.is_the_current_page
 
     def delete_version(self, name='Test Version', product_name='Test Product'):

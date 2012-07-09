@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from pages.base_page import MozTrapBasePage
 
 
@@ -33,7 +32,6 @@ class MozTrapManageCasesPage(MozTrapBasePage):
         '''
         Types the name into the input field and then clicks the item in the search suggestions
         '''
-        _filter_locator = (self._filter_locator[0], self._filter_locator[1] % {'filter_name': name.lower()})
         _filter_suggestion_locator = (self._filter_suggestion_locator[0], self._filter_suggestion_locator[1] % {'filter_name': name})
 
         self.selenium.find_element(*self._filter_input_locator).send_keys(name)

@@ -26,9 +26,9 @@ class MozTrapHomePage(MozTrapBasePage):
     def select_item(self, name):
         _select_locator = (self._select_locator[0], self._select_locator[1] % {'item_name': name})
 
-        self.selenium.find_element(_select_locator).click()
+        self.selenium.find_element(*_select_locator).click()
         self.wait_for_ajax()
-    
+
     def go_to_run_test(self, product_name, version_name, run_name, env_category, env_element):
         #This has not been migrated properly yet because I have NFI what it does
 

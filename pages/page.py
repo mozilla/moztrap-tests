@@ -65,3 +65,18 @@ class Page(object):
     def wait_for_ajax(self):
         WebDriverWait(self.selenium, self.timeout).until(lambda s: s.execute_script("return $.active == 0"),
                     "Wait for AJAX timed out after %s seconds" % self.timeout)
+
+    def type_in_element(self, locator, text):
+        """
+        Type a string into an element.
+
+        This method clears the element first then types the string via send_keys.
+
+        Arguments:
+        locator -- a locator for the element
+        text -- the string to type via send_keys
+        """
+
+        text_fld = self.selenium.find_element(*locator)
+        text_fld.clear()
+        text_fld.send_keys(text)
