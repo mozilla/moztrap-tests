@@ -24,7 +24,7 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
     _suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem .title[title="%(suite_name)s"]')
 
     def go_to_create_suite_page(self):
-        self.selenium.open('/manage/suite/add/')
+        self.get_relative_path('/manage/suite/add/')
         self.is_the_current_page
 
     def create_suite(self, name='Test Suite', product='Test Product', desc='This is a test suite', status='active', case_list=None):
