@@ -27,7 +27,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
     def delete_run(self, name='Test Run'):
         _delete_locator = (self._delete_run_locator[0], self._delete_run_locator[1] % {'run_name': name})
 
-        self.selenium.find_element(*self._delete_locator).click()
+        self.selenium.find_element(*_delete_locator).click()
         self.wait_for_ajax()
 
     def filter_runs_by_name(self, name):
