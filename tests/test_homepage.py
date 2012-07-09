@@ -7,10 +7,11 @@
 from pages.home_page import MozTrapHomePage
 from pages.base_test import BaseTest
 from unittestzero import Assert
-
+import pytest
 
 class TestHomepage(BaseTest):
 
+    @pytest.mark.nondestructive
     def test_that_user_can_login_and_logout(self, mozwebqa):
         from pages.login_page import MozTrapLoginPage
         login_pg = MozTrapLoginPage(mozwebqa)
