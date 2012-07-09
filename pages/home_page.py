@@ -20,7 +20,7 @@ class MozTrapHomePage(MozTrapBasePage):
     _submit_locator = (By.CSS_SELECTOR, '#runtests-environment-form .form-actions button[type="submit"]')
 
     def go_to_homepage_page(self):
-        self.selenium.get(self.testsetup + '/')
+        self.selenium.get(self.base_url + '/')
         self.is_the_current_page
 
     def select_item(self, name):
@@ -30,7 +30,7 @@ class MozTrapHomePage(MozTrapBasePage):
         self.wait_for_ajax()
     
     def go_to_run_test(self, product_name, version_name, run_name, env_category, env_element):
-    #This has not been migrated properly yet because I have NFI what it does
+        #This has not been migrated properly yet because I have NFI what it does
 
         _env_select_locator = (self._env_select_locator[0], self._env_select_locator[1] % {'env_category': env_category})
 
