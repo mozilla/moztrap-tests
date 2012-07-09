@@ -35,7 +35,6 @@ class TestHomepage(BaseTest):
 
         Assert.false(home_pg.header.is_user_logged_in)
 
-    @pytest.mark.nondestructive
     def test_that_user_can_select_product(self, mozwebqa_logged_in):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
@@ -51,7 +50,6 @@ class TestHomepage(BaseTest):
 
         self.delete_product(mozwebqa_logged_in, product=product)
 
-    @pytest.mark.nondestructive
     def test_that_user_can_select_version(self, mozwebqa_logged_in):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
@@ -68,7 +66,6 @@ class TestHomepage(BaseTest):
 
         self.delete_product(mozwebqa_logged_in, product=run['version']['product'])
 
-    @pytest.mark.nondestructive
     def test_that_user_can_select_run(self, mozwebqa_logged_in):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
