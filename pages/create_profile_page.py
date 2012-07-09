@@ -5,7 +5,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
+
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from datetime import datetime
 
@@ -47,22 +48,20 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
         add_category = self.selenium.find_element(*self._add_category_locator)
         add_category.click()
 
-        profile_category_field = self.selenium.find_element(*self.add_category_input_locator)
+        profile_category_field = self.selenium.find_element(*self._add_category_input_locator)
         profile_category_field.send_keys(profile['category'])
         profile_category_field.send_keys(Keys.RETURN)
 
-        element_field = self.selenium.find_element(*self._add_element_input_locator)
+        element_field = self.selenium.find_element(*_add_element_input_locator)
         element_field.send_keys(profile['element'])
         element_field.send_keys(Keys.RETURN)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.find_element(*_new_element_locator))
+        self.selenium.find_element(*_select_category_locator).click()
 
-        self.selenium.key_down(_add_element_input_locator, '13')
-        self.wait_for_element_visible(_new_element_locator)
-
-        select_category = Select(self.selenium.find_element(*self._select_category_locator))
-        select_category.select_by_visible_text("select category")
+        self.selenium.find_element(*self._submit_locator).click()
 
         return profile
 
     def delete_environment_category(self, category_name='Test Category'):
-        _delete_category_locator = self._delete_category_locator % {'category_name': category_name}
-        self.selenium.find_element._delete_category_locator.click()
+        _delete_category_locator = (self._delete_category_locator[0], self._delete_category_locator[1] % {'category_name': category_name})
+        self.selenium.find_element(*_delete_category_locator).click()
