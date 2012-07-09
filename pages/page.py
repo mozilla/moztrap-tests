@@ -43,7 +43,7 @@ class Page(object):
     def get_relative_path(self, url):
         self.selenium.get(self.base_url + url)
 
-    def is_element_present(self, *locator):
+    def is_element_present(self, locator):
         self.selenium.implicitly_wait(0)
         try:
             self.selenium.find_element(*locator)
