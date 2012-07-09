@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 from pages.base_page import MozTrapBasePage
+from selenium.webdriver.support.select import Select
 
 
 class MozTrapHomePage(MozTrapBasePage):
@@ -19,20 +20,22 @@ class MozTrapHomePage(MozTrapBasePage):
     _submit_locator = (By.CSS_SELECTOR, '#runtests-environment-form .form-actions button[type="submit"]')
 
     def go_to_homepage_page(self):
-        self.selenium.open('/')
+        self.selenium.get(self.testsetup + '/')
         self.is_the_current_page
 
     def select_item(self, name):
         _select_locator = (self._select_locator[0], self._select_locator[1] % {'item_name': name})
 
-        self.click(_select_locator)
+        self.selenium.find_element(_select_locator).click()
         self.wait_for_ajax()
-
+    
     def go_to_run_test(self, product_name, version_name, run_name, env_category, env_element):
+    #This has not been migrated properly yet because I have NFI what it does
+
         _env_select_locator = (self._env_select_locator[0], self._env_select_locator[1] % {'env_category': env_category})
 
         self.select_item(product_name)
         self.select_item(version_name)
         self.select_item(run_name)
         self.select(_env_select_locator, env_element)
-        self.click(self._submit_locator, wait_flag=True)
+        self.selenium.find_element(self._submit_locator).click()
