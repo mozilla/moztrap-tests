@@ -5,6 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base_page import MozTrapBasePage
 
@@ -38,6 +39,8 @@ class MozTrapLoginPage(MozTrapBasePage):
             self.selenium.find_element(*self._username_locator).send_keys(user['username'])
             self.selenium.find_element(*self._password_locator).send_keys(user['password'])
             self.selenium.find_element(*self._submit_locator).click()
+
+        WebDriverWait(self.selenium, 10).until(lambda s: self.header.is_user_logged_in)
 
         return MozTrapHomePage(self.testsetup)
 
