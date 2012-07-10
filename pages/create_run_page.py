@@ -54,7 +54,7 @@ class MozTrapCreateRunPage(MozTrapBasePage):
         if suite_list:
 
             for suite in suite_list:
-                suite_input_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s'/input" % suite)
+                suite_input_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s']//label" % suite)
                 suite_input_element.click()
             self.selenium.find_element(*self._include_selected_suites_locator).click()
         self.selenium.find_element(*self._submit_locator).click()
