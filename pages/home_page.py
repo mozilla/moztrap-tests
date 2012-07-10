@@ -37,5 +37,7 @@ class MozTrapHomePage(MozTrapBasePage):
         self.select_item(product_name)
         self.select_item(version_name)
         self.select_item(run_name)
-        self.select(_env_select_locator, env_element)
-        self.selenium.find_element(self._submit_locator).click()
+
+        env_select = Select(self.selenium.find_element(*_env_select_locator))
+        env_select.select_by_visible_text(env_element)
+        self.selenium.find_element(*self._submit_locator).click()
