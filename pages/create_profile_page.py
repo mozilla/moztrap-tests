@@ -5,7 +5,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
+
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from datetime import datetime
 
@@ -17,7 +18,7 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
     _page_title = 'MozTrap'
 
     _profile_name_locator = (By.ID, 'id_name')
-    _select_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .bulk-value')
+    _select_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .listitem .itembody .element[data-title="%(element_name)s"] label')
     _delete_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem .action-delete[title="delete %(category_name)s"]')
     _add_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .add-item .itemhead')
     _add_category_input_locator = (By.ID, 'new-category-name')
@@ -37,7 +38,7 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
         profile['category'] = u'%(category_name)s %(dt_string)s' % {'category_name': category_name, 'dt_string': dt_string}
         profile['element'] = u'%(element_name)s %(dt_string)s' % {'element_name': element_name, 'dt_string': dt_string}
         profile['locator'] = (self._profile_locator[0], self._profile_locator[1] % {'profile_name': profile['name']})
-        _select_category_locator = (self._select_category_locator[0], self._select_category_locator[1] % {'category_name': profile['category']})
+        _select_category_locator = (self._select_category_locator[0], self._select_category_locator[1] % {'category_name': profile['category'], 'element_name': profile['element']})
         _add_element_input_locator = (self._add_element_input_locator[0], self._add_element_input_locator[1] % {'category_name': profile['category']})
         _new_element_locator = (self._new_element_locator[0], self._new_element_locator[1] % {'category_name': profile['category'], 'element_name': profile['element']})
 
@@ -47,22 +48,20 @@ class MozTrapCreateProfilePage(MozTrapBasePage):
         add_category = self.selenium.find_element(*self._add_category_locator)
         add_category.click()
 
-        profile_category_field = self.selenium.find_element(*self.add_category_input_locator)
+        profile_category_field = self.selenium.find_element(*self._add_category_input_locator)
         profile_category_field.send_keys(profile['category'])
         profile_category_field.send_keys(Keys.RETURN)
 
-        element_field = self.selenium.find_element(*self._add_element_input_locator)
+        element_field = self.selenium.find_element(*_add_element_input_locator)
         element_field.send_keys(profile['element'])
         element_field.send_keys(Keys.RETURN)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.selenium.find_element(*_new_element_locator))
+        self.selenium.find_element(*_select_category_locator).click()
 
-        self.selenium.key_down(_add_element_input_locator, '13')
-        self.wait_for_element_visible(_new_element_locator)
-
-        select_category = Select(self.selenium.find_element(*self._select_category_locator))
-        select_category.select_by_visible_text("select category")
+        self.selenium.find_element(*self._submit_locator).click()
 
         return profile
 
     def delete_environment_category(self, category_name='Test Category'):
-        _delete_category_locator = self._delete_category_locator % {'category_name': category_name}
-        self.selenium.find_element._delete_category_locator.click()
+        _delete_category_locator = (self._delete_category_locator[0], self._delete_category_locator[1] % {'category_name': category_name})
+        self.selenium.find_element(*_delete_category_locator).click()
