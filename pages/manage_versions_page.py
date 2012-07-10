@@ -18,7 +18,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
     _clone_version_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .action-clone[title="clone %(product_name)s %(version_name)s"]')
     _filter_input_locator = (By.ID, 'text-filter')
     _filter_suggestion_locator = (By.CSS_SELECTOR, '#filter .textual .suggest .suggestion[data-type="version"][data-name="%(filter_name)s"]')
-    _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="version"][value="%(filter_name)s"]:checked')
+    _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="version"][value="%(filter_name)s"]:checked + span label')
 
     def go_to_manage_versions_page(self):
         self.get_relative_path('/manage/productversions/')
