@@ -35,9 +35,9 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
         _filter_suggestion_locator = (self._filter_suggestion_locator[0], self._filter_suggestion_locator[1] % {'filter_name': name})
 
         self.selenium.find_element(*self._filter_input_locator).send_keys(name)
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_suggestion_locator))
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*_filter_suggestion_locator))
         self.selenium.find_element(*_filter_suggestion_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_present(*_filter_locator))
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*_filter_locator))
         self.wait_for_ajax()
 
     def remove_name_filter(self, name):
