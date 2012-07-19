@@ -20,11 +20,11 @@ class TestManageProfilesPage(BaseTest):
 
         manage_profiles_pg.filter_profiles_by_name(name=profile['name'])
 
-        Assert.true(manage_profiles_pg.is_element_present(profile['locator']))
+        Assert.true(manage_profiles_pg.is_element_present(*profile['locator']))
 
         manage_profiles_pg.delete_profile(name=profile['name'])
 
-        Assert.false(manage_profiles_pg.is_element_present(profile['locator']))
+        Assert.false(manage_profiles_pg.is_element_present(*profile['locator']))
 
         create_profile_pg.go_to_create_profile_page()
         create_profile_pg.delete_environment_category(category_name=profile['category'])

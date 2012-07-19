@@ -1,8 +1,14 @@
 # This pulls in all the libraries needed to run Selenium tests
 # on the Mozilla MozTrap project
 
+PyYAML==3.10
+UnittestZero
+certifi==0.0.8
+chardet==1.0.1
+execnet==1.1
+py==1.4.9
+pytest==2.2.4
+pytest-mozwebqa==1.0
+pytest-xdist==1.8
+requests==0.13.2
 selenium
-pytest
-pytest-xdist
-pytest-mozwebqa==0.9
-unittestzero

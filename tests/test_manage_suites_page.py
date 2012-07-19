@@ -18,10 +18,10 @@ class TestManageSuitesPage(BaseTest):
 
         manage_suites_pg.filter_suites_by_name(name=suite['name'])
 
-        Assert.true(manage_suites_pg.is_element_present(suite['locator']))
+        Assert.true(manage_suites_pg.is_element_present(*suite['locator']))
 
         manage_suites_pg.delete_suite(name=suite['name'])
 
-        Assert.false(manage_suites_pg.is_element_present(suite['locator']))
+        Assert.false(manage_suites_pg.is_element_present(*suite['locator']))
 
         self.delete_product(mozwebqa_logged_in, product=suite['product'])

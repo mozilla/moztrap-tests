@@ -24,17 +24,16 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
         self.is_the_current_page
 
     def delete_suite(self, name='Test Suite'):
-        _delete_locator = (self._delete_suite_locator[0], self._delete_product_locator[1] % {'suite_name': name})
+        _delete_locator = (self._delete_suite_locator[0], self._delete_suite_locator[1] % {'suite_name': name})
 
-        self.selenium.find_element(*self._delete_locator).click()
+        self.selenium.find_element(*_delete_locator).click()
         self.wait_for_ajax()
 
     def filter_suites_by_name(self, name):
-        _filter_locator = (self._filter_locator[0], self._filter_locator[1] % {'filter_name': name.lower()})
         _filter_suggestion_locator = (self._filter_suggestion_locator[0], self._filter_suggestion_locator[1] % {'filter_name': name})
 
         self.selenium.find_element(*self._filter_input_locator).send_keys(name)
-        self.selenium.find_element(*self._filter_suggestion_locator).click()
+        self.selenium.find_element(*_filter_suggestion_locator).click()
         self.wait_for_ajax()
 
     def activate_suite(self, name='Test Suite'):

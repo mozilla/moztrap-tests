@@ -24,7 +24,7 @@ class MozTrapCreateCasePage(MozTrapBasePage):
     _step1_result_locator = (By.ID, 'id_steps-0-expected')
     _status_select_locator = (By.ID, 'id_status')
     _submit_locator = (By.CSS_SELECTOR, '#single-case-add .form-actions button[type="submit"]')
-    _case_locator = (By.CSS_SELECTOR, 'css=#managecases .itemlist .listitem .title[title="%(case_name)s"]')
+    _case_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem .title[title="%(case_name)s"]')
 
     def go_to_create_case_page(self):
         self.selenium.get(self.base_url + '/manage/case/add/')
@@ -42,19 +42,19 @@ class MozTrapCreateCasePage(MozTrapBasePage):
 
         product_select = Select(self.selenium.find_element(*self._product_select_locator))
         product_select.select_by_visible_text(product)
-        
+
         version_select = Select(self.selenium.find_element(*self._version_select_locator))
         version_select.select_by_visible_text(product)
 
         if suite:
             suite_select = Select(self.selenium.find_element(*self._suite_select_locator))
             suite_select.select_by_visible_text(suite)
-    
+
         self.selenium.find_element(*self._description_locator).send_keys(case['desc'])
         self.selenium.find_element(*self._step1_instruction_locator).send_keys(step1_instruction)
         self.selenium.find_element(*self._step1_result_locator).send_keys(step1_result)
-        
-        status_select = Select(self.find_element(By.CSS_SELECTOR, *self._status_select_locator))
+
+        status_select = Select(self.selenium.find_element(*self._status_select_locator))
         status_select.select_by_visible_text(status)
 
         self.selenium.find_element(*self._submit_locator).click()

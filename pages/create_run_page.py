@@ -36,7 +36,7 @@ class MozTrapCreateRunPage(MozTrapBasePage):
         run = {}
         run['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
         run['desc'] = u'%(desc)s created on %(dt_string)s' % {'desc': desc, 'dt_string': dt_string}
-        run['manage_locator'] = self._run_manage_locator % {'run_name': run['name']}
+        run['manage_locator'] = (self._run_manage_locator[0], self._run_manage_locator[1] % {'run_name': run['name']})
         run['homepage_locator'] = (self._run_homepage_locator[0], self._run_homepage_locator[1] % {'run_name': run['name']})
         run['run_tests_locator'] = self._run_tests_button_locator
 
@@ -48,15 +48,15 @@ class MozTrapCreateRunPage(MozTrapBasePage):
 
         self.selenium.find_element(*self._description_locator).send_keys(run['desc'])
 
-        self.selenium.find_element(*self._start_date_locator).send_keys(start_date)
+        self.type_in_element(self._start_date_locator, start_date)
         self.selenium.find_element(*self._end_date_locator).send_keys(end_date)
 
         if suite_list:
-            
+
             for suite in suite_list:
-                suite_input_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s'/input" % suite)
+                suite_input_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s']//label" % suite)
                 suite_input_element.click()
             self.selenium.find_element(*self._include_selected_suites_locator).click()
-        self.find_element(*self._submit_locator).click()
+        self.selenium.find_element(*self._submit_locator).click()
 
         return run

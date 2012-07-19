@@ -18,10 +18,10 @@ class TestManageCasesPage(BaseTest):
 
         manage_cases_pg.filter_cases_by_name(name=case['name'])
 
-        Assert.true(manage_cases_pg.is_element_present(case['locator']))
+        Assert.true(manage_cases_pg.is_element_present(*case['locator']))
 
         manage_cases_pg.delete_case(name=case['name'])
 
-        Assert.false(manage_cases_pg.is_element_present(case['locator']))
+        Assert.false(manage_cases_pg.is_element_present(*case['locator']))
 
         self.delete_product(mozwebqa_logged_in, product=case['product'])
