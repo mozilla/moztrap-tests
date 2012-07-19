@@ -5,6 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from datetime import datetime
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
@@ -33,7 +34,7 @@ class MozTrapCreateVersionPage(MozTrapBasePage):
         version['homepage_locator'] = (self._version_homepage_locator[0], self._version_homepage_locator[1] % {'product_name': product_name, 'version_name': version['name']})
 
         self.selenium.find_element(*self._version_name_locator).send_keys(version['name'])
-        
+
         product_select = Select(self.selenium.find_element(*self._product_select_locator))
         product_select.select_by_visible_text(product_name)
 

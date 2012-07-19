@@ -11,7 +11,6 @@ from pages.page import Page
 
 class MozTrapBasePage(Page):
 
-
     @property
     def header(self):
         return self.Header(self.testsetup)

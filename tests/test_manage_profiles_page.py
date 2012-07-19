@@ -4,9 +4,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from pages.manage_profiles_page import MozTrapManageProfilesPage
-from pages.base_test import BaseTest
 from unittestzero import Assert
+
+from pages.base_test import BaseTest
+from pages.manage_profiles_page import MozTrapManageProfilesPage
 
 
 class TestManageProfilesPage(BaseTest):

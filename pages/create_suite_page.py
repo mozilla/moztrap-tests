@@ -5,10 +5,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from datetime import datetime
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from pages.base_page import MozTrapBasePage
+
 
 class MozTrapCreateSuitePage(MozTrapBasePage):
 
