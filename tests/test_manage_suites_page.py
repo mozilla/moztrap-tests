@@ -12,6 +12,7 @@ from pages.manage_suites_page import MozTrapManageSuitesPage
 
 class TestManageSuitesPage(BaseTest):
 
+    # no moztrap case
     def test_that_user_can_create_and_delete_suite(self, mozwebqa_logged_in):
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
 

@@ -12,6 +12,7 @@ from pages.manage_versions_page import MozTrapManageVersionsPage
 
 class TestManageVersionsPage(BaseTest):
 
+    #no moztrap case
     def test_that_user_can_create_and_delete_version(self, mozwebqa_logged_in):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
@@ -27,6 +28,7 @@ class TestManageVersionsPage(BaseTest):
 
         self.delete_product(mozwebqa_logged_in, version['product'])
 
+    # no moztrap case
     def test_that_user_can_filter_version_by_name(self, mozwebqa_logged_in):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
@@ -43,6 +45,7 @@ class TestManageVersionsPage(BaseTest):
 
         self.delete_version(mozwebqa_logged_in, version, delete_product=True)
 
+    # no moztrap case
     def test_that_user_can_clone_version(self, mozwebqa_logged_in):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 

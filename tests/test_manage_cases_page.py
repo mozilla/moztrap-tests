@@ -12,6 +12,7 @@ from pages.manage_cases_page import MozTrapManageCasesPage
 
 class TestManageCasesPage(BaseTest):
 
+    @pytest.mark.moztrap([142, 137])
     def test_that_user_can_create_and_delete_case(self, mozwebqa_logged_in):
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
 

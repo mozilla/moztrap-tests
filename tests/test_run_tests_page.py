@@ -13,6 +13,7 @@ from pages.run_tests_page import MozTrapRunTestsPage
 
 class TestRunTestsPage(BaseTest):
 
+    @pytest.mark.moztrap([205, 208])
     @pytest.mark.xfail(reason="Bug 795283 - [dev] https://moztrap-dev.allizom.org/manage/suite/add/ returns 503[Service Unavailable]")
     def test_that_user_can_pass_test(self, mozwebqa_logged_in):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
@@ -28,6 +29,7 @@ class TestRunTestsPage(BaseTest):
         self.delete_product(mozwebqa_logged_in, product=case['product'])
         self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
 
+    @pytest.mark.moztrap(206)
     @pytest.mark.xfail(reason="Bug 795283 - [dev] https://moztrap-dev.allizom.org/manage/suite/add/ returns 503[Service Unavailable]")
     def test_that_user_can_fail_test(self, mozwebqa_logged_in):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
@@ -43,6 +45,7 @@ class TestRunTestsPage(BaseTest):
         self.delete_product(mozwebqa_logged_in, product=case['product'])
         self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
 
+    @pytest.mark.moztrap(207)
     @pytest.mark.xfail(reason="Bug 795283 - [dev] https://moztrap-dev.allizom.org/manage/suite/add/ returns 503[Service Unavailable]")
     def test_that_user_can_mark_test_invalid(self, mozwebqa_logged_in):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)

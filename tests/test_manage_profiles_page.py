@@ -12,6 +12,7 @@ from pages.manage_profiles_page import MozTrapManageProfilesPage
 
 class TestManageProfilesPage(BaseTest):
 
+    @pytest.mark.moztrap([154, 155])
     def test_that_user_can_create_and_delete_profile(self, mozwebqa_logged_in):
         from pages.create_profile_page import MozTrapCreateProfilePage
         manage_profiles_pg = MozTrapManageProfilesPage(mozwebqa_logged_in)
