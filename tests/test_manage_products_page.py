@@ -28,7 +28,6 @@ class TestManageProductsPage(BaseTest):
         Assert.false(manage_products_pg.is_element_present(*product['locator']))
 
     @pytest.mark.moztrap(151)
-    @pytest.mark.xfail(reason = "795244 - [dev]Searching by name for a product just created does not return any results ")
     def test_that_user_can_filter_product_by_name(self, mozwebqa_logged_in):
         manage_products_pg = MozTrapManageProductsPage(mozwebqa_logged_in)
 
@@ -46,7 +45,6 @@ class TestManageProductsPage(BaseTest):
         manage_products_pg.delete_product(name=product['name'])
 
     # no moztrap case
-    @pytest.mark.xfail(reason = "795244 - [dev]Searching by name for a product just created does not return any results ")
     def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa_logged_in):
         manage_products_pg = MozTrapManageProductsPage(mozwebqa_logged_in)
 
