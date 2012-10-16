@@ -4,6 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import pytest
 from unittestzero import Assert
 
 from pages.base_test import BaseTest
@@ -12,7 +13,7 @@ from pages.manage_suites_page import MozTrapManageSuitesPage
 
 class TestManageSuitesPage(BaseTest):
 
-    # no moztrap case
+    @pytest.mark.moztrap([98, 99])
     def test_that_user_can_create_and_delete_suite(self, mozwebqa_logged_in):
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
 
