@@ -47,7 +47,7 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
 
         if case_list:
             for case in case_list:
-                case_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s'/input" % case)
+                case_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s']/input" % case)
                 case_element.click()
             self.selenium.find_element(*self._include_selected_cases_locator).click()
         self.selenium.find_element(*self._submit_locator).click()
