@@ -44,7 +44,7 @@ class TestManageProductsPage(BaseTest):
 
         manage_products_pg.delete_product(name=product['name'])
 
-    # no moztrap case
+    @pytest.mark.moztrap(3415)
     def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa_logged_in):
         manage_products_pg = MozTrapManageProductsPage(mozwebqa_logged_in)
 
