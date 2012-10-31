@@ -14,7 +14,6 @@ from pages.run_tests_page import MozTrapRunTestsPage
 class TestRunTestsPage(BaseTest):
 
     @pytest.mark.moztrap([205, 208])
-
     def test_that_user_can_pass_test(self, mozwebqa_logged_in):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
