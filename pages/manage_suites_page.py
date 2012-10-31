@@ -15,6 +15,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
 
     _delete_suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .action-delete')
     _suite_status_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .status-action')
+    _view_cases_locator = ((By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .casecount .drill-link'))
     _filter_input_locator = (By.ID, 'text-filter')
     _filter_suggestion_locator = (By.CSS_SELECTOR, '#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]')
     _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
@@ -41,3 +42,9 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
 
         self.selenium.find_element(*self._suite_status_locator).click()
         self.wait_for_ajax()
+
+    def view_cases(self, name='Test Suite'):
+        _view_cases_locator = (self._view_cases_locator[0], self._view_cases_locator[1] % {'suite_name': name})
+        self.selenium.find_element(*_view_cases_locator).click()
+        from pages.manage_cases_page import MozTrapManageCasesPage
+        return MozTrapManageCasesPage(self.testsetup)
