@@ -13,6 +13,7 @@ from pages.manage_products_page import MozTrapManageProductsPage
 
 class TestManageProductsPage(BaseTest):
 
+    @pytest.mark.moztrap([145, 146])
     def test_that_user_can_create_and_delete_product(self, mozwebqa_logged_in):
         manage_products_pg = MozTrapManageProductsPage(mozwebqa_logged_in)
 
@@ -26,6 +27,7 @@ class TestManageProductsPage(BaseTest):
 
         Assert.false(manage_products_pg.is_element_present(*product['locator']))
 
+    @pytest.mark.moztrap(151)
     def test_that_user_can_filter_product_by_name(self, mozwebqa_logged_in):
         manage_products_pg = MozTrapManageProductsPage(mozwebqa_logged_in)
 
@@ -42,6 +44,7 @@ class TestManageProductsPage(BaseTest):
 
         manage_products_pg.delete_product(name=product['name'])
 
+    @pytest.mark.moztrap(3415)
     def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa_logged_in):
         manage_products_pg = MozTrapManageProductsPage(mozwebqa_logged_in)
 

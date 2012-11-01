@@ -4,6 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import pytest
 from unittestzero import Assert
 
 from pages.base_test import BaseTest
@@ -12,6 +13,7 @@ from pages.manage_profiles_page import MozTrapManageProfilesPage
 
 class TestManageProfilesPage(BaseTest):
 
+    @pytest.mark.moztrap([154, 155])
     def test_that_user_can_create_and_delete_profile(self, mozwebqa_logged_in):
         from pages.create_profile_page import MozTrapCreateProfilePage
         manage_profiles_pg = MozTrapManageProfilesPage(mozwebqa_logged_in)
