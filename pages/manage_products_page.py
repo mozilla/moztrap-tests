@@ -19,6 +19,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
     _filter_suggestion_locator = (By.CSS_SELECTOR, '#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]')
     _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
     _filter_remove_locator = (By.XPATH, '//label[@class="onoffswitch"][text()="%(filter_name)s"]')
+    _suggestion_dropdown_locator = (By.CSS_SELECTOR, ".textual .suggest li a")
 
     def go_to_manage_products_page(self):
         self.get_relative_path('/manage/products/')
@@ -45,6 +46,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
 
         filter_input_locator = self.selenium.find_element(*self._filter_input_locator)
         filter_input_locator.send_keys(name)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*self._suggestion_dropdown_locator))
         filter_input_locator.send_keys(Keys.RETURN)
         WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*_filter_locator))
         self.wait_for_ajax()
