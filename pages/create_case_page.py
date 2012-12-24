@@ -19,7 +19,7 @@ class MozTrapCreateCasePage(MozTrapBasePage):
     _name_locator = (By.ID, 'id_name')
     _product_select_locator = (By.ID, 'id_product')
     _version_select_locator = (By.ID, 'id_productversion')
-    _suite_select_locator = (By.ID, 'id_initial_suite')
+    _suite_select_locator = (By.ID, 'id_suite')
     _description_locator = (By.ID, 'id_description')
     _step1_instruction_locator = (By.ID, 'id_steps-0-instruction')
     _step1_result_locator = (By.ID, 'id_steps-0-expected')
