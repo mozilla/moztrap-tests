@@ -26,9 +26,7 @@ class Page(object):
     def is_the_current_page(self):
         if self._page_title:
             page_title = self.page_title
-            Assert.equal(page_title, self._page_title,
-                         "Expected page title: %s. Actual page title: %s" % \
-                         (self._page_title, page_title))
+            Assert.contains(self._page_title, page_title)
 
     @property
     def url_current_page(self):
@@ -63,7 +61,7 @@ class Page(object):
 
     def wait_for_ajax(self):
         WebDriverWait(self.selenium, self.timeout).until(lambda s: s.execute_script("return $.active == 0"),
-                    "Wait for AJAX timed out after %s seconds" % self.timeout)
+                                                         "Wait for AJAX timed out after %s seconds" % self.timeout)
 
     def type_in_element(self, locator, text):
         """
