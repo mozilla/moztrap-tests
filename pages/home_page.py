@@ -12,7 +12,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapHomePage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Run Tests'
 
     _select_locator = (By.CSS_SELECTOR, '.runsdrill .runsfinder .carousel .colcontent .title[title="%(item_name)s"]')
     _env_select_locator = (By.CSS_SELECTOR, '#runtests-environment-form .formfield[data-title="%(env_category)s"] select')

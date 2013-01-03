@@ -12,7 +12,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapManageVersionsPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Manage-Versions'
 
     _version_manage_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .title[title="%(product_name)s %(version_name)s"]')
     _version_homepage_locator = (By.CSS_SELECTOR, '.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"])')

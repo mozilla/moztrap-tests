@@ -13,7 +13,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapManageProductsPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Manage-Products'
     _delete_product_locator = (By.CSS_SELECTOR, '#manageproducts .listitem .controls .action-delete[title="delete %(product_name)s"]')
     _filter_input_locator = (By.ID, 'text-filter')
     _filter_suggestion_locator = (By.CSS_SELECTOR, '#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]')

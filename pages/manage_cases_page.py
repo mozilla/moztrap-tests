@@ -11,7 +11,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapManageCasesPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Manage-Cases'
 
     _delete_case_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem[data-title="%(case_name)s"] .action-delete')
     _case_status_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem[data-title="%(case_name)s"] .status-action')

@@ -15,7 +15,7 @@ from base_page import MozTrapBasePage
 
 class MozTrapCreateProfilePage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Create Profile'
 
     _profile_name_locator = (By.ID, 'id_name')
     _select_category_locator = (By.CSS_SELECTOR, '#profile-add-form .itemlist .bulkselectitem[data-title="%(category_name)s"] .listitem .itembody .element[data-title="%(element_name)s"] label')

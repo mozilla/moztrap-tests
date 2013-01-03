@@ -11,7 +11,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapManageSuitesPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Manage-Suites'
 
     _delete_suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .action-delete')
     _suite_status_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .status-action')

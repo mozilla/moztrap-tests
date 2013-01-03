@@ -11,7 +11,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapManageProfilesPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Manage-Environments'
 
     _delete_profile_locator = (By.CSS_SELECTOR, '#manageprofiles .listitem .action-delete[title="delete %(profile_name)s"]')
     _filter_input_locator = (By.ID, 'text-filter')
