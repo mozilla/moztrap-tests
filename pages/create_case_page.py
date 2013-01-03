@@ -14,7 +14,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapCreateCasePage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Create Case'
 
     _name_locator = (By.ID, 'id_name')
     _product_select_locator = (By.ID, 'id_product')

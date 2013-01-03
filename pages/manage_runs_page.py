@@ -11,7 +11,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapManageRunsPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Manage-Runs'
 
     _delete_run_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .action-delete')
     _run_activate_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-action.active')

@@ -11,7 +11,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapRunTestsPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Run Tests'
 
     _test_pass_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .action-pass')
     _test_is_passed_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem.passed[data-title="%(case_name)s"]')

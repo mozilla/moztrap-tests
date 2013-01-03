@@ -12,7 +12,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapLoginPage(MozTrapBasePage):
 
-    _page_title = 'Login | MozTrap'
+    _page_title = 'Login'
 
     _username_locator = (By.ID, 'id_username')
     _password_locator = (By.ID, 'id_password')

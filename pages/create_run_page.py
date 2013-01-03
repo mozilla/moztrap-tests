@@ -14,7 +14,7 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapCreateRunPage(MozTrapBasePage):
 
-    _page_title = 'MozTrap'
+    _page_title = 'Create Run'
 
     _name_locator = (By.ID, 'id_name')
     _product_version_select_locator = (By.ID, 'id_productversion')
@@ -43,7 +43,6 @@ class MozTrapCreateRunPage(MozTrapBasePage):
         run['homepage_locator'] = (self._run_homepage_locator[0], self._run_homepage_locator[1] % {'run_name': run['name']})
         run['run_tests_locator'] = self._run_tests_button_locator
 
-
         name_field = self.selenium.find_element(*self._name_locator)
         name_field.send_keys(run['name'])
 
@@ -55,7 +54,6 @@ class MozTrapCreateRunPage(MozTrapBasePage):
         else:
             if series_run:
                 series_element.click()
-
 
         product_version_select = Select(self.selenium.find_element(*self._product_version_select_locator))
         product_version_select.select_by_visible_text(product_version)
