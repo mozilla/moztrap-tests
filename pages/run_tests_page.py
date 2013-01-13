@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 
+from pages.page import Page
 from pages.base_page import MozTrapBasePage
 
 
@@ -24,6 +25,8 @@ class MozTrapRunTestsPage(MozTrapBasePage):
     _test_invalid_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-summary')
     _test_invalid_desc_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-form .invalid-input')
     _test_invalid_submit_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-form .form-actions .invalid')
+
+    _test_item_locator = (By.CSS_SELECTOR, '.listitem')
 
     def open_test_summary(self, case_name):
         _open_test = (self._test_summary_locator[0], self._test_summary_locator[1] % {'case_name': case_name})
@@ -74,3 +77,36 @@ class MozTrapRunTestsPage(MozTrapBasePage):
         _test_is_invalid_locator = (self._test_is_invalid_locator[0], self._test_is_invalid_locator[1] % {'case_name': case_name})
 
         return self.is_element_present(*_test_is_invalid_locator)
+
+    @property
+    def test_items(self):
+        return [self.TestItem(self.testsetup, web_el) for web_el
+                in self.selenium.find_elements(*self._test_item_locator)]
+
+    class TestItem(Page):
+
+        _case_result_locator = (By.CSS_SELECTOR, '.result')
+        _case_name_locator = (By.CSS_SELECTOR, '.title')
+        _suite_name_locator = (By.CSS_SELECTOR, 'a[data-type="suite"]')
+        _case_position_number_locator = (By.CSS_SELECTOR, '.order')
+
+        def __init__(self, testsetup, base_el):
+            Page.__init__(self, testsetup)
+            self.selenium = base_el
+
+        @property
+        def result(self):
+            return self.selenium.find_element(*self._case_result_locator).text
+
+        @property
+        def name(self):
+            return self.selenium.find_element(*self._case_name_locator).text
+
+        @property
+        def suite_name(self):
+            return self.selenium.find_element(*self._suite_name_locator).text
+
+        @property
+        def position_number(self):
+            return self.selenium.find_element(*self._case_position_number_locator).text
+

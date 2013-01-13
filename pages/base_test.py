@@ -18,6 +18,7 @@ from pages.create_product_page import MozTrapCreateProductPage
 from pages.manage_products_page import MozTrapManageProductsPage
 from pages.create_profile_page import MozTrapCreateProfilePage
 from pages.manage_profiles_page import MozTrapManageProfilesPage
+from pages.create_bulk_cases_page import MozTrapCreateBulkCasesPage
 
 
 class BaseTest(object):
@@ -96,14 +97,14 @@ class BaseTest(object):
         if delete_version:
             self.delete_version(mozwebqa, version=run['version'], delete_product=delete_product)
 
-    def create_suite(self, mozwebqa, status='active', product=None, case_name_list=None):
+    def create_suite(self, mozwebqa, status='active', product=None, case_name_list=None, **kwargs):
         create_suite_pg = MozTrapCreateSuitePage(mozwebqa)
 
         if product is None:
             product = self.create_product(mozwebqa)
 
         create_suite_pg.go_to_create_suite_page()
-        suite = create_suite_pg.create_suite(product=product['name'], status=status, case_list=case_name_list)
+        suite = create_suite_pg.create_suite(product=product['name'], status=status, case_list=case_name_list, **kwargs)
         suite['product'] = product
 
         return suite
@@ -175,7 +176,28 @@ class BaseTest(object):
         case['profile'] = profile
         run = self.create_run(mozwebqa, activate=True, product=product, version=product['version'], suite_name_list=[suite['name']])
 
-        home_pg.go_to_homepage_page()
+        home_pg.go_to_home_page()
         home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'], env_category=profile['category'], env_element=profile['element'])
 
         return case
+
+    def create_bulk_cases(self, mozwebqa, cases_amount=2, status='active', product=None, version=None, suite_name=None, **kwargs):
+        create_bulk_cases_pg = MozTrapCreateBulkCasesPage(mozwebqa)
+
+        if product is None:
+            product = self.create_product(mozwebqa)
+            version = product['version']
+        elif version is None:
+            version = product['version']
+
+        create_bulk_cases_pg.go_to_create_bulk_cases_page()
+        cases = create_bulk_cases_pg.create_bulk_cases(
+            product=product['name'], version=version['name'], status=status,
+            suite=suite_name, cases_amount=cases_amount, **kwargs)
+
+        #add product to dictionary to ensure that output of this method
+        #is similar to create_case method
+        for case in cases:
+            case['product'] = product
+
+        return cases
