@@ -21,8 +21,9 @@ class MozTrapEditRunPage(MozTrapBasePage):
     _start_date_locator = (By.ID, 'id_start')
     _end_date_locator = (By.ID, 'id_end')
     _series_run_locator = (By.ID, 'id_is_series')
-    _include_selected_suites_locator = (By.CSS_SELECTOR, '#run-edit-form .multiselect .include-exclude .action-include')
-    _sort_included_suites_by_name_locator = (By.CSS_SELECTOR, '#run-edit-form .multiselected .byname .sortlink')
+    _include_selected_suites_locator = (By.CSS_SELECTOR, '.multiselect .include-exclude .action-include')
+    _sort_included_suites_by_name_locator = (By.CSS_SELECTOR, '.multiselected .byname .sortlink')
+    _loading_included_suites_locator = (By.CSS_SELECTOR, '.multiselected .select[data-name="suites"] .overlay')
     _submit_locator = (By.CSS_SELECTOR, '#run-edit-form .form-actions > button')
 
     def edit_run(self, run, name=None, product_version=None, desc=None,
@@ -59,6 +60,7 @@ class MozTrapEditRunPage(MozTrapBasePage):
 
         if reorder_suites:
             sorter = self.selenium.find_element(*self._sort_included_suites_by_name_locator)
+            self.wait_for_element_not_present(*self._loading_included_suites_locator)
             sorter.click()
             sorter.click()
 
