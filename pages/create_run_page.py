@@ -64,7 +64,7 @@ class MozTrapCreateRunPage(MozTrapBasePage):
         self.selenium.find_element(*self._end_date_locator).send_keys(end_date)
 
         if suite_list:
-            for suite in suite_list:
+            for suite in reversed(suite_list):
                 suite_input_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s']//label" % suite)
                 suite_input_element.click()
                 self.selenium.find_element(*self._include_selected_suites_locator).click()

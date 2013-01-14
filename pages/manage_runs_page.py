@@ -64,7 +64,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         self.wait_for_ajax()
 
     def go_to_edit_run_page(self, name='Test Run'):
-        _edit_run_locator= (self._edit_run_locator[0], self._edit_run_locator[1] % {'run_name' : name})
+        _edit_run_locator = (self._edit_run_locator[0], self._edit_run_locator[1] % {'run_name': name})
 
         self.selenium.find_element(*_edit_run_locator).click()
         from pages.edit_run_page import MozTrapEditRunPage

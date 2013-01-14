@@ -109,4 +109,3 @@ class MozTrapRunTestsPage(MozTrapBasePage):
         @property
         def position_number(self):
             return self.selenium.find_element(*self._case_position_number_locator).text
-
