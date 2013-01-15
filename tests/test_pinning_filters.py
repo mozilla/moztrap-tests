@@ -13,7 +13,7 @@ from pages.manage_runs_page import MozTrapManageRunsPage
 from pages.create_run_page import MozTrapCreateRunPage
 
 
-class TestHomepage(BaseTest):
+class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5935)
     @pytest.mark.nondestructive
