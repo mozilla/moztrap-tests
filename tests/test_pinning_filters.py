@@ -16,7 +16,7 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5935)
     @pytest.mark.nondestructive
-    def test_that_pinned_product_version_is_defaulted_on_test_run_creation(self, mozwebqa_logged_in):
+    def test_that_pinning_filter_on_product_version_set_defaults_in_new_run(self, mozwebqa_logged_in):
         product = self.create_product(mozwebqa_logged_in)
         product_version = u'%s %s' % (product['name'], product['version']['name'])
 
