@@ -30,8 +30,7 @@ class TestPinningFilters(BaseTest):
             manage_runs_pg.pinned_filter_color.upper(),
             u'#DFB081')
 
-        create_run_pg = MozTrapCreateRunPage(mozwebqa_logged_in)
-        create_run_pg.go_to_create_run_page()
+        create_run_pg = manage_runs_pg.click_create_run_button()
 
         Assert.equal(
             create_run_pg.product_version,
