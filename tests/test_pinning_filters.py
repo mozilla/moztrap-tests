@@ -21,7 +21,7 @@ class TestPinningFilters(BaseTest):
 
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
         manage_runs_pg.go_to_manage_runs_page()
-        manage_runs_pg.filter_form.filter_by(lookup='productversion', product_version_name)
+        manage_runs_pg.filter_form.filter_by(lookup='productversion', value=product_version_name)
         manage_runs_pg.filter_form.pin_filter(lookup='productversion')
 
         Assert.equal(

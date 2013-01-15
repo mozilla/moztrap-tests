@@ -113,7 +113,7 @@ class BaseTest(object):
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
 
         manage_suites_pg.go_to_manage_suites_page()
-        manage_suites_pg.filter_form.filter_by(lookup='name', value==suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         manage_suites_pg.delete_suite(name=suite['name'])
 
         if delete_product:
