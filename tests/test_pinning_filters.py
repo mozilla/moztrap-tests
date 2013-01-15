@@ -10,7 +10,6 @@ from unittestzero import Assert
 
 from pages.base_test import BaseTest
 from pages.manage_runs_page import MozTrapManageRunsPage
-from pages.create_run_page import MozTrapCreateRunPage
 
 
 class TestPinningFilters(BaseTest):
