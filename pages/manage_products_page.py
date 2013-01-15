@@ -5,16 +5,19 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base_page import MozTrapBasePage
-
+from pages.regions.filter import Filter
 
 class MozTrapManageProductsPage(MozTrapBasePage):
 
     _page_title = 'Manage-Products'
+
     _delete_product_locator = (By.CSS_SELECTOR, '#manageproducts .listitem .controls .action-delete[title="delete %(product_name)s"]')
+
+    @property
+    def filter_form(self):
+        return Filter(self.testsetup)
 
     def go_to_manage_products_page(self):
         self.get_relative_path('/manage/products/')

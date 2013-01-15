@@ -11,6 +11,7 @@ from unittestzero import Assert
 from pages.base_test import BaseTest
 from pages.manage_runs_page import MozTrapManageRunsPage
 
+
 class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5935)

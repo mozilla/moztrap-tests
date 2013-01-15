@@ -5,10 +5,10 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 
 from pages.base_page import MozTrapBasePage
 from pages.regions.filter import Filter
+
 
 class MozTrapManageVersionsPage(MozTrapBasePage):
 
