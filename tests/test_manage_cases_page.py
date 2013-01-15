@@ -19,7 +19,7 @@ class TestManageCasesPage(BaseTest):
 
         case = self.create_case(mozwebqa_logged_in)
 
-        manage_cases_pg.filter_cases_by_name(name=case['name'])
+        manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
 
         Assert.true(manage_cases_pg.is_element_present(*case['locator']))
 
