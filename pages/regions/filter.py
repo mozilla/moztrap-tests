@@ -45,10 +45,6 @@ class Filter(Page):
         self.wait_for_ajax()
 
     def filter_by_without_mouse(self, lookup, value):
-        #_suggestion_locator = (
-        #    self._filter_suggestion_locator[0],
-        #    self._filter_suggestion_locator[1] % {'filter_type': lookup, 'filter_name': value})
-
         filter_input  = self.selenium.find_element(*self._filter_input_locator)
         filter_input.send_keys(value)
 
