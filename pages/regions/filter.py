@@ -7,6 +7,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.color import Color
+from selenium.webdriver.common.keys import Keys
 
 from pages.page import Page
 
@@ -26,9 +27,9 @@ class Filter(Page):
     def remove_filter_by(self, lookup, value):
         _remove_button_locator = (
             self._filter_remove_button_locator[0],
-            self._filter_remove_button_locator[1] % {'filter_type': lookup, 'filter_name': value})
+            self._filter_remove_button_locator[1] % {'filter_type': lookup, 'filter_name': value.lower()})
 
-        self.selenium.find_element(_remove_button_locator).click()
+        self.selenium.find_element(*_remove_button_locator).click()
         self.wait_for_ajax()
 
     def filter_by(self, lookup, value):
@@ -44,18 +45,17 @@ class Filter(Page):
         self.wait_for_ajax()
 
     def filter_by_without_mouse(self, lookup, value):
-        _suggestion_locator = (
-            self._filter_suggestion_locator[0],
-            self._filter_suggestion_locator[1] % {'filter_type': lookup, 'filter_name': value})
+        #_suggestion_locator = (
+        #    self._filter_suggestion_locator[0],
+        #    self._filter_suggestion_locator[1] % {'filter_type': lookup, 'filter_name': value})
 
         filter_input  = self.selenium.find_element(*self._filter_input_locator)
-        filter_input.send_keys(name)
+        filter_input.send_keys(value)
 
         WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: self.is_element_visible(*self._suggestion_dropdown_locator),
+            lambda s: self.is_element_visible(*self._filter_suggestion_dropdown_locator),
             u'expected filter suggestion is not visible')
-        filter_input_locator.send_keys(Keys.RETURN)
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*_filter_locator))
+        filter_input.send_keys(Keys.RETURN)
         self.wait_for_ajax()
 
     def pin_filter(self, lookup):
