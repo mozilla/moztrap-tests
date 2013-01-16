@@ -45,7 +45,7 @@ class TestHomepage(BaseTest):
 
         product = self.create_product(mozwebqa_logged_in)
 
-        home_pg.go_to_homepage_page()
+        home_pg.go_to_home_page()
 
         Assert.false(home_pg.is_element_visible(*product['version']['homepage_locator']))
 
@@ -61,7 +61,7 @@ class TestHomepage(BaseTest):
 
         run = self.create_run(mozwebqa_logged_in, activate=True)
 
-        home_pg.go_to_homepage_page()
+        home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])
 
         Assert.false(home_pg.is_element_visible(*run['homepage_locator']))
@@ -78,7 +78,7 @@ class TestHomepage(BaseTest):
 
         run = self.create_run(mozwebqa_logged_in, activate=True)
 
-        home_pg.go_to_homepage_page()
+        home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])
         home_pg.select_item(run['version']['name'])
 

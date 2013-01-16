@@ -15,7 +15,9 @@ class MozTrapManageRunsPage(MozTrapBasePage):
 
     _delete_run_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .action-delete')
     _run_activate_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-action.active')
+    _run_draft_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-action.draft')
     _run_status_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-title')
+    _edit_run_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .edit-link')
     _filter_input_locator = (By.ID, 'text-filter')
     _filter_suggestion_locator = (By.CSS_SELECTOR, '#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]')
     _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
@@ -51,3 +53,19 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         self.selenium.find_element(*_run_activate_locator).click()
 
         self.wait_for_ajax()
+
+    def make_run_draft(self, name='Test Run'):
+        _run_status_locator = (self._run_status_locator[0], self._run_status_locator[1] % {'run_name': name})
+        _run_draft_locator = (self._run_draft_locator[0], self._run_draft_locator[1] % {'run_name': name})
+
+        self.selenium.find_element(*_run_status_locator).click()
+        self.selenium.find_element(*_run_draft_locator).click()
+
+        self.wait_for_ajax()
+
+    def go_to_edit_run_page(self, name='Test Run'):
+        _edit_run_locator = (self._edit_run_locator[0], self._edit_run_locator[1] % {'run_name': name})
+
+        self.selenium.find_element(*_edit_run_locator).click()
+        from pages.edit_run_page import MozTrapEditRunPage
+        return MozTrapEditRunPage(self.testsetup)
