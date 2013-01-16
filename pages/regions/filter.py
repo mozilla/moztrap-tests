@@ -18,11 +18,14 @@ class Filter(Page):
     _filter_suggestion_locator = (By.CSS_SELECTOR,
         '#filter .textual .suggest .suggestion[data-type="%(filter_type)s"][data-name="%(filter_name)s"]')
     _filter_suggestion_dropdown_locator = (By.CSS_SELECTOR, ".textual .suggest li a")
+    _filtered_item_locator = (By.CSS_SELECTOR,
+        'input[data-name="%(filter_type)s"][value="%(filter_name)s"]:checked')
     _filter_remove_button_locator = (By.CSS_SELECTOR,
-        '#filterform .filter-group input[data-name="%(filter_type)s"][value="%(filter_name)s"]:checked')
+        'input[data-name="%(filter_type)s"][value="%(filter_name)s"]:checked + .onoff .onoffswitch')
     _filter_pin_button_locator = (By.CSS_SELECTOR,
-        '#filterform input[data-name="%(filter_type)s"]:checked + .onoff .pinswitch')
-    _pinned_filter_locator = (By.CSS_SELECTOR, '#filterform .onoff.pinned')
+        'input[data-name="%(filter_type)s"][value="%(filter_name)s"]:checked + .onoff .pinswitch')
+    _pinned_filter_locator = (By.CSS_SELECTOR,
+        'input[data-name="%(filter_type)s"][value="%(filter_name)s"]:checked + .onoff.pinned')
 
     def remove_filter_by(self, lookup, value):
         _remove_button_locator = (
@@ -48,20 +51,30 @@ class Filter(Page):
         filter_input  = self.selenium.find_element(*self._filter_input_locator)
         filter_input.send_keys(value)
 
+        _filter_locator = (
+            self._filtered_item_locator[0],
+            self._filtered_item_locator[1] % {'filter_type': lookup, 'filter_name': value.lower()})
+
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: self.is_element_visible(*self._filter_suggestion_dropdown_locator),
             u'expected filter suggestion is not visible')
         filter_input.send_keys(Keys.RETURN)
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: self.is_element_visible(*_filter_locator),
+            u'expected filter is not visible')
         self.wait_for_ajax()
 
-    def pin_filter(self, lookup):
+    def pin_filter(self, lookup, value):
         _pin_button_locator = (
             self._filter_pin_button_locator[0],
-            self._filter_pin_button_locator[1] % {'filter_type': lookup})
+            self._filter_pin_button_locator[1] % {'filter_type': lookup, 'filter_name': value})
         self.selenium.find_element(*_pin_button_locator).click()
 
     @property
-    def pinned_filter_color(self, coding='hex'):
-        pinned_filter = self.selenium.find_element(*self._pinned_filter_locator)
+    def pinned_filter_color(self, lookupcoding='hex'):
+        _pinned_filter_locator = (
+            self._pinned_filter_locator[0],
+            self._pinned_filter_locator[1] % {'filter_type': lookup, 'filter_name': value})
+        pinned_filter = self.selenium.find_element(_pinned_filter_locator)
         color = pinned_filter.value_of_css_property('background-color')
         return getattr(Color.from_string(color), coding)
