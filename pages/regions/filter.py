@@ -71,7 +71,7 @@ class Filter(Page):
         self.selenium.find_element(*_pin_button_locator).click()
 
     @property
-    def pinned_filter_color(self, lookupcoding='hex'):
+    def pinned_filter_color(self, lookup, value, coding='hex'):
         _pinned_filter_locator = (
             self._pinned_filter_locator[0],
             self._pinned_filter_locator[1] % {'filter_type': lookup, 'filter_name': value})
