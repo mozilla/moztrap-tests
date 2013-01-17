@@ -7,7 +7,7 @@
 from unittestzero import Assert
 
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 
 class Page(object):
@@ -49,6 +49,15 @@ class Page(object):
             return False
         finally:
             # set back to where you once belonged
+            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+
+    def wait_for_element_not_present(self, *locator):
+        self.selenium.implicitly_wait(0)
+        try:
+            WebDriverWait(self.selenium, 10).until(lambda s: len(self.selenium.find_elements(*locator)) < 1)
+        except TimeoutException:
+            Assert.fail(TimeoutException)
+        finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
     def is_element_visible(self, by, value):

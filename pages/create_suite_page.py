@@ -46,10 +46,10 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
         status_select.select_by_visible_text(status)
 
         if case_list:
-            for case in case_list:
+            for case in reversed(case_list):
                 case_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s']/div/label" % case)
                 case_element.click()
-            self.selenium.find_element(*self._include_selected_cases_locator).click()
+                self.selenium.find_element(*self._include_selected_cases_locator).click()
         self.selenium.find_element(*self._submit_locator).click()
 
         return suite
