@@ -85,3 +85,10 @@ class Page(object):
         text_fld = self.selenium.find_element(*locator)
         text_fld.clear()
         text_fld.send_keys(text)
+
+
+class PageRegion(Page):
+
+    def __init__(self, testsetup, base_el):
+        Page.__init__(self, testsetup)
+        self.selenium = base_el

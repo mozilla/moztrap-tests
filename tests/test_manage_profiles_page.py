@@ -21,7 +21,7 @@ class TestManageProfilesPage(BaseTest):
 
         profile = self.create_profile(mozwebqa_logged_in)
 
-        manage_profiles_pg.filter_profiles_by_name(name=profile['name'])
+        manage_profiles_pg.filter_form.filter_by(lookup='name', value=profile['name'])
 
         Assert.true(manage_profiles_pg.is_element_present(*profile['locator']))
 
