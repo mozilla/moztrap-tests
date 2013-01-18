@@ -36,11 +36,11 @@ class TestManageVersionsPage(BaseTest):
 
         version = self.create_version(mozwebqa_logged_in)
 
-        manage_versions_pg.filter_form.filter_by(lookup='version', value='Another Version')
+        filter_item = manage_versions_pg.filter_form.filter_by(lookup='version', value='Another Version')
 
         Assert.false(manage_versions_pg.is_element_present(*version['manage_locator']))
 
-        manage_versions_pg.filter_form.remove_filter_by(lookup='version', value='Another Version')
+        filter_item.remove_filter()
         manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 
         Assert.true(manage_versions_pg.is_element_present(*version['manage_locator']))

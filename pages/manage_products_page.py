@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from pages.base_page import MozTrapBasePage
 from pages.regions.filter import Filter
 
+
 class MozTrapManageProductsPage(MozTrapBasePage):
 
     _page_title = 'Manage-Products'

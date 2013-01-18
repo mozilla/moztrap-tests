@@ -33,11 +33,11 @@ class TestManageProductsPage(BaseTest):
 
         product = self.create_product(mozwebqa_logged_in)
 
-        manage_products_pg.filter_form.filter_by(lookup='name', value='Another Product')
+        filter_item = manage_products_pg.filter_form.filter_by(lookup='name', value='Another Product')
 
         Assert.false(manage_products_pg.is_element_present(*product['locator']))
 
-        manage_products_pg.filter_form.remove_filter_by(lookup='name', value='Another Product')
+        filter_item.remove_filter()
         manage_products_pg.filter_form.filter_by(lookup='name', value=product['name'])
 
         Assert.true(manage_products_pg.is_element_present(*product['locator']))
@@ -50,12 +50,12 @@ class TestManageProductsPage(BaseTest):
 
         product = self.create_product(mozwebqa_logged_in)
 
-        manage_products_pg.filter_form.filter_by_without_mouse(lookup='name', value='Another Product')
+        filter_item = manage_products_pg.filter_form.filter_without_mouse_by(lookup='name', value='Another Product')
 
         Assert.false(manage_products_pg.is_element_present(*product['locator']))
 
-        manage_products_pg.filter_form.remove_filter_by(lookup='name', value='Another Product')
-        manage_products_pg.filter_form.filter_by_without_mouse(lookup='name', value=product['name'])
+        filter_item.remove_filter()
+        manage_products_pg.filter_form.filter_without_mouse_by(lookup='name', value=product['name'])
 
         Assert.true(manage_products_pg.is_element_present(*product['locator']))
 

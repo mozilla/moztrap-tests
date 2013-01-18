@@ -24,8 +24,7 @@ class TestPinningFilters(BaseTest):
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
         manage_runs_pg.go_to_manage_runs_page()
         filter_item = manage_runs_pg.filter_form.filter_by(
-                lookup='productversion',
-                value=product_version_name)
+            lookup='productversion', value=product_version_name)
 
         #check that filter is not orange before it's pinned
         Assert.not_equal(
