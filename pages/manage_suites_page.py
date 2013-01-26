@@ -50,7 +50,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
         from pages.manage_cases_page import MozTrapManageCasesPage
         return MozTrapManageCasesPage(self.testsetup)
 
-    def go_to_edit_suite_page(self,name='Test Suite'):
+    def go_to_edit_suite_page(self, name='Test Suite'):
         _edit_suite_locator = (
             self._edit_suite_locator[0],
             self._edit_suite_locator[1] % {'suite_name': name})

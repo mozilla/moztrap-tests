@@ -50,8 +50,11 @@ class MozTrapEditSuitePage(MozTrapBasePage):
         return [self.TestCaseItem(self.testsetup, case_item)
                 for case_item in self.selenium.find_elements(*self._included_case_item_locator)]
 
+    def save_suite(self):
+        self.selenium.find_element(*self._save_suite_button_locator).click()
+
     def include_cases_to_suite(self, case_name_list, save=True):
-        #wait till available and included cases are not loaded
+        #wait till available and included cases are loaded
         self.wait_for_element_not_present(*self._loading_available_cases_locator)
         self.wait_for_element_not_present(*self._loading_included_cases_locator)
         include_button = self.selenium.find_element(*self._include_selected_cases_button_locator)
@@ -65,8 +68,7 @@ class MozTrapEditSuitePage(MozTrapBasePage):
             include_button.click()
 
         if save:
-            self.selenium.find_element(*self._save_suite_button_locator).click()
-
+            self.save_suite()
 
     class TestCaseItem(Page):
 

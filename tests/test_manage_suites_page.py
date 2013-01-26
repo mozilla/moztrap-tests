@@ -53,7 +53,7 @@ class TestManageSuitesPage(BaseTest):
         cases = self.create_bulk_cases(mozwebqa_logged_in, cases_amount=3, product=product)
 
         #simulate random order of cases
-        case_list = [cases[i]['name'] for i in (2,0,1)]
+        case_list = [cases[i]['name'] for i in (2, 0, 1)]
 
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
         manage_suites_pg.go_to_manage_suites_page()
