@@ -5,6 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.color import Color
 
 from pages.base_page import MozTrapBasePage
@@ -14,21 +15,17 @@ class MozTrapManageRunsPage(MozTrapBasePage):
 
     _page_title = 'Manage-Runs'
 
-    _create_run_locator = (By.CSS_SELECTOR, '#manageruns .create.single')
+    _create_run_button_locator = (By.CSS_SELECTOR, '#manageruns .create.single')
     _delete_run_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .action-delete')
     _run_activate_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-action.active')
     _run_draft_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-action.draft')
     _run_status_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-title')
     _edit_run_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .edit-link')
     _filter_input_locator = (By.ID, 'text-filter')
-    _filter_suggestion_by_name_locator = (By.CSS_SELECTOR,
-        '#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]')
-    _filter_suggestion_by_product_version_locator = (By.CSS_SELECTOR,
-        '#filter .textual .suggest .suggestion[data-type="productversion"][data-name="%(filter_name)s"]')
-    _filter_locator = (By.CSS_SELECTOR,
-        '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
-    _pin_filter_button_locator = (By.CSS_SELECTOR,
-        '#filterform input[data-name="productversion"]:checked + .onoff .pinswitch')
+    _filter_suggestion_by_name_locator = (By.CSS_SELECTOR, '#filter .suggestion[data-type="name"][data-name="%(filter_name)s"]')
+    _filter_suggestion_by_product_version_locator = (By.CSS_SELECTOR, '#filter .suggestion[data-type="productversion"][data-name="%(filter_name)s"]')
+    _filter_locator = (By.CSS_SELECTOR, '#filterform input[data-name="name"][value="%(filter_name)s"]:checked')
+    _pin_filter_button_locator = (By.CSS_SELECTOR, '#filterform input[data-name="productversion"]:checked + .onoff .pinswitch')
     _pinned_filter_locator = (By.CSS_SELECTOR, '#filterform .onoff.pinned')
 
     def go_to_manage_runs_page(self):
@@ -36,7 +33,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         self.is_the_current_page
 
     def click_create_run_button(self):
-        self.selenium.find_element(*self._create_run_locator).click()
+        self.selenium.find_element(*self._create_run_button_locator).click()
         from pages.create_run_page import MozTrapCreateRunPage
         return MozTrapCreateRunPage(self.testsetup)
 
@@ -52,6 +49,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
             self._filter_suggestion_by_name_locator[1] % {'filter_name': name})
 
         self.selenium.find_element(*self._filter_input_locator).send_keys(name)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*_filter_suggestion_locator))
         self.selenium.find_element(*_filter_suggestion_locator).click()
         self.wait_for_ajax()
 
@@ -61,6 +59,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
             self._filter_suggestion_by_product_version_locator[1] % {'filter_name': product_version})
 
         self.selenium.find_element(*self._filter_input_locator).send_keys(product_version)
+        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*_filter_suggestion_locator))
         self.selenium.find_element(*_filter_suggestion_locator).click()
         self.wait_for_ajax()
 
@@ -95,11 +94,10 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         from pages.edit_run_page import MozTrapEditRunPage
         return MozTrapEditRunPage(self.testsetup)
 
-    def pin_product_version(self):
+    def pin_filter_by_product_version(self):
         self.selenium.find_element(*self._pin_filter_button_locator).click()
 
-    @property
-    def pinned_filter_color(self, coding='hex'):
+    def get_pinned_filter_color(self, coding='hex'):
         pinned_filter = self.selenium.find_element(*self._pinned_filter_locator)
         color = pinned_filter.value_of_css_property('background-color')
-        return getattr(Color.from_string(color), coding)
+        return getattr(Color.from_string(color), coding).upper()

@@ -73,6 +73,6 @@ class MozTrapCreateRunPage(MozTrapBasePage):
         return run
 
     @property
-    def product_version(self):
+    def product_version_value(self):
         product_version_select = Select(self.selenium.find_element(*self._product_version_select_locator))
         return product_version_select.first_selected_option.text
