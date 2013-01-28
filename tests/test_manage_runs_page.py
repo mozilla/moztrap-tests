@@ -19,7 +19,7 @@ class TestManageRunsPage(BaseTest):
 
         run = self.create_run(mozwebqa_logged_in)
 
-        manage_runs_pg.filter_runs_by_name(name=run['name'])
+        manage_runs_pg.filter_form.filter_by(lookup='name', value=run['name'])
 
         Assert.true(manage_runs_pg.is_element_present(*run['manage_locator']))
 
