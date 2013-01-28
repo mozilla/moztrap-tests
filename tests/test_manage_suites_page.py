@@ -19,7 +19,7 @@ class TestManageSuitesPage(BaseTest):
 
         suite = self.create_suite(mozwebqa_logged_in)
 
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
 
         Assert.true(manage_suites_pg.is_element_present(*suite['locator']))
 
@@ -37,7 +37,7 @@ class TestManageSuitesPage(BaseTest):
 
         suite = self.create_suite(mozwebqa=mozwebqa_logged_in, product=product, case_name_list=[case['name'] for case in cases])
 
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         Assert.true(manage_suites_pg.is_element_present(*suite['locator']))
 
         manage_test_cases_pg = manage_suites_pg.view_cases(name=suite['name'])
@@ -57,8 +57,8 @@ class TestManageSuitesPage(BaseTest):
 
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
         manage_suites_pg.go_to_manage_suites_page()
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
-        edit_suite_pg = manage_suites_pg.go_to_edit_suite_page(name=suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
+        edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
         #product field should not be read-only.
         Assert.false(
@@ -66,8 +66,8 @@ class TestManageSuitesPage(BaseTest):
             u'product version field should be editable')
 
         edit_suite_pg.include_cases_to_suite(case_list)
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
-        edit_suite_pg = manage_suites_pg.go_to_edit_suite_page(name=suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
+        edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
         Assert.true(
             edit_suite_pg.is_product_field_readonly,

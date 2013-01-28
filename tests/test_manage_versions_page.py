@@ -20,7 +20,7 @@ class TestManageVersionsPage(BaseTest):
 
         version = self.create_version(mozwebqa_logged_in)
 
-        manage_versions_pg.filter_versions_by_name(name=version['name'])
+        manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 
         Assert.true(manage_versions_pg.is_element_present(*version['manage_locator']))
 
@@ -36,12 +36,12 @@ class TestManageVersionsPage(BaseTest):
 
         version = self.create_version(mozwebqa_logged_in)
 
-        manage_versions_pg.filter_versions_by_name(name='Another Version')
+        filter_item = manage_versions_pg.filter_form.filter_by(lookup='version', value='Another Version')
 
         Assert.false(manage_versions_pg.is_element_present(*version['manage_locator']))
 
-        manage_versions_pg.remove_name_filter(name='Another Version')
-        manage_versions_pg.filter_versions_by_name(name=version['name'])
+        filter_item.remove_filter()
+        manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 
         Assert.true(manage_versions_pg.is_element_present(*version['manage_locator']))
 
@@ -53,7 +53,7 @@ class TestManageVersionsPage(BaseTest):
 
         version = self.create_version(mozwebqa_logged_in)
 
-        manage_versions_pg.filter_versions_by_name(name=version['name'])
+        manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 
         cloned_version = manage_versions_pg.clone_version(name=version['name'], product_name=version['product']['name'])
 

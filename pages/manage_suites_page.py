@@ -6,54 +6,65 @@
 
 from selenium.webdriver.common.by import By
 
+from pages.page import PageRegion
 from pages.base_page import MozTrapBasePage
+from pages.regions.filter import Filter
 
 
 class MozTrapManageSuitesPage(MozTrapBasePage):
 
     _page_title = 'Manage-Suites'
 
-    _delete_suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .action-delete')
-    _suite_status_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .status-action')
-    _view_cases_locator = ((By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .casecount .drill-link'))
-    _edit_suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .edit-link')
-    _filter_input_locator = (By.ID, 'text-filter')
-    _filter_suggestion_locator = (By.CSS_SELECTOR, '#filter .textual .suggest .suggestion[data-type="name"][data-name="%(filter_name)s"]')
-    _filter_locator = (By.CSS_SELECTOR, '#filterform .filter-group input[data-name="name"][value="%(filter_name)s"]:checked')
+    _test_suite_item_locator = (By.CSS_SELECTOR, '#manage-suites-form .listitem')
+
+    @property
+    def filter_form(self):
+        return Filter(self.testsetup)
 
     def go_to_manage_suites_page(self):
         self.selenium.get(self.base_url + '/manage/suites/')
         self.is_the_current_page
 
+    @property
+    def test_suites(self):
+        return [self.TestSuiteItem(self.testsetup, web_element)
+                for web_element in self.find_elements(*self._test_suite_item_locator)]
+
     def delete_suite(self, name='Test Suite'):
-        _delete_locator = (self._delete_suite_locator[0], self._delete_suite_locator[1] % {'suite_name': name})
-
-        self.selenium.find_element(*_delete_locator).click()
-        self.wait_for_ajax()
-
-    def filter_suites_by_name(self, name):
-        _filter_suggestion_locator = (self._filter_suggestion_locator[0], self._filter_suggestion_locator[1] % {'filter_name': name})
-
-        self.selenium.find_element(*self._filter_input_locator).send_keys(name)
-        self.selenium.find_element(*_filter_suggestion_locator).click()
-        self.wait_for_ajax()
-
-    def activate_suite(self, name='Test Suite'):
-        _suite_status_locator = (self._suite_status_locator[0], self._suite_status_locator[1] % {'suite_name': name})
-
-        self.selenium.find_element(*self._suite_status_locator).click()
-        self.wait_for_ajax()
+        self._get_suite(name).delete()
 
     def view_cases(self, name='Test Suite'):
-        _view_cases_locator = (self._view_cases_locator[0], self._view_cases_locator[1] % {'suite_name': name})
-        self.selenium.find_element(*_view_cases_locator).click()
-        from pages.manage_cases_page import MozTrapManageCasesPage
-        return MozTrapManageCasesPage(self.testsetup)
+        return self._get_suite(name).view_cases()
 
-    def go_to_edit_suite_page(self, name='Test Suite'):
-        _edit_suite_locator = (
-            self._edit_suite_locator[0],
-            self._edit_suite_locator[1] % {'suite_name': name})
-        self.selenium.find_element(*_edit_suite_locator).click()
-        from pages.edit_suite_page import MozTrapEditSuitePage
-        return MozTrapEditSuitePage(self.testsetup)
+    def edit_suite(self, name='Test Suite'):
+        return self._get_suite(name).edit()
+
+    def _get_suite(self, name='Test Suite'):
+        for suite in self.test_suites:
+            if suite.name == name:
+                return suite
+
+    class TestSuiteItem(PageRegion):
+
+        _delete_suite_locator = (By.CSS_SELECTOR, '.action-delete')
+        _edit_suite_locator = (By.CSS_SELECTOR, '.edit-link')
+        _view_cases_locator = (By.CSS_SELECTOR, '.casecount .drill-link')
+        _suite_title_locator = (By.CSS_SELECTOR, '.title')
+
+        @property
+        def name(self):
+            return self.find_element(*self._suite_title_locator).text
+
+        def delete(self):
+            self.find_element(*self._delete_suite_locator).click()
+            self.wait_for_ajax()
+
+        def edit(self):
+            self.find_element(*self._edit_suite_locator).click()
+            from pages.edit_suite_page import MozTrapEditSuitePage
+            return MozTrapEditSuitePage(self.testsetup)
+
+        def view_cases(self):
+            self.find_element(*self._view_cases_locator).click()
+            from pages.manage_cases_page import MozTrapManageCasesPage
+            return MozTrapManageCasesPage(self.testsetup)

@@ -38,7 +38,7 @@ class BaseTest(object):
         manage_products_pg = MozTrapManageProductsPage(mozwebqa)
 
         manage_products_pg.go_to_manage_products_page()
-        manage_products_pg.filter_products_by_name(name=product['name'])
+        manage_products_pg.filter_form.filter_by(lookup='name', value=product['name'])
         manage_products_pg.delete_product(name=product['name'])
 
     def create_version(self, mozwebqa, product=None):
@@ -61,7 +61,7 @@ class BaseTest(object):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
 
         manage_versions_pg.go_to_manage_versions_page()
-        manage_versions_pg.filter_versions_by_name(name=version['name'])
+        manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
         manage_versions_pg.delete_version(name=version['name'], product_name=version['product']['name'])
 
         if delete_product:
@@ -82,7 +82,7 @@ class BaseTest(object):
 
         if activate:
             manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
-            manage_runs_pg.filter_runs_by_name(name=run['name'])
+            manage_runs_pg.filter_form.filter_by(lookup='name', value=run['name'])
             manage_runs_pg.activate_run(name=run['name'])
 
         return run
@@ -91,7 +91,7 @@ class BaseTest(object):
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
 
         manage_runs_pg.go_to_manage_runs_page()
-        manage_runs_pg.filter_runs_by_name(name=run['name'])
+        manage_runs_pg.filter_form.filter_by(lookup='name', value=run['name'])
         manage_runs_pg.delete_run(name=run['name'])
 
         if delete_version:
@@ -113,7 +113,7 @@ class BaseTest(object):
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
 
         manage_suites_pg.go_to_manage_suites_page()
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         manage_suites_pg.delete_suite(name=suite['name'])
 
         if delete_product:
@@ -138,7 +138,7 @@ class BaseTest(object):
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
 
         manage_cases_pg.go_to_manage_cases_page()
-        manage_cases_pg.filter_cases_by_name(name=case['name'])
+        manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
         manage_cases_pg.delete_case(name=case['name'])
 
         if delete_product:
@@ -157,7 +157,7 @@ class BaseTest(object):
         manage_profiles_pg = MozTrapManageProfilesPage(mozwebqa)
 
         manage_profiles_pg.go_to_manage_profiles_page()
-        manage_profiles_pg.filter_profiles_by_name(name=profile['name'])
+        manage_profiles_pg.filter_form.filter_by(lookup='name', value=profile['name'])
         manage_profiles_pg.delete_profile(name=profile['name'])
         create_profile_pg.go_to_create_profile_page()
         create_profile_pg.delete_environment_category(category_name=profile['category'])

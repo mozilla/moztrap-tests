@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from pages.base_page import MozTrapBasePage
-from pages.page import Page
+from pages.page import PageRegion
 
 
 class MozTrapEditSuitePage(MozTrapBasePage):
@@ -27,7 +27,7 @@ class MozTrapEditSuitePage(MozTrapBasePage):
 
     @property
     def is_product_field_readonly(self):
-        product_field = self.selenium.find_element(*self._product_field_locator)
+        product_field = self.find_element(*self._product_field_locator)
         if product_field.tag_name == u'select' and product_field.is_enabled():
             return False
         else:
@@ -37,7 +37,7 @@ class MozTrapEditSuitePage(MozTrapBasePage):
     def available_cases(self):
         self.wait_for_element_not_present(*self._loading_available_cases_locator)
         return [self.TestCaseItem(self.testsetup, case_item)
-                for case_item in self.selenium.find_elements(*self._available_case_item_locator)]
+                for case_item in self.find_elements(*self._available_case_item_locator)]
 
     @property
     def has_included_cases(self):
@@ -48,16 +48,16 @@ class MozTrapEditSuitePage(MozTrapBasePage):
     def included_cases(self):
         self.wait_for_element_not_present(*self._loading_included_cases_locator)
         return [self.TestCaseItem(self.testsetup, case_item)
-                for case_item in self.selenium.find_elements(*self._included_case_item_locator)]
+                for case_item in self.find_elements(*self._included_case_item_locator)]
 
     def save_suite(self):
-        self.selenium.find_element(*self._save_suite_button_locator).click()
+        self.find_element(*self._save_suite_button_locator).click()
 
     def include_cases_to_suite(self, case_name_list, save=True):
         #wait till available and included cases are loaded
         self.wait_for_element_not_present(*self._loading_available_cases_locator)
         self.wait_for_element_not_present(*self._loading_included_cases_locator)
-        include_button = self.selenium.find_element(*self._include_selected_cases_button_locator)
+        include_button = self.find_element(*self._include_selected_cases_button_locator)
 
         available_items = self.available_cases
         items_to_add = [item for name in reversed(case_name_list) for item in available_items
@@ -70,18 +70,14 @@ class MozTrapEditSuitePage(MozTrapBasePage):
         if save:
             self.save_suite()
 
-    class TestCaseItem(Page):
+    class TestCaseItem(PageRegion):
 
         _select_item_locator = (By.CSS_SELECTOR, '.bulk-type')
         _item_title_locator = (By.CSS_SELECTOR, '.title')
 
-        def __init__(self, testsetup, web_element):
-            Page.__init__(self, testsetup)
-            self.selenium = web_element
-
         @property
         def name(self):
-            return self.selenium.find_element(*self._item_title_locator).text
+            return self.find_element(*self._item_title_locator).text
 
         def select(self):
-            self.selenium.find_element(*self._select_item_locator).click()
+            self.find_element(*self._select_item_locator).click()
