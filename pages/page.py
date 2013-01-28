@@ -20,6 +20,7 @@ class Page(object):
         self.base_url = testsetup.base_url
         self.selenium = testsetup.selenium
         self.timeout = testsetup.timeout
+        self._selenium_root = hasattr(self, '_root_element') and self._root_element or self.selenium
 
     @property
     def is_the_current_page(self):
@@ -42,7 +43,7 @@ class Page(object):
     def is_element_present(self, by, value):
         self.selenium.implicitly_wait(0)
         try:
-            self.selenium.find_element(by, value)
+            self._selenium_root.find_element(by, value)
             return True
         except NoSuchElementException:
             # this will return a snapshot, which takes time.
@@ -54,7 +55,7 @@ class Page(object):
     def wait_for_element_not_present(self, *locator):
         self.selenium.implicitly_wait(0)
         try:
-            WebDriverWait(self.selenium, 10).until(lambda s: len(self.selenium.find_elements(*locator)) < 1)
+            WebDriverWait(self.selenium, 10).until(lambda s: len(self._selenium_root.find_elements(*locator)) < 1)
         except TimeoutException:
             Assert.fail(TimeoutException)
         finally:
@@ -62,7 +63,7 @@ class Page(object):
 
     def is_element_visible(self, by, value):
         try:
-            return self.selenium.find_element(by, value).is_displayed()
+            return self._selenium_root.find_element(by, value).is_displayed()
         except NoSuchElementException, ElementNotVisibleException:
             # this will return a snapshot, which takes time.
             return False
@@ -82,6 +83,19 @@ class Page(object):
         text -- the string to type via send_keys
         """
 
-        text_fld = self.selenium.find_element(*locator)
+        text_fld = self._selenium_root.find_element(*locator)
         text_fld.clear()
         text_fld.send_keys(text)
+
+    def find_element(self, *locator):
+        return self._selenium_root.find_element(*locator)
+
+    def find_elements(self, *locator):
+        return self._selenium_root.find_elements(*locator)
+
+
+class PageRegion(Page):
+
+    def __init__(self, testsetup, element):
+        self._root_element = element
+        Page.__init__(self, testsetup)
