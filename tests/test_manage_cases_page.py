@@ -42,18 +42,21 @@ class TestManageCasesPage(BaseTest):
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
         manage_cases_pg.go_to_manage_cases_page()
         filter_item = manage_cases_pg.filter_form.filter_by(lookup='product', value=product['name'])
+        test_cases = manage_cases_pg.test_cases
 
-        #delete first version of test case
-        manage_cases_pg.delete_case(product_version=product_versions[0])
+        #remember case version and delete case
+        deleted_version = test_cases[0].product_version
+        product_versions.remove(deleted_version)
+        test_cases[0].delete()
 
         filter_item.remove_filter()
         manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
+        test_cases = manage_cases_pg.test_cases
 
         #check that there is only one test case left and ensure its version equals to second version
-        test_cases = manage_cases_pg.test_cases
         Assert.equal(len(test_cases), 1, u'there should be only one case')
         Assert.equal(test_cases[0].name, test_case['name'], u'that\'s wrong test case')
-        Assert.equal(test_cases[0].product_version, product_versions[1], u'that\'s wrong product version')
+        Assert.equal(test_cases[0].product_version, product_versions[0], u'that\'s wrong product version')
 
     def test_that_manage_cases_list_shows_all_case_versions_individually(self, mozwebqa_logged_in):
         """https://www.pivotaltracker.com/projects/280483#!/stories/40857159"""

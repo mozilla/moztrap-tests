@@ -25,17 +25,12 @@ class MozTrapManageCasesPage(MozTrapBasePage):
         self.selenium.get(self.base_url + '/manage/cases/')
         self.is_the_current_page
 
-    def delete_case(self, name=None, product_version=None):
-        if name:
-            attr, value = 'name', name
-        elif product_version:
-            attr, value = 'product_version', product_version
+    def delete_case(self, name='Test Case'):
+        self._get_case(name).delete()
 
-        self._get_case(attr,value).delete()
-
-    def _get_case(self, attr, value):
+    def _get_case(self, name):
         for case in self.test_cases:
-            if getattr(case, attr) == value:
+            if case.name == name:
                 return case
 
     @property
@@ -51,12 +46,12 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
         @property
         def name(self):
-            return self.find_element(*self._name_field_locator).text
+            return self.find_element(*self._case_name_locator).text
 
         @property
         def product_version(self):
-            return self.find_element(*self._product_version_field_locator).text
+            return self.find_element(*self._case_product_version_locator).text
 
         def delete(self):
-            self.find_element(*self._delete_button_locator).click()
+            self.find_element(*self._delete_case_locator).click()
             self.wait_for_ajax()
