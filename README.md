@@ -1,74 +1,87 @@
-MozTrap Tests
-===================
+Selenium Tests for moztrap-dev.allizom.org (MozTrap)
+====================
 
-Automated tests for the MozTrap web application.
-The following contributors have submitted pull requests to moztrap-tests:
+Thank you for checking out Mozilla's MozTrap test suite. Mozilla and the Mozwebqa team are grateful for the help and hard work of many contributors like yourself.
+The following contributors have submitted pull requests to MozTrap-Tests:
 
 https://github.com/mozilla/moztrap-tests/contributors
 
-Running Tests
--------------
+Getting involved as a contributor
+------------------------------------------
 
-### Java
-You will need a version of the [Java Runtime Environment][JRE] installed
+We love working with contributors to fill out the Selenium test coverage for MozTrap-Tests, but it does require a few skills.   You will need to know some Python, some Selenium and you will need some basic familiarity with Github.
 
-[JRE]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. Our suite uses [Selenium WebDriver][webdriver].
 
-### Python
-Before you will be able to run these tests you will need to have Python 2.6 installed.
+If you need to brush up on programming but are eager to start contributing immediately, please consider helping us find bugs in Mozilla [Firefox][firefox] or find bugs in the Mozilla web-sites tested by the [WebQA][webqa] team.
 
-__note__
+To brush up on Python skills before engaging with us, [Dive Into Python][dive] is an excellent resource.  MIT also has [lecture notes on Python][mit] available through their open courseware.The programming concepts you will need to know include functions, working with classes, and some object oriented programming basics.
 
-The below instructions will install the required Python libraries into your
-global Python installation. If you work on multiple Python projects that might
-end up needing different versions of the same libraries, you might want to
-follow `sudo easy_install pip` with `sudo pip install virtualenv`, and then
-create and activate a [virtualenv](http://www.virtualenv.org) (e.g. `virtualenv
-moztrap-tests-env; source moztrap-tests-env/bin/activate`) to
-create a clean "virtual environment" for just this project. Then you can `pip
-install -r requiremenst/mozwebqa.txt` in your virtual environment without
-needing to use `sudo`.
+[mit]: http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-189-a-gentle-introduction-to-programming-using-python-january-iap-2011/
+[dive]: http://www.diveintopython.net/toc/index.html
+[webqa]: http://quality.mozilla.org/teams/web-qa/
+[firefox]: http://quality.mozilla.org/teams/desktop-firefox/
+[webdriver]: http://seleniumhq.org/docs/03_webdriver.html
 
-If you don't mind installing globally, just run
+Questions are always welcome
+----------------------------
+While we take pains to keep our documentation updated, the best source of information is those of us who work on the project.  Don't be afraid to join us in irc.mozilla.org #mozwebqa to ask questions about our Selenium tests.  Mozilla also hosts the #mozillians chat room to answer your general questions about contributing to Mozilla.
 
-    sudo easy_install pip
+[mozwebqa]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozwebqa
+[mozillians]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozillians
 
-followed by
+How to Set up and Build MozTrap Tests Locally
+-----------------------------------------
+This repository contains Selenium tests used to test the website moztrap-dev.allizom.org.
 
-    sudo pip install -r requirements/mozwebqa.txt
+Mozilla maintains a guide to running Automated tests on our QMO website:
 
-__note__
+https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/
 
-If you are running on Ubuntu/Debian you will need to first do
+This wiki page has some advanced instructions specific to Windows:
 
-    sudo apt-get install python-setuptools
+https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
 
-to install the required Python libraries.
 
-### Selenium
-Once this is all set up you will need to download and start a Selenium server. You can download the latest Selenium server from [here][Selenium Downloads]. The filename will be something like 'selenium-server-standalone-2.5.0.jar'
+###You will need to install the following:
 
-To start the Selenium server run the following command:
+#### Git
+If you have cloned this project already then you can skip this!
+GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linux][GitLinux].
+[GitWin]: http://help.github.com/win-set-up-git/
+[GitMacOSX]: http://help.github.com/mac-set-up-git/
+[GitLinux]: http://help.github.com/linux-set-up-git/
 
-    java -jar ~/Downloads/selenium-server-standalone-2.5.0.jar
+#### Python
+Before you will be able to run these tests you will need to have [Python 2.6][Python] installed.
+[Python]: http://www.python.org/download/releases/2.6.6/
 
-Change the path/name to the downloaded Selenium server file.
+#### Running tests locally
 
-[Selenium Downloads]: http://code.google.com/p/selenium/downloads/list
+Tests are run using the py.test library. You will find examples here for running all of the tests, tests in one file and running a single test.
 
-### Running tests locally
+WebDriver does not need a Selenium Server or Grid to run so these examples bypass this step and just use the --driver command.
 
-To run tests locally it's a simple case of calling py.test from the
-moztrap-tests directory. You should specify the following argument for
-Selenium RC: --api=rc
+An example of running all tests without a Selenium Server:
 
-The base URL should be a valid instance of MozTrap: the staging env is
-currently https://moztrap.allizom.org
+    py.test --driver=firefox --credentials=/credentials.yaml --destructive .
 
-    py.test --api=rc --baseurl=https://moztrap.allizom.org
+An example of running all of the tests in one file:
 
-For other possible options, type py.test --help .
+    py.test --driver=firefox --credentials=/credentials.yaml tests/test_manage_runs_page.py
 
+An example of running one test in a file:
+
+    py.test --driver=firefox --credentials=/credentials.yaml tests/test_manage_runs_page.py -k test_that_user_can_create_and_delete_run
+
+The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [davehunt's pytest mozwebqa github][pymozwebqa].
+[pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
+
+####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
+While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
+
+[venv]: http://pypi.python.org/pypi/virtualenv
+[wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
 
 Writing Tests
 -------------
@@ -79,7 +92,8 @@ we'd like to ask you to do:
 1. Use the [template files][GitHub Templates] for all new tests and page objects
 2. Follow our simple [style guide][Style Guide]
 3. Fork this project with your own GitHub account
-4. Make sure all tests are passing, and submit a pull request with your changes
+4. Add your test into the "tests" folder and the necessary methods for it into the appropriate file in "pages"
+5. Make sure all tests are passing and submit a pull request with your changes
 
 [GitHub Templates]: https://github.com/mozilla/mozwebqa-test-templates
 [Style Guide]: https://wiki.mozilla.org/QA/Execution/Web_Testing/Docs/Automation/StyleGuide
