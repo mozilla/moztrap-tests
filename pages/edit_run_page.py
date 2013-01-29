@@ -27,7 +27,7 @@ class MozTrapEditRunPage(MozTrapBasePage):
     _submit_locator = (By.CSS_SELECTOR, '#run-edit-form .form-actions > button')
 
     def edit_run(self, run, name=None, product_version=None, desc=None,
-        start_date=None, end_date=None, reorder_suites=False, series_run=False):
+                start_date=None, end_date=None, reorder_suites=False, series_run=False):
 
         if name:
             name_field = self.selenium.find_element(*self._name_locator)

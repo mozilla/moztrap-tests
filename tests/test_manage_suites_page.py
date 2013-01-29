@@ -19,7 +19,7 @@ class TestManageSuitesPage(BaseTest):
 
         suite = self.create_suite(mozwebqa_logged_in)
 
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
 
         Assert.true(manage_suites_pg.is_element_present(*suite['locator']))
 
@@ -37,7 +37,7 @@ class TestManageSuitesPage(BaseTest):
 
         suite = self.create_suite(mozwebqa=mozwebqa_logged_in, product=product, case_name_list=[case['name'] for case in cases])
 
-        manage_suites_pg.filter_suites_by_name(name=suite['name'])
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         Assert.true(manage_suites_pg.is_element_present(*suite['locator']))
 
         manage_test_cases_pg = manage_suites_pg.view_cases(name=suite['name'])

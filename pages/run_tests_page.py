@@ -6,7 +6,7 @@
 
 from selenium.webdriver.common.by import By
 
-from pages.page import Page
+from pages.page import Page, PageRegion
 from pages.base_page import MozTrapBasePage
 
 
@@ -83,29 +83,25 @@ class MozTrapRunTestsPage(MozTrapBasePage):
         return [self.TestItem(self.testsetup, web_el) for web_el
                 in self.selenium.find_elements(*self._test_item_locator)]
 
-    class TestItem(Page):
+    class TestItem(PageRegion):
 
         _case_result_locator = (By.CSS_SELECTOR, '.result')
         _case_name_locator = (By.CSS_SELECTOR, '.title')
         _suite_name_locator = (By.CSS_SELECTOR, 'a[data-type="suite"]')
         _case_position_number_locator = (By.CSS_SELECTOR, '.order')
 
-        def __init__(self, testsetup, base_el):
-            Page.__init__(self, testsetup)
-            self.selenium = base_el
-
         @property
         def result(self):
-            return self.selenium.find_element(*self._case_result_locator).text
+            return self.find_element(*self._case_result_locator).text
 
         @property
         def name(self):
-            return self.selenium.find_element(*self._case_name_locator).text
+            return self.find_element(*self._case_name_locator).text
 
         @property
         def suite_name(self):
-            return self.selenium.find_element(*self._suite_name_locator).text
+            return self.find_element(*self._suite_name_locator).text
 
         @property
         def position_number(self):
-            return self.selenium.find_element(*self._case_position_number_locator).text
+            return self.find_element(*self._case_position_number_locator).text

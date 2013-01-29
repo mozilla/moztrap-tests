@@ -79,14 +79,14 @@ class TestRunTestsPage(BaseTest):
         #create first test run (suite a, suite b)
         first_suite_order = (suite_a['name'], suite_b['name'])
         first_run = self.create_run(
-                mozwebqa_logged_in, activate=True, product=product,
-                version=version, suite_name_list=first_suite_order)
+            mozwebqa_logged_in, activate=True, product=product,
+            version=version, suite_name_list=first_suite_order)
         #execute first test run
         home_page = MozTrapHomePage(mozwebqa_logged_in)
         home_page.go_to_home_page()
         home_page.go_to_run_test(
-                product_name=product['name'], version_name=version['name'], run_name=first_run['name'],
-                env_category=profile['category'], env_element=profile['element'])
+            product_name=product['name'], version_name=version['name'], run_name=first_run['name'],
+            env_category=profile['category'], env_element=profile['element'])
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
         actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
@@ -99,19 +99,19 @@ class TestRunTestsPage(BaseTest):
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
         manage_runs_pg.go_to_manage_runs_page()
         #push run into draft mode
-        manage_runs_pg.filter_runs_by_name(first_run['name'])
+        manage_runs_pg.filter_form.filter_by(lookup='name', value=first_run['name'])
         manage_runs_pg.make_run_draft(first_run['name'])
         #go to edit run page and reorder suites by name (suite b, suite a)
         edit_run_pg = manage_runs_pg.go_to_edit_run_page(first_run['name'])
         second_run = edit_run_pg.edit_run(first_run, reorder_suites=True)
         #make run active again
-        manage_runs_pg.filter_runs_by_name(first_run['name'])
+        manage_runs_pg.filter_form.filter_by(lookup='name', value=first_run['name'])
         manage_runs_pg.activate_run(first_run['name'])
         #execute run again
         home_page.go_to_home_page()
         home_page.go_to_run_test(
-                product_name=product['name'], version_name=version['name'], run_name=first_run['name'],
-                env_category=profile['category'], env_element=profile['element'])
+            product_name=product['name'], version_name=version['name'], run_name=first_run['name'],
+            env_category=profile['category'], env_element=profile['element'])
         #check actual order of items on run tests page
         actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
 
