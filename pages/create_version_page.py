@@ -44,5 +44,5 @@ class MozTrapCreateVersionPage(MozTrapBasePage):
 
     @property
     def product_name_value(self):
-        product_select = Select(self.selenium.find_element(*self._product_select_locator))
+        product_select = Select(self.find_element(*self._product_select_locator))
         return product_select.first_selected_option.text

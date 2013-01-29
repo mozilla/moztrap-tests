@@ -30,7 +30,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         self.is_the_current_page
 
     def click_create_run_button(self):
-        self.selenium.find_element(*self._create_run_button_locator).click()
+        self.find_element(*self._create_run_button_locator).click()
         from pages.create_run_page import MozTrapCreateRunPage
         return MozTrapCreateRunPage(self.testsetup)
 

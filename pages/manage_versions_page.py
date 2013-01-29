@@ -29,7 +29,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
         self.is_the_current_page
 
     def click_create_version_button(self):
-        self.selenium.find_element(*self._create_version_button_locator).click()
+        self.find_element(*self._create_version_button_locator).click()
         from pages.create_version_page import MozTrapCreateVersionPage
         return MozTrapCreateVersionPage(self.testsetup)
 
