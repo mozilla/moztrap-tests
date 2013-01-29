@@ -19,11 +19,11 @@ class TestManageCasesPage(BaseTest):
 
         case = self.create_case(mozwebqa_logged_in)
 
-        manage_cases_pg.filter_cases(lookup='name', value=case['name'])
+        manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
 
         Assert.true(manage_cases_pg.is_element_present(*case['locator']))
 
-        manage_cases_pg.delete_case(value=case['name'])
+        manage_cases_pg.delete_case(name=case['name'])
 
         Assert.false(manage_cases_pg.is_element_present(*case['locator']))
 
@@ -41,13 +41,13 @@ class TestManageCasesPage(BaseTest):
 
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
         manage_cases_pg.go_to_manage_cases_page()
-        manage_cases_pg.filter_cases(lookup='product', value=product['name'])
+        filter_item = manage_cases_pg.filter_form.filter_by(lookup='product', value=product['name'])
 
         #delete first version of test case
-        manage_cases_pg.delete_case(lookup='product version', value=product_versions[0])
+        manage_cases_pg.delete_case(product_version=product_versions[0])
 
-        manage_cases_pg.remove_filter()
-        manage_cases_pg.filter_cases(lookup='name', value=test_case['name'])
+        filter_item.remove_filter()
+        manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
 
         #check that there is only one test case left and ensure its version equals to second version
         test_cases = manage_cases_pg.test_cases
@@ -67,7 +67,7 @@ class TestManageCasesPage(BaseTest):
 
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
         manage_cases_pg.go_to_manage_cases_page()
-        manage_cases_pg.filter_cases(lookup='name', value=test_case['name'])
+        manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
         filtered_cases = manage_cases_pg.test_cases
 
         for case in filtered_cases:

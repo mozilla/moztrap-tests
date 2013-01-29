@@ -40,6 +40,13 @@ class Page(object):
     def get_relative_path(self, url):
         self.selenium.get(self.base_url + url)
 
+    def is_element_visible(self, by, value):
+        try:
+            return self._selenium_root.find_element(by, value).is_displayed()
+        except NoSuchElementException, ElementNotVisibleException:
+            # this will return a snapshot, which takes time.
+            return False
+
     def is_element_present(self, by, value):
         self.selenium.implicitly_wait(0)
         try:
@@ -52,6 +59,17 @@ class Page(object):
             # set back to where you once belonged
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
+    def wait_for_element_to_be_visible(self, *locator):
+        """Wait for an element to become present."""
+        self.selenium.implicitly_wait(0)
+        try:
+            WebDriverWait(self.selenium, 10).until(lambda s: self._selenium_root.find_element(*locator).is_displayed())
+        except TimeoutException:
+            Assert.fail(TimeoutException)
+        finally:
+            # set back to where you once belonged
+            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+
     def wait_for_element_not_present(self, *locator):
         self.selenium.implicitly_wait(0)
         try:
@@ -60,13 +78,6 @@ class Page(object):
             Assert.fail(TimeoutException)
         finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
-
-    def is_element_visible(self, by, value):
-        try:
-            return self._selenium_root.find_element(by, value).is_displayed()
-        except NoSuchElementException, ElementNotVisibleException:
-            # this will return a snapshot, which takes time.
-            return False
 
     def wait_for_ajax(self):
         WebDriverWait(self.selenium, self.timeout).until(lambda s: s.execute_script("return $.active == 0"),

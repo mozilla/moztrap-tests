@@ -5,50 +5,38 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 
 from pages.page import PageRegion
 from pages.base_page import MozTrapBasePage
+from pages.regions.filter import Filter
 
 
 class MozTrapManageCasesPage(MozTrapBasePage):
 
     _page_title = 'Manage-Cases'
 
-    _case_status_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem[data-title="%(case_name)s"] .status-action')
-    _filter_input_locator = (By.ID, 'text-filter')
-    _filter_suggestion_locator = (By.CSS_SELECTOR, '#filter .suggestion[data-type="%(filter_lookup)s"][data-name="%(filter_name)s"]')
     _test_case_item_locator = (By.CSS_SELECTOR, '.listitem.active')
+
+    @property
+    def filter_form(self):
+        return Filter(self.testsetup)
 
     def go_to_manage_cases_page(self):
         self.selenium.get(self.base_url + '/manage/cases/')
         self.is_the_current_page
 
-    def delete_case(self, lookup='name', value='Test Case'):
+    def delete_case(self, name=None, product_version=None):
+        if name:
+            attr, value = 'name', name
+        elif product_version:
+            attr, value = 'product_version', product_version
+
+        self._get_case(attr,value).delete()
+
+    def _get_case(self, attr, value):
         for case in self.test_cases:
-            if getattr(case, lookup.replace(u' ', u'_')) == value:
-                case.delete()
-                break
-        self.wait_for_ajax()
-
-    def filter_cases(self, lookup, value):
-        '''
-        Types the name into the input field and then clicks the item in the search suggestions
-        '''
-        _filter_suggestion_locator = (
-            self._filter_suggestion_locator[0],
-            self._filter_suggestion_locator[1] % {'filter_lookup': lookup, 'filter_name': value})
-
-        self.selenium.find_element(*self._filter_input_locator).send_keys(value)
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.is_element_visible(*_filter_suggestion_locator))
-        self.selenium.find_element(*_filter_suggestion_locator).click()
-        self.wait_for_ajax()
-
-    def activate_case(self, name='Test Case'):
-        _case_status_locator = (self._case_status_locator[0], self._case_status_locator[1] % {'case_name': name})
-
-        self.selenium.find_element(*_case_status_locator).click()
-        self.wait_for_ajax()
+            if getattr(case, attr) == value:
+                return case
 
     @property
     def test_cases(self):
@@ -57,9 +45,9 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
     class TestCaseItem(PageRegion):
 
-        _product_version_field_locator = (By.CSS_SELECTOR, '.product')
-        _name_field_locator = (By.CSS_SELECTOR, '.title')
-        _delete_button_locator = (By.CSS_SELECTOR, '.action-delete')
+        _case_product_version_locator = (By.CSS_SELECTOR, '.product')
+        _case_name_locator = (By.CSS_SELECTOR, '.title')
+        _delete_case_locator = (By.CSS_SELECTOR, '.action-delete')
 
         @property
         def name(self):
@@ -71,3 +59,4 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
         def delete(self):
             self.find_element(*self._delete_button_locator).click()
+            self.wait_for_ajax()
