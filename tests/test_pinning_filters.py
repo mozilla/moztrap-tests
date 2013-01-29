@@ -45,7 +45,7 @@ class TestPinningFilters(BaseTest):
 
         Assert.equal(
             create_run_pg.product_version_value,
-            product_version,
+            product_version_name,
             u'default product version is incorrect')
 
     @pytest.mark.moztrap(5936)
