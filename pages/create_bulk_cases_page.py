@@ -66,3 +66,18 @@ class MozTrapCreateBulkCasesPage(MozTrapBasePage):
         self.selenium.find_element(*self._submit_locator).click()
 
         return cases
+
+    @property
+    def product_value(self):
+        product_select = self.find_element(*self._product_select_locator)
+        return Select(product_select).first_selected_option.text
+
+    @property
+    def product_version_value(self):
+        version_select = self.find_element(*self._version_select_locator)
+        return Select(version_select).first_selected_option.text
+
+    @property
+    def suite_value(self):
+        suite_select = self.find_element(*self._suite_select_locator)
+        return Select(suite_select).first_selected_option.text
