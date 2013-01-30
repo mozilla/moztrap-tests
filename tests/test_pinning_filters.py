@@ -5,11 +5,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-
 from unittestzero import Assert
 
 from pages.base_test import BaseTest
-from pages.manage_runs_page import MozTrapManageRunsPage
 
 
 PINNED_FILTER_COLOR = u'#DFB081'
@@ -23,6 +21,7 @@ class TestPinningFilters(BaseTest):
         product = self.create_product(mozwebqa_logged_in)
         product_version_name = u'%s %s' % (product['name'], product['version']['name'])
 
+        from pages.manage_runs_page import MozTrapManageRunsPage
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
         manage_runs_pg.go_to_manage_runs_page()
         filter_item = manage_runs_pg.filter_form.filter_by(
