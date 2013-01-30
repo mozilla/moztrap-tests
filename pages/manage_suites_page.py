@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from pages.base_page import MozTrapBasePage
 from pages.regions.filter import Filter
+from pages.page import PageRegion
 
 
 class MozTrapManageSuitesPage(MozTrapBasePage):
@@ -17,6 +18,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     _delete_suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .action-delete')
     _suite_status_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .status-action')
     _view_cases_locator = ((By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .casecount .drill-link'))
+    _test_suite_item_locator = (By.CSS_SELECTOR, '#manage-suites-form .listitem')
 
     @property
     def filter_form(self):
@@ -43,3 +45,16 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
         self.selenium.find_element(*_view_cases_locator).click()
         from pages.manage_cases_page import MozTrapManageCasesPage
         return MozTrapManageCasesPage(self.testsetup)
+
+    @property
+    def test_suites(self):
+        return [self.TestSuiteItem(self.testsetup, web_element)
+                for web_element in self.find_elements(*self._test_suite_item_locator)]
+
+    class TestSuiteItem(PageRegion):
+
+        _suite_title_locator = (By.CSS_SELECTOR, '.title')
+
+        @property
+        def name(self):
+            return self.find_element(*self._suite_title_locator).text

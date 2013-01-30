@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 from pages.base_page import MozTrapBasePage
 from pages.regions.filter import Filter
+from pages.page import PageRegion
 
 
 class MozTrapManageCasesPage(MozTrapBasePage):
@@ -16,6 +17,7 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
     _delete_case_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem[data-title="%(case_name)s"] .action-delete')
     _case_status_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem[data-title="%(case_name)s"] .status-action')
+    _test_case_item_locator = (By.CSS_SELECTOR, '.listitem.active')
 
     @property
     def filter_form(self):
@@ -36,3 +38,16 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
         self.selenium.find_element(*_case_status_locator).click()
         self.wait_for_ajax()
+
+    @property
+    def test_cases(self):
+        return [self.TestCaseItem(self.testsetup, web_element)
+                for web_element in self.find_elements(*self._test_case_item_locator)]
+
+    class TestCaseItem(PageRegion):
+
+        _case_title_locator = (By.CSS_SELECTOR, '.title')
+
+        @property
+        def name(self):
+            return self.find_element(*self._case_title_locator).text

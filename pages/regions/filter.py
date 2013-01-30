@@ -18,9 +18,10 @@ class Filter(Page):
     _filter_suggestion_locator = (
         By.CSS_SELECTOR,
         '.textual .suggest .suggestion[data-type="%(filter_type)s"][data-name="%(filter_name)s"]')
-    _filter_item_locator = (
+    _detailed_filter_item_locator = (
         By.CSS_SELECTOR,
         'input[data-name="%(filter_type)s"][value="%(filter_name)s"]:checked + .onoff')
+    _filter_item_locator = (By.CSS_SELECTOR, 'input:checked + .onoff')
 
     def filter_by(self, lookup, value):
         _suggestion_locator = (
@@ -36,8 +37,8 @@ class Filter(Page):
         suggestion.click()
 
         _filter_item_locator = (
-            self._filter_item_locator[0],
-            self._filter_item_locator[1] % {'filter_type': lookup, 'filter_name': data_id.lower()})
+            self._detailed_filter_item_locator[0],
+            self._detailed_filter_item_locator[1] % {'filter_type': lookup, 'filter_name': data_id.lower()})
 
         self.wait_for_element_to_be_visible(*_filter_item_locator)
         self.wait_for_ajax()
@@ -58,8 +59,8 @@ class Filter(Page):
         suggestion.click()
 
         _filter_item_locator = (
-            self._filter_item_locator[0],
-            self._filter_item_locator[1] % {'filter_type': lookup, 'filter_name': data_id.lower()})
+            self._detailed_filter_item_locator[0],
+            self._detailed_filter_item_locator[1] % {'filter_type': lookup, 'filter_name': data_id.lower()})
 
         filter_input.send_keys(Keys.RETURN)
         self.wait_for_element_to_be_visible(*_filter_item_locator)
@@ -69,11 +70,17 @@ class Filter(Page):
         filter_item = self.find_element(*_filter_item_locator)
         return FilterItem(self.testsetup, filter_item)
 
+    @property
+    def filter_items(self):
+        return [FilterItem(self.testsetup, web_element)
+                for web_element in self.find_elements(*self._filter_item_locator)]
+
 
 class FilterItem(PageRegion):
 
     _remove_button_locator = (By.CSS_SELECTOR, '.onoffswitch')
     _pin_button_locator = (By.CSS_SELECTOR, '.pinswitch')
+    _filter_content_locator = (By.CSS_SELECTOR, '.content')
 
     def pin_filter(self):
         self.find_element(*self._pin_button_locator).click()
@@ -89,3 +96,7 @@ class FilterItem(PageRegion):
     @property
     def is_pinned(self):
         return u'pinned' in self._selenium_root.get_attribute('className')
+
+    @property
+    def content_text(self):
+        return self.find_element(*self._filter_content_locator).text
