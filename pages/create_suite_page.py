@@ -53,3 +53,8 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
         self.selenium.find_element(*self._submit_locator).click()
 
         return suite
+
+    @property
+    def product_value(self):
+        product_select = self.find_element(*self._product_select_locator)
+        return Select(product_select).first_selected_option.text

@@ -17,6 +17,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     _delete_suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .action-delete')
     _suite_status_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .status-action')
     _view_cases_locator = ((By.CSS_SELECTOR, '#managesuites .itemlist .listitem[data-title="%(suite_name)s"] .casecount .drill-link'))
+    _create_suite_button_locator = (By.CSS_SELECTOR, '#managesuites .create.single')
 
     @property
     def filter_form(self):
@@ -43,3 +44,8 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
         self.selenium.find_element(*_view_cases_locator).click()
         from pages.manage_cases_page import MozTrapManageCasesPage
         return MozTrapManageCasesPage(self.testsetup)
+
+    def click_create_suite_button(self):
+        self.find_element(*self._create_suite_button_locator).click()
+        from pages.create_suite_page import MozTrapCreateSuitePage
+        return MozTrapCreateSuitePage(self.testsetup)
