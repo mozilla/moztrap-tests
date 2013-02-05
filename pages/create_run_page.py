@@ -74,5 +74,5 @@ class MozTrapCreateRunPage(MozTrapBasePage):
 
     @property
     def product_version_value(self):
-        product_version_select = Select(self.find_element(*self._product_version_select_locator))
-        return product_version_select.first_selected_option.text
+        product_version_select = self.find_element(*self._product_version_select_locator)
+        return product_version_select.find_element(By.CSS_SELECTOR, 'option:checked').text
