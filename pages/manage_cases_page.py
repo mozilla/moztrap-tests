@@ -5,6 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
+from unittestzero import Assert
 
 from pages.page import PageRegion
 from pages.base_page import MozTrapBasePage
@@ -32,6 +33,7 @@ class MozTrapManageCasesPage(MozTrapBasePage):
         for case in self.test_cases:
             if case.name == name:
                 return case
+        Assert.fail('test case with %s name not found' % name)
 
     @property
     def test_cases(self):
