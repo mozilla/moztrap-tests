@@ -6,7 +6,6 @@
 
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
 
 from pages.base_page import MozTrapBasePage
 from pages.page import PageRegion

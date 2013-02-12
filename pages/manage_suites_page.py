@@ -43,6 +43,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
         for suite in self.test_suites:
             if suite.name == name:
                 return suite
+        raise NameError(u'test suite with %s name not found' % names)
 
     class TestSuiteItem(PageRegion):
 
