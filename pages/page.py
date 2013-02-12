@@ -7,7 +7,7 @@
 from unittestzero import Assert
 
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
 
 
 class Page(object):
@@ -43,7 +43,7 @@ class Page(object):
     def is_element_visible(self, by, value):
         try:
             return self._selenium_root.find_element(by, value).is_displayed()
-        except NoSuchElementException, ElementNotVisibleException:
+        except (NoSuchElementException, ElementNotVisibleException):
             # this will return a snapshot, which takes time.
             return False
 
