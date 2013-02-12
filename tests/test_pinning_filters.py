@@ -24,26 +24,28 @@ class TestPinningFilters(BaseTest):
         from pages.manage_runs_page import MozTrapManageRunsPage
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
         manage_runs_pg.go_to_manage_runs_page()
-        filter_item = manage_runs_pg.filter_form.filter_by(
-            lookup='productversion', value=product_version_name)
+        filter_item = manage_runs_pg.filter_form.filter_by(lookup='productversion', value=product_version_name)
 
         #check that filter is not orange before it's pinned
         Assert.not_equal(
             filter_item.get_filter_color(),
-            PINNED_FILTER_COLOR)
+            PINNED_FILTER_COLOR,
+            u'filter is orange before it was pinned')
 
         filter_item.pin_filter()
 
         #check that filter is orange after it's been pinned
         Assert.equal(
             filter_item.get_filter_color(),
-            PINNED_FILTER_COLOR)
+            PINNED_FILTER_COLOR,
+            u'pinned filter\'s color is not orange')
 
         create_run_pg = manage_runs_pg.click_create_run_button()
 
         Assert.equal(
-            create_run_pg.product_version,
-            product_version_name)
+            create_run_pg.product_version_value,
+            product_version_name,
+            u'default product version is incorrect')
 
     @pytest.mark.moztrap(5930)
     @pytest.mark.nondestructive
@@ -113,3 +115,34 @@ class TestPinningFilters(BaseTest):
 
         #check that there is no filters applied
         Assert.equal(manage_runs_pg.filter_form.filter_items, [])
+
+    @pytest.mark.moztrap(5936)
+    @pytest.mark.nondestructive
+    def test_that_pinning_filter_on_product_sets_defaults_in_new_product_version(self, mozwebqa_logged_in):
+        product = self.create_product(mozwebqa_logged_in)
+
+        from pages.manage_versions_page import MozTrapManageVersionsPage
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
+        manage_versions_pg.go_to_manage_versions_page()
+        filter_item = manage_versions_pg.filter_form.filter_by(lookup='product', value=product['name'])
+
+        #check that filter is not orange before it's pinned
+        Assert.not_equal(
+            filter_item.get_filter_color(),
+            PINNED_FILTER_COLOR,
+            u'filter is orange before it was pinned')
+
+        filter_item.pin_filter()
+
+        #check that filter is orange after it's been pinned
+        Assert.equal(
+            filter_item.get_filter_color(),
+            PINNED_FILTER_COLOR,
+            u'pinned filter\'s color is not orange')
+
+        create_version_pg = manage_versions_pg.click_create_version_button()
+
+        Assert.equal(
+            create_version_pg.product_name_value,
+            product['name'],
+            u'default product is incorrect')
