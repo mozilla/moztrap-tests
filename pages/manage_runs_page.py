@@ -14,7 +14,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
 
     _page_title = 'Manage-Runs'
 
-    _create_run_locator = (By.CSS_SELECTOR, '#manageruns .create.single')
+    _create_run_button_locator = (By.CSS_SELECTOR, '#manageruns .create.single')
     _delete_run_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .action-delete')
     _run_activate_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-action.active')
     _run_draft_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem[data-title="%(run_name)s"] .status-action.draft')
@@ -30,7 +30,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         self.is_the_current_page
 
     def click_create_run_button(self):
-        self.selenium.find_element(*self._create_run_locator).click()
+        self.find_element(*self._create_run_button_locator).click()
         from pages.create_run_page import MozTrapCreateRunPage
         return MozTrapCreateRunPage(self.testsetup)
 
