@@ -33,7 +33,7 @@ class MozTrapManageCasesPage(MozTrapBasePage):
         for case in self.test_cases:
             if case.name == name:
                 return case
-        Assert.fail('test case with %s name not found' % name)
+        raise NameError('test case with %s name not found' % name)
 
     @property
     def test_cases(self):
