@@ -52,7 +52,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         for run in self.test_runs:
             if run.name == name:
                 return run
-        raise NameError(u'test suite with %s name not found' % name)
+        raise NameError(u'test run with %s name not found' % name)
 
     class TestRunItem(PageRegion):
 
