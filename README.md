@@ -1,7 +1,7 @@
 Selenium Tests for moztrap-dev.allizom.org (MozTrap)
 ====================
 
-Thank you for checking out Mozilla's MozTrap test suite. Mozilla and the Mozwebqa team are grateful for the help and hard work of many contributors like yourself.
+Thank you for checking out Mozilla's MozTrap test suite. Mozilla and the Web QA team are grateful for the help and hard work of many contributors like yourself.
 The following contributors have submitted pull requests to MozTrap-Tests:
 
 https://github.com/mozilla/moztrap-tests/contributors
@@ -9,7 +9,7 @@ https://github.com/mozilla/moztrap-tests/contributors
 Getting involved as a contributor
 ------------------------------------------
 
-We love working with contributors to fill out the Selenium test coverage for MozTrap-Tests, but it does require a few skills.   You will need to know some Python, some Selenium and you will need some basic familiarity with Github.
+We love working with contributors to fill out the Selenium test coverage for MozTrap-Tests, but it does require a few skills. You will need to know some Python, some Selenium and you will need some basic familiarity with Github.
 
 If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. Our suite uses [Selenium WebDriver][webdriver].
 
@@ -53,8 +53,39 @@ GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linu
 [GitLinux]: http://help.github.com/linux-set-up-git/
 
 #### Python
-Before you will be able to run these tests you will need to have [Python 2.6][Python] installed.
-[Python]: http://www.python.org/download/releases/2.6.6/
+Before you will be able to run these tests you will need to have [Python 2.6][Python2.6] or [Python 2.7][Python2.7]installed.
+
+[Python2.6]: http://www.python.org/download/releases/2.6.8/
+[Python2.7]: http://www.python.org/download/releases/2.7.3/
+
+Install pip (for managing Python packages):
+
+    sudo easy_install pip
+
+or
+
+    sudo apt-get install python-pip
+
+####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
+While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
+
+[venv]: http://pypi.python.org/pypi/virtualenv
+[wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
+
+#### Installing dependencies
+
+If you are using virtualenv, create and activate the virtualenv, then run the following in the project root:
+
+    pip install -r requirements.txt
+
+If you are not using virtualenv, run the following in the project root to install dependencies globally:
+
+    sudo pip install -r requirements.txt
+
+####Initializing git submodules
+Be sure to retrieve the git submodules by issuing this command at the project root:
+
+    git submodule update --init
 
 #### Running tests locally
 
@@ -64,24 +95,37 @@ WebDriver does not need a Selenium Server or Grid to run so these examples bypas
 
 An example of running all tests without a Selenium Server:
 
-    py.test --driver=firefox --credentials=/credentials.yaml --destructive .
+    py.test --driver=firefox --credentials=/path/to/credentials/credentials.yaml --destructive .
 
 An example of running all of the tests in one file:
 
-    py.test --driver=firefox --credentials=/credentials.yaml tests/test_manage_runs_page.py
+    py.test --driver=firefox --credentials=/path/to/credentials//credentials.yaml tests/test_manage_runs_page.py
 
 An example of running one test in a file:
 
-    py.test --driver=firefox --credentials=/credentials.yaml tests/test_manage_runs_page.py -k test_that_user_can_create_and_delete_run
+    py.test --driver=firefox --credentials=/path/to/credentials//credentials.yaml tests/test_manage_runs_page.py -k test_that_user_can_create_and_delete_run
 
 The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [davehunt's pytest mozwebqa github][pymozwebqa].
 [pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
 
-####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
-While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
+#### Moz-grid-config (Optional/Intermediate level)
+Prerequisites: [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
 
-[venv]: http://pypi.python.org/pypi/virtualenv
-[wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
+[Moz-grid-config][moz-grid] is a project containining our Selenium Grid configuration. It uses Apache Ant to run the Selenium hub or node to the configuration defined in the yaml files.
+
+We recommend git cloning the repository for a couple of reasons:
+
+1. The commands to launch a node or hub are all pre-configured and as simple as typing `ant launch-hub` or `ant launch-node`
+2. The paths to browser binaries and nodes can be stored in configuration (yaml) files
+3. It contains a jar file of the latest Selenium in it's lib directory
+
+(If you prefer to download Selenium it's own, you can do that from [here][Selenium Downloads])
+You will need to make sure that the name of your Firefox application matches one of the names in moz-grid-config/grid_configuration.yml.  As an example:  even though Firefox typically installs without a version number in the name, moz-grid-config requires it to be named "Firefox <version number>".app on mac.
+
+[moz-grid]:https://github.com/mozilla/moz-grid-config
+[ANT]: http://ant.apache.org/
+[Java JRE]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[Selenium Downloads]: http://code.google.com/p/selenium/downloads/list
 
 Writing Tests
 -------------
