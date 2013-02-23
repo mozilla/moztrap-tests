@@ -29,8 +29,8 @@ Questions are always welcome
 ----------------------------
 While we take pains to keep our documentation updated, the best source of information is those of us who work on the project.  Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask questions about our Selenium tests.  Mozilla also hosts the [#mozillians][mozillians] chat room to answer your general questions about contributing to Mozilla.
 
-[mozwebqa]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozwebqa
-[mozillians]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozillians
+[mozwebqa]:http://chat.mibbit.com/?server=irc.mozilla.org&channel=#mozwebqa
+[mozillians]:http://chat.mibbit.com/?server=irc.mozilla.org&channel=#mozillians
 
 How to Set up and Build MozTrap Tests Locally
 -----------------------------------------
@@ -50,6 +50,7 @@ https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
 #### Git
 If you have cloned this project already then you can skip this!
 GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linux][GitLinux].
+
 [GitWin]: http://help.github.com/win-set-up-git/
 [GitMacOSX]: http://help.github.com/mac-set-up-git/
 [GitLinux]: http://help.github.com/linux-set-up-git/
