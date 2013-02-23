@@ -1,10 +1,12 @@
 Selenium Tests for moztrap-dev.allizom.org (MozTrap)
 ====================
 
-Thank you for checking out Mozilla's MozTrap test suite. Mozilla and the Web QA team are grateful for the help and hard work of many contributors like yourself.
+Thank you for checking out Mozilla's MozTrap test suite. Mozilla and the [Web QA][webqa] team are grateful for the help and hard work of many contributors like yourself.
 The following contributors have submitted pull requests to MozTrap-Tests:
 
 https://github.com/mozilla/moztrap-tests/contributors
+
+[webqa]: http://quality.mozilla.org/teams/web-qa/
 
 Getting involved as a contributor
 ------------------------------------------
@@ -13,7 +15,7 @@ We love working with contributors to fill out the Selenium test coverage for Moz
 
 If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. Our suite uses [Selenium WebDriver][webdriver].
 
-If you need to brush up on programming but are eager to start contributing immediately, please consider helping us find bugs in Mozilla [Firefox][firefox] or find bugs in the Mozilla web-sites tested by the [WebQA][webqa] team.
+If you need to brush up on programming but are eager to start contributing immediately, please consider helping us find bugs in Mozilla [Firefox][firefox] or find bugs in the Mozilla web-sites tested by the [Web QA][webqa] team.
 
 To brush up on Python skills before engaging with us, [Dive Into Python][dive] is an excellent resource.  MIT also has [lecture notes on Python][mit] available through their open courseware.The programming concepts you will need to know include functions, working with classes, and some object oriented programming basics.
 
@@ -25,7 +27,7 @@ To brush up on Python skills before engaging with us, [Dive Into Python][dive] i
 
 Questions are always welcome
 ----------------------------
-While we take pains to keep our documentation updated, the best source of information is those of us who work on the project.  Don't be afraid to join us in irc.mozilla.org #mozwebqa to ask questions about our Selenium tests.  Mozilla also hosts the #mozillians chat room to answer your general questions about contributing to Mozilla.
+While we take pains to keep our documentation updated, the best source of information is those of us who work on the project.  Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask questions about our Selenium tests.  Mozilla also hosts the [#mozillians][mozillians] chat room to answer your general questions about contributing to Mozilla.
 
 [mozwebqa]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozwebqa
 [mozillians]:http://02.chat.mibbit.com/?server=irc.mozilla.org&channel=#mozillians
@@ -53,7 +55,7 @@ GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linu
 [GitLinux]: http://help.github.com/linux-set-up-git/
 
 #### Python
-Before you will be able to run these tests you will need to have [Python 2.6][Python2.6] or [Python 2.7][Python2.7]installed.
+Before you will be able to run these tests you will need to have [Python 2.6][Python2.6] or [Python 2.7][Python2.7] installed.
 
 [Python2.6]: http://www.python.org/download/releases/2.6.8/
 [Python2.7]: http://www.python.org/download/releases/2.7.3/
@@ -99,11 +101,11 @@ An example of running all tests without a Selenium Server:
 
 An example of running all of the tests in one file:
 
-    py.test --driver=firefox --credentials=/path/to/credentials//credentials.yaml tests/test_manage_runs_page.py
+    py.test --driver=firefox --credentials=/path/to/credentials/credentials.yaml tests/test_manage_runs_page.py
 
 An example of running one test in a file:
 
-    py.test --driver=firefox --credentials=/path/to/credentials//credentials.yaml tests/test_manage_runs_page.py -k test_that_user_can_create_and_delete_run
+    py.test --driver=firefox --credentials=/path/to/credentials/credentials.yaml tests/test_manage_runs_page.py -k test_that_user_can_create_and_delete_run
 
 The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [davehunt's pytest mozwebqa github][pymozwebqa].
 [pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
