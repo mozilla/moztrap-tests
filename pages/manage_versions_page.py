@@ -16,6 +16,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
 
     _version_manage_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .title[title="%(product_name)s %(version_name)s"]')
     _version_homepage_locator = (By.CSS_SELECTOR, '.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"])')
+    _create_version_button_locator = (By.CSS_SELECTOR, '#manageproductversions .create.single')
     _delete_version_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .action-delete[title="delete %(product_name)s %(version_name)s"]')
     _clone_version_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .action-clone[title="clone %(product_name)s %(version_name)s"]')
 
@@ -26,6 +27,11 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
     def go_to_manage_versions_page(self):
         self.get_relative_path('/manage/productversions/')
         self.is_the_current_page
+
+    def click_create_version_button(self):
+        self.find_element(*self._create_version_button_locator).click()
+        from pages.create_version_page import MozTrapCreateVersionPage
+        return MozTrapCreateVersionPage(self.testsetup)
 
     def delete_version(self, name='Test Version', product_name='Test Product'):
         _delete_locator = (self._delete_version_locator[0], self._delete_version_locator[1] % {'product_name': product_name, 'version_name': name})

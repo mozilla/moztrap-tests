@@ -7,7 +7,7 @@
 from unittestzero import Assert
 
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
 
 
 class Page(object):
@@ -43,7 +43,7 @@ class Page(object):
     def is_element_visible(self, by, value):
         try:
             return self._selenium_root.find_element(by, value).is_displayed()
-        except NoSuchElementException, ElementNotVisibleException:
+        except (NoSuchElementException, ElementNotVisibleException):
             # this will return a snapshot, which takes time.
             return False
 
@@ -63,7 +63,8 @@ class Page(object):
         """Wait for an element to become present."""
         self.selenium.implicitly_wait(0)
         try:
-            WebDriverWait(self.selenium, 10).until(lambda s: self._selenium_root.find_element(*locator).is_displayed())
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: self._selenium_root.find_element(*locator).is_displayed())
         except TimeoutException:
             Assert.fail(TimeoutException)
         finally:
@@ -73,15 +74,17 @@ class Page(object):
     def wait_for_element_not_present(self, *locator):
         self.selenium.implicitly_wait(0)
         try:
-            WebDriverWait(self.selenium, 10).until(lambda s: len(self._selenium_root.find_elements(*locator)) < 1)
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: len(self._selenium_root.find_elements(*locator)) < 1)
         except TimeoutException:
             Assert.fail(TimeoutException)
         finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
     def wait_for_ajax(self):
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.execute_script("return $.active == 0"),
-                                                         "Wait for AJAX timed out after %s seconds" % self.timeout)
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: s.execute_script('return $.active == 0'),
+            'wait for AJAX timed out after %s seconds' % self.timeout)
 
     def type_in_element(self, locator, text):
         """
@@ -104,6 +107,8 @@ class Page(object):
     def find_elements(self, *locator):
         return self._selenium_root.find_elements(*locator)
 
+    def go_back(self):
+        self.selenium.back()
 
 class PageRegion(Page):
 
