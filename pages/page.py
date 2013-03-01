@@ -107,6 +107,8 @@ class Page(object):
     def find_elements(self, *locator):
         return self._selenium_root.find_elements(*locator)
 
+    def go_back(self):
+        self.selenium.back()
 
 class PageRegion(Page):
 
