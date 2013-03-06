@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from selenium.webdriver.common.by import By
-from unittestzero import Assert
 
 from pages.page import PageRegion
 from pages.base_page import MozTrapBasePage
