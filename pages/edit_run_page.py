@@ -25,21 +25,22 @@ class MozTrapEditRunPage(MozTrapBasePage):
     _sort_included_suites_by_name_locator = (By.CSS_SELECTOR, '.multiselected .byname .sortlink')
     _loading_included_suites_locator = (By.CSS_SELECTOR, '.multiselected .select[data-name="suites"] .overlay')
     _submit_locator = (By.CSS_SELECTOR, '#run-edit-form .form-actions > button')
+    _multiselect_widget_locator = (By.CSS_SELECTOR, '#run-edit-form .multiselect')
+    _readonly_included_suite_locator = (By.CSS_SELECTOR, '.suites-field .value > li')
 
     def edit_run(self, run, name=None, product_version=None, desc=None,
-                start_date=None, end_date=None, reorder_suites=False, series_run=False):
+                 start_date=None, end_date=None, reorder_suites=False, series_run=False):
 
         if name:
-            name_field = self.selenium.find_element(*self._name_locator)
-            name_field.send_keys(name)
+            self.type_in_element(self._name_locator, name)
             run['name'] = name
 
         if product_version:
-            product_version_select = Select(self.selenium.find_element(*self._product_version_select_locator))
+            product_version_select = Select(self.find_element(*self._product_version_select_locator))
             product_version_select.select_by_visible_text(product_version)
 
         if desc:
-            self.selenium.find_element(*self._description_locator).send_keys(desc)
+            self.type_in_element(self._description_locator, desc)
             run['desc'] = desc
 
         if start_date:
@@ -49,7 +50,7 @@ class MozTrapEditRunPage(MozTrapBasePage):
             self.type_in_element(self._end_date_locator, end_date)
 
         if series_run:
-            series_element = self.selenium.find_element(*self._series_run_locator)
+            series_element = self.find_element(*self._series_run_locator)
             if series_element.is_selected():
                 if not series_run:
                     series_element.click()
@@ -59,11 +60,22 @@ class MozTrapEditRunPage(MozTrapBasePage):
             run['series'] = series_run
 
         if reorder_suites:
-            sorter = self.selenium.find_element(*self._sort_included_suites_by_name_locator)
+            sorter = self.find_element(*self._sort_included_suites_by_name_locator)
             self.wait_for_element_not_present(*self._loading_included_suites_locator)
             sorter.click()
             sorter.click()
 
-        self.selenium.find_element(*self._submit_locator).click()
+        self.save_run()
 
         return run
+
+    def save_run(self):
+        self.find_element(*self._submit_locator).click()
+
+    @property
+    def is_multiselect_widget_present(self):
+        return self.is_element_present(*self._multiselect_widget_locator)
+
+    @property
+    def readonly_included_suites(self):
+        return [item.text for item in self.find_elements(*self._readonly_included_suite_locator)]
