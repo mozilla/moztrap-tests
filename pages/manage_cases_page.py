@@ -6,6 +6,7 @@
 
 from selenium.webdriver.common.by import By
 
+from pages.page import PageRegion
 from pages.base_page import MozTrapBasePage
 from pages.regions.filter import Filter
 
@@ -14,8 +15,7 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
     _page_title = 'Manage-Cases'
 
-    _delete_case_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem[data-title="%(case_name)s"] .action-delete')
-    _case_status_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem[data-title="%(case_name)s"] .status-action')
+    _test_case_item_locator = (By.CSS_SELECTOR, '.listitem.active')
     _create_case_button_locator = (By.CSS_SELECTOR, '#managecases .create.single')
     _create_bulk_cases_button_locator = (By.CSS_SELECTOR, '#managecases .create.bulk')
 
@@ -38,13 +38,33 @@ class MozTrapManageCasesPage(MozTrapBasePage):
         return MozTrapCreateBulkCasesPage(self.testsetup)
 
     def delete_case(self, name='Test Case'):
-        _delete_locator = (self._delete_case_locator[0], self._delete_case_locator[1] % {'case_name': name})
+        self._get_case(name).delete()
 
-        self.selenium.find_element(*_delete_locator).click()
-        self.wait_for_ajax()
+    def _get_case(self, name):
+        for case in self.test_cases:
+            if case.name == name:
+                return case
+        raise NameError('test case with %s name not found' % name)
 
-    def activate_case(self, name='Test Case'):
-        _case_status_locator = (self._case_status_locator[0], self._case_status_locator[1] % {'case_name': name})
+    @property
+    def test_cases(self):
+        return [self.TestCaseItem(self.testsetup, web_element)
+                for web_element in self.find_elements(*self._test_case_item_locator)]
 
-        self.selenium.find_element(*_case_status_locator).click()
-        self.wait_for_ajax()
+    class TestCaseItem(PageRegion):
+
+        _case_product_version_locator = (By.CSS_SELECTOR, '.product')
+        _case_name_locator = (By.CSS_SELECTOR, '.title')
+        _delete_case_locator = (By.CSS_SELECTOR, '.action-delete')
+
+        @property
+        def name(self):
+            return self.find_element(*self._case_name_locator).text
+
+        @property
+        def product_version(self):
+            return self.find_element(*self._case_product_version_locator).text
+
+        def delete(self):
+            self.find_element(*self._delete_case_locator).click()
+            self.wait_for_ajax()
