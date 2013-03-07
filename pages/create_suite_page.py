@@ -53,3 +53,8 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
         self.selenium.find_element(*self._submit_locator).click()
 
         return suite
+
+    @property
+    def product_name_value(self):
+        product_select = self.find_element(*self._product_select_locator)
+        return product_select.find_element(By.CSS_SELECTOR, 'option:checked').text

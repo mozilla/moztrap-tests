@@ -15,6 +15,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
 
     _page_title = 'Manage-Suites'
 
+    _create_suite_button_locator = (By.CSS_SELECTOR, '#managesuites .create.single')
     _test_suite_item_locator = (By.CSS_SELECTOR, '#manage-suites-form .listitem')
 
     @property
@@ -44,6 +45,11 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
             if suite.name == name:
                 return suite
         raise NameError(u'test suite with %s name not found' % name)
+
+    def click_create_suite_button(self):
+        self.find_element(*self._create_suite_button_locator).click()
+        from pages.create_suite_page import MozTrapCreateSuitePage
+        return MozTrapCreateSuitePage(self.testsetup)
 
     class TestSuiteItem(PageRegion):
 

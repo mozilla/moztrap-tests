@@ -47,6 +47,37 @@ class TestPinningFilters(BaseTest):
             product_version_name,
             u'default product version is incorrect')
 
+    @pytest.mark.moztrap(5933)
+    @pytest.mark.nondestructive
+    def test_that_pinning_filters_on_product_sets_defaults_in_new_suite(self, mozwebqa_logged_in):
+        product = self.create_product(mozwebqa_logged_in)
+
+        from pages.manage_suites_page import MozTrapManageSuitesPage
+        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
+        manage_suites_pg.go_to_manage_suites_page()
+        filter_item = manage_suites_pg.filter_form.filter_by(lookup='product', value=product['name'])
+
+        #check that filter is not orange before it's pinned
+        Assert.not_equal(
+            filter_item.get_filter_color(),
+            PINNED_FILTER_COLOR,
+            u'filter is orange before it was pinned')
+
+        filter_item.pin_filter()
+
+        #check that filter is orange after it's been pinned
+        Assert.equal(
+            filter_item.get_filter_color(),
+            PINNED_FILTER_COLOR,
+            u'pinned filter\'s color is not orange')
+
+        create_suite_pg = manage_suites_pg.click_create_suite_button()
+
+        Assert.equal(
+            create_suite_pg.product_name_value,
+            product['name'],
+            u'default product is incorrect')
+
     @pytest.mark.moztrap(5932)
     @pytest.mark.nondestructive
     def test_that_pinning_filters_on_product_and_version_and_suite_set_defaults_in_new_case(self, mozwebqa_logged_in):
