@@ -60,7 +60,7 @@ class Page(object):
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
     def wait_for_element_to_be_visible(self, *locator):
-        """Wait for an element to become present."""
+        """Wait for an element to become visible"""
         self.selenium.implicitly_wait(0)
         try:
             WebDriverWait(self.selenium, self.timeout).until(
@@ -123,6 +123,7 @@ class Page(object):
 
     def go_back(self):
         self.selenium.back()
+
 
 class PageRegion(Page):
 
