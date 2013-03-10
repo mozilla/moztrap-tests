@@ -9,7 +9,6 @@ from selenium.webdriver.common.by import By
 from pages.page import PageRegion
 from pages.base_page import MozTrapBasePage
 from pages.regions.filter import Filter
-from pages.page import PageRegion
 
 
 class MozTrapManageSuitesPage(MozTrapBasePage):
