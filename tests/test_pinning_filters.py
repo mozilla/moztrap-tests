@@ -9,6 +9,7 @@ from unittestzero import Assert
 
 from pages.base_test import BaseTest
 
+
 PINNED_FILTER_COLOR = u'#DFB081'
 
 

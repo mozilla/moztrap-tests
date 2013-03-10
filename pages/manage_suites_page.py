@@ -22,11 +22,6 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     def filter_form(self):
         return Filter(self.testsetup)
 
-    @property
-    def test_suites(self):
-        return [self.TestSuiteItem(self.testsetup, web_element)
-                for web_element in self.find_elements(*self._test_suite_item_locator)]
-
     def go_to_manage_suites_page(self):
         self.selenium.get(self.base_url + '/manage/suites/')
         self.is_the_current_page
