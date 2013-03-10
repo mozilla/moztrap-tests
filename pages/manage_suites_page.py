@@ -16,20 +16,21 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
 
     _page_title = 'Manage-Suites'
 
+    _create_suite_button_locator = (By.CSS_SELECTOR, '#managesuites .create.single')
     _test_suite_item_locator = (By.CSS_SELECTOR, '#manage-suites-form .listitem')
 
     @property
     def filter_form(self):
         return Filter(self.testsetup)
 
-    def go_to_manage_suites_page(self):
-        self.selenium.get(self.base_url + '/manage/suites/')
-        self.is_the_current_page
-
     @property
     def test_suites(self):
         return [self.TestSuiteItem(self.testsetup, web_element)
                 for web_element in self.find_elements(*self._test_suite_item_locator)]
+
+    def go_to_manage_suites_page(self):
+        self.selenium.get(self.base_url + '/manage/suites/')
+        self.is_the_current_page
 
     def delete_suite(self, name='Test Suite'):
         self._get_suite(name).delete()
@@ -40,11 +41,16 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     def edit_suite(self, name='Test Suite'):
         return self._get_suite(name).edit()
 
-    def _get_suite(self, name='Test Suite'):
+    def _get_suite(self, name):
         for suite in self.test_suites:
             if suite.name == name:
                 return suite
-        raise NameError(u'test suite with %s name not found' % names)
+        raise NameError(u'test suite with %s name not found' % name)
+
+    def click_create_suite_button(self):
+        self.find_element(*self._create_suite_button_locator).click()
+        from pages.create_suite_page import MozTrapCreateSuitePage
+        return MozTrapCreateSuitePage(self.testsetup)
 
     @property
     def test_suites(self):
