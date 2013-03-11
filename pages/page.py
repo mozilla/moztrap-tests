@@ -60,7 +60,7 @@ class Page(object):
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
     def wait_for_element_to_be_visible(self, *locator):
-        """Wait for an element to become present."""
+        """Wait for an element to become visible"""
         self.selenium.implicitly_wait(0)
         try:
             WebDriverWait(self.selenium, self.timeout).until(
@@ -68,7 +68,16 @@ class Page(object):
         except TimeoutException:
             Assert.fail(TimeoutException)
         finally:
-            # set back to where you once belonged
+            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
+
+    def wait_for_element_present(self, *locator):
+        self.selenium.implicitly_wait(0)
+        try:
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: self._selenium_root.find_element(*locator))
+        except TimeoutException:
+            Assert.fail(TimeoutException)
+        finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
     def wait_for_element_not_present(self, *locator):
@@ -82,9 +91,14 @@ class Page(object):
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
     def wait_for_ajax(self):
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.execute_script('return $.active == 0'),
-            'wait for AJAX timed out after %s seconds' % self.timeout)
+        self.selenium.implicitly_wait(0)
+        try:
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: s.execute_script('return $.active == 0'))
+        except TimeoutException:
+            Assert.fail('wait for AJAX timed out after %s seconds' % self.timeout)
+        finally:
+            self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
     def type_in_element(self, locator, text):
         """
@@ -109,6 +123,7 @@ class Page(object):
 
     def go_back(self):
         self.selenium.back()
+
 
 class PageRegion(Page):
 
