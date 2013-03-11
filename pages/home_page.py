@@ -25,20 +25,23 @@ class MozTrapHomePage(MozTrapBasePage):
         self.is_the_current_page
 
     def select_item(self, name):
-        _select_locator = (self._select_locator[0], self._select_locator[1] % {'item_name': name})
+        _select_locator = (
+            self._select_locator[0],
+            self._select_locator[1] % {'item_name': name})
 
-        self.selenium.find_element(*_select_locator).click()
+        self.wait_for_element_present(*_select_locator)
+        self.find_element(*_select_locator).click()
         self.wait_for_ajax()
 
     def go_to_run_test(self, product_name, version_name, run_name, env_category, env_element):
-        #This has not been migrated properly yet because I have NFI what it does
-
-        _env_select_locator = (self._env_select_locator[0], self._env_select_locator[1] % {'env_category': env_category})
+        _env_select_locator = (
+            self._env_select_locator[0],
+            self._env_select_locator[1] % {'env_category': env_category})
 
         self.select_item(product_name)
         self.select_item(version_name)
         self.select_item(run_name)
 
-        env_select = Select(self.selenium.find_element(*_env_select_locator))
+        env_select = Select(self.find_element(*_env_select_locator))
         env_select.select_by_visible_text(env_element)
-        self.selenium.find_element(*self._submit_locator).click()
+        self.find_element(*self._submit_locator).click()
