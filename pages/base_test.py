@@ -5,7 +5,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from pages.home_page import MozTrapHomePage
-from pages.run_tests_page import MozTrapRunTestsPage
 from pages.create_case_page import MozTrapCreateCasePage
 from pages.manage_cases_page import MozTrapManageCasesPage
 from pages.create_suite_page import MozTrapCreateSuitePage
@@ -164,8 +163,6 @@ class BaseTest(object):
 
     def create_and_run_test(self, mozwebqa, profile=None):
         home_pg = MozTrapHomePage(mozwebqa)
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
-        run_tests_pg = MozTrapRunTestsPage(mozwebqa)
 
         if profile is None:
             profile = self.create_profile(mozwebqa)

@@ -6,6 +6,7 @@
 
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.base_page import MozTrapBasePage
 from pages.page import PageRegion
@@ -68,6 +69,20 @@ class MozTrapEditSuitePage(MozTrapBasePage):
 
         if save:
             self.save_suite()
+
+    def reorder_included_cases(self, case_name_list):
+        """ reorder cases via drag and drop """
+        self.wait_for_element_not_present(*self._loading_included_cases_locator)
+        for name in case_name_list:
+            expected_index = case_name_list.index(name)
+            actual_index = [item.name for item in self.included_cases].index(name)
+            if expected_index == actual_index:
+                pass
+            else:
+                actions = ActionChains(self.selenium)
+                actions.drag_and_drop(
+                    self.included_cases[actual_index]._selenium_root,
+                    self.included_cases[expected_index]._selenium_root).perform()
 
     class TestCaseItem(PageRegion):
 

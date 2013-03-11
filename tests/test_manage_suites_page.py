@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import random
+
 import pytest
 from unittestzero import Assert
 
@@ -46,13 +48,14 @@ class TestManageSuitesPage(BaseTest):
             Assert.true(manage_test_cases_pg.is_element_present(*case['locator']))
 
     @pytest.mark.moztrap(2743)
+    @pytest.mark.nondestructive
     def test_editing_of_existing_suite_that_has_no_included_cases(self, mozwebqa_logged_in):
-        #create product, suite and cases
+        # create product, suite and cases
         product = self.create_product(mozwebqa_logged_in)
         suite = self.create_suite(mozwebqa_logged_in, product=product)
         cases = self.create_bulk_cases(mozwebqa_logged_in, cases_amount=3, product=product)
 
-        #simulate random order of cases
+        # simulate random order of cases
         case_list = [cases[i]['name'] for i in (2, 0, 1)]
 
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
@@ -60,7 +63,7 @@ class TestManageSuitesPage(BaseTest):
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
-        #product field should not be read-only.
+        # product field should not be read-only.
         Assert.false(
             edit_suite_pg.is_product_field_readonly,
             u'product version field should be editable')
@@ -75,4 +78,52 @@ class TestManageSuitesPage(BaseTest):
 
         Assert.equal(
             [item.name for item in edit_suite_pg.included_cases], case_list,
+            u'items are listed in wrong order')
+
+    @pytest.mark.native
+    @pytest.mark.moztrap(2742)
+    @pytest.mark.nondestructive
+    def test_editing_of_existing_suite_that_includes_cases(self, mozwebqa_logged_in):
+        # create product, suite, cases (both included and not included into suite)
+        product = self.create_product(mozwebqa_logged_in)
+        suite = self.create_suite(mozwebqa_logged_in, product=product)
+        included_cases = self.create_bulk_cases(mozwebqa_logged_in, suite_name=suite['name'], cases_amount=2, product=product)
+        not_included_cases = self.create_bulk_cases(mozwebqa_logged_in, cases_amount=3, product=product)
+
+        # filter by suite name and go to edit suite page
+        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
+        manage_suites_pg.go_to_manage_suites_page()
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
+        edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
+
+        Assert.true(
+            edit_suite_pg.is_product_field_readonly,
+            u'product version field should be read only')
+
+        # check list of available cases
+        actual_available_cases = [item.name for item in edit_suite_pg.available_cases]
+        expected_available_cases = [item['name'] for item in not_included_cases]
+        Assert.equal(actual_available_cases, expected_available_cases)
+
+        # check list of included cases
+        actual_included_cases = [item.name for item in edit_suite_pg.included_cases]
+        expected_included_cases = [item['name'] for item in included_cases]
+        Assert.equal(actual_included_cases, expected_included_cases)
+
+        # get all cases names and make random order via random.shuffle
+        all_cases = expected_available_cases + expected_included_cases
+        random.shuffle(all_cases)
+
+        # include new cases to suite and reorder them in accordance with all_cases list
+        edit_suite_pg.include_cases_to_suite(actual_available_cases, save=False)
+        edit_suite_pg.reorder_included_cases(all_cases)
+        edit_suite_pg.save_suite()
+
+        # re-edit the same suite
+        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
+        edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
+
+        # and ensure that included cases are listed in right order
+        Assert.equal(
+            [item.name for item in edit_suite_pg.included_cases], all_cases,
             u'items are listed in wrong order')
