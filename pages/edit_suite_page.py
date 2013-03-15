@@ -73,16 +73,15 @@ class MozTrapEditSuitePage(MozTrapBasePage):
     def reorder_included_cases(self, case_name_list):
         """ reorder cases via drag and drop """
         self.wait_for_element_not_present(*self._loading_included_cases_locator)
-        for name in case_name_list:
-            expected_index = case_name_list.index(name)
-            actual_index = [item.name for item in self.included_cases].index(name)
-            if expected_index == actual_index:
-                pass
-            else:
-                actions = ActionChains(self.selenium)
-                actions.drag_and_drop(
-                    self.included_cases[actual_index]._selenium_root,
-                    self.included_cases[expected_index]._selenium_root).perform()
+
+        for i in xrange(1, len(case_name_list)):
+            case_names = [case.name for case in self.included_cases]
+            j = i - 1
+            while j >= 0 and case_name_list.index(case_names[i]) < case_name_list.index(case_names[j]):
+                ActionChains(self.selenium).drag_and_drop(
+                    self.included_cases[j]._selenium_root,
+                    self.included_cases[j + 1]._selenium_root).perform()
+                j -= 1
 
     class TestCaseItem(PageRegion):
 
