@@ -4,6 +4,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import requests
+import json
+
+from mocks.mock_product import MockProduct
+from mocks.moztrap_api import MoztrapAPI
 from pages.home_page import MozTrapHomePage
 from pages.run_tests_page import MozTrapRunTestsPage
 from pages.create_case_page import MozTrapCreateCasePage
@@ -25,6 +30,14 @@ class BaseTest(object):
     '''
     Base class for all Tests
     '''
+
+    def create_product_via_API(self, mozwebqa, profile=None):
+
+        api = MoztrapAPI(mozwebqa)
+        product = MockProduct(mozwebqa)
+        product = api.create_product(product)
+        mozwebqa.product = product
+        return product
 
     def create_product(self, mozwebqa, profile=None):
         create_product_pg = MozTrapCreateProductPage(mozwebqa)

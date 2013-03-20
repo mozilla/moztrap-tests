@@ -14,6 +14,12 @@ from pages.base_test import BaseTest
 
 class TestHomepage(BaseTest):
 
+    @pytest.mark.skip_selenium
+    def test_create_product_via_API(self, mozwebqa):
+
+        product = self.create_product_via_API(mozwebqa)
+        Assert.true(product['id'] > 0)
+
     @pytest.mark.moztrap([3385, 3386])
     @pytest.mark.nondestructive
     def test_that_user_can_login_and_logout(self, mozwebqa):
