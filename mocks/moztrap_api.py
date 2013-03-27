@@ -15,7 +15,7 @@ class MoztrapAPI:
     def __init__(self, mozwebqa):
         user = mozwebqa.credentials['default']
         self.params = {
-            u'username': unicode(user['name']),
+            u'username': unicode(user['username']),
             u'api_key': unicode(user['api_key']),
             u'format': u'json',
         }
@@ -23,21 +23,35 @@ class MoztrapAPI:
         self.headers = {"content-type": "application/json"}
 
     def _do_post(self, uri, post_data):
+        """Post to an API method and return the resulting id."""
         response = requests.post(
             "%s/%s" % (self.base_url, uri),
             params=self.params,
             data=json.dumps(post_data),
             headers=self.headers)
         response.raise_for_status()
-        return response
+        text = json.loads(response.text)
+
+        if response.status_code == 201:
+            return text['id']
+        else:
+            print "Failed to create resource: %s with %s.\n%s" % (
+                post_data, response.status_code, response.text)
+            return 0
 
     def _do_delete(self, uri, id):
+        """Delete to an API method and return True or False."""
         response = requests.delete(
             "%s/%s/%s" % (self.base_url, uri, id),
             params=self.params,
             headers=self.headers)
         response.raise_for_status()
-        return response
+        if response.status_code == 204:
+            return True
+        else:
+            print "Failed to delete resource: %s with %s.\n%s" % (
+                id, response.status_code, response.text)
+            return False
 
     def create_product(self, product, profile=None):
 
@@ -47,15 +61,7 @@ class MoztrapAPI:
             u'description': unicode(product['description']),
             u'productversions': [{u'version': unicode(product['version']['name'])}]
         }
-        response = self._do_post(uri, post_data)
-        text = json.loads(response.text)
-
-        if response.status_code == 201:
-            print "Created product %s." % post_data['name']
-            product['id'] = text['id']
-        else:
-            print "Failed to create %s with %s.\n%s" % (
-                post_data['name'], response.status_code, response.text)
+        product['id'] = self._do_post(uri, post_data)
 
         Assert.greater(product['id'], 0, 'No product was created.')
         return product
@@ -64,9 +70,4 @@ class MoztrapAPI:
 
         uri = "api/v1/product"
         self.params['permanent'] = True
-        response = self._do_delete(uri, product['id'])
-        if response.status_code == 204:
-            print "Deleted product %s." % product['name']
-        else:
-            print "Failed to delete %s with %s.\n%s" % (
-                product['name'], response.status_code, response.text)
+        Assert.true(self._do_delete(uri, product['id']), 'Deletion of product %s failed' % product['name'])
