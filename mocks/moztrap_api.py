@@ -37,7 +37,7 @@ class MoztrapAPI:
         else:
             print "Failed to create resource: %s with %s.\n%s" % (
                 post_data, response.status_code, response.text)
-            return 0
+            return None
 
     def _do_delete(self, uri, id):
         """Delete to an API method and return True or False."""

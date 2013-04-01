@@ -17,7 +17,7 @@ class MockProduct(dict):
         create_product_page = MozTrapCreateProductPage(mozwebqa)
 
         dt_string = datetime.utcnow().isoformat()
-        self['id'] = 0
+        self['id'] = None
         self['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
         self['description'] = u'%(desc)s created on %(dt_string)s' % {'desc': description, 'dt_string': dt_string}
         self['locator'] = (create_product_page._product_locator[0], create_product_page._product_locator[1] % {'product_name': self['name']})
