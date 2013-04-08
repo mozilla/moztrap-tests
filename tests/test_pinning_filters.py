@@ -48,11 +48,10 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5930)
     @pytest.mark.nondestructive
-    def test_that_pinning_name_field_filter_only_works_for_current_page(self, mozwebqa_logged_in):
+    def test_that_pinning_name_field_filter_only_works_for_current_page(self, mozwebqa_logged_in, product):
         good_case_name = u'MOZILLA'
         good_suite_name = u'MozTrap'
 
-        product = self.create_product(mozwebqa_logged_in)
         self.create_bulk_cases(mozwebqa_logged_in, name=good_case_name, product=product, cases_amount=3)
         self.create_bulk_cases(mozwebqa_logged_in, name=u'ALLIZOM', product=product, cases_amount=2)
         self.create_suite(mozwebqa_logged_in, name=good_suite_name, product=product)

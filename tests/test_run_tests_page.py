@@ -61,8 +61,7 @@ class TestRunTestsPage(BaseTest):
         self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
 
     @pytest.mark.moztrap(2744)
-    def test_that_test_run_saves_right_order_of_test_cases(self, mozwebqa_logged_in):
-        #get profile, product and version
+    def test_that_test_run_saves_right_order_of_test_cases(self, mozwebqa_logged_in, product):
         profile = self.create_profile(mozwebqa_logged_in)
         product = self.create_product(mozwebqa_logged_in, profile['name'])
         version = product['version']

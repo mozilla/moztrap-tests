@@ -78,9 +78,8 @@ class TestManageSuitesPage(BaseTest):
     @pytest.mark.native
     @pytest.mark.moztrap(2742)
     @pytest.mark.nondestructive
-    def test_editing_of_existing_suite_that_includes_cases(self, mozwebqa_logged_in):
-        # create product, suite, cases (both included and not included into suite)
-        product = self.create_product(mozwebqa_logged_in)
+    def test_editing_of_existing_suite_that_includes_cases(self, mozwebqa_logged_in, product):
+        # create suite and cases (both included and not included into suite)
         suite = self.create_suite(mozwebqa_logged_in, product=product)
         included_cases = self.create_bulk_cases(mozwebqa_logged_in, suite_name=suite['name'], cases_amount=2, product=product)
         not_included_cases = self.create_bulk_cases(mozwebqa_logged_in, cases_amount=3, product=product)
