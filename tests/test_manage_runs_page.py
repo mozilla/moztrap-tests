@@ -14,10 +14,10 @@ from pages.manage_runs_page import MozTrapManageRunsPage
 class TestManageRunsPage(BaseTest):
 
     @pytest.mark.moztrap([113, 112])
-    def test_that_user_can_create_and_delete_run(self, mozwebqa_logged_in):
+    def test_that_user_can_create_and_delete_run(self, mozwebqa_logged_in, product):
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
 
-        run = self.create_run(mozwebqa_logged_in)
+        run = self.create_run(mozwebqa_logged_in, product=product)
 
         manage_runs_pg.filter_form.filter_by(lookup='name', value=run['name'])
 
@@ -26,5 +26,3 @@ class TestManageRunsPage(BaseTest):
         manage_runs_pg.delete_run(name=run['name'])
 
         Assert.false(manage_runs_pg.is_element_present(*run['manage_locator']))
-
-        self.delete_version(mozwebqa_logged_in, version=run['version'], delete_product=True)

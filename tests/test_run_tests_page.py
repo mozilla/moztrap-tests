@@ -121,9 +121,8 @@ class TestRunTestsPage(BaseTest):
         Assert.equal(actual_order, expected_order)
 
     @pytest.mark.moztrap(3302)
-    def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, mozwebqa_logged_in):
-        #create product and version
-        product = self.create_product(mozwebqa_logged_in)
+    def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, mozwebqa_logged_in, product):
+        #create version
         version = product['version']
         #create two test suites
         suite_a = self.create_suite(mozwebqa_logged_in, product=product, name='suite A')

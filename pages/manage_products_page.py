@@ -15,6 +15,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
     _page_title = 'Manage-Products'
 
     _delete_product_locator = (By.CSS_SELECTOR, '#manageproducts .listitem .controls .action-delete[title="delete %(product_name)s"]')
+    _product_locator = (By.CSS_SELECTOR, '#manageproducts .listitem .title[title="%(product_name)s"]')
 
     @property
     def filter_form(self):
@@ -29,3 +30,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
 
         self.selenium.find_element(*_delete_locator).click()
         self.wait_for_ajax()
+
+    def is_product_present(self, product):
+        _product_locator = (self._product_locator[0], self._product_locator[1] % {'product_name': product['name']})
+        return self.is_element_present(*_product_locator)

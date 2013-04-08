@@ -15,10 +15,10 @@ from pages.manage_versions_page import MozTrapManageVersionsPage
 class TestManageVersionsPage(BaseTest):
 
     @pytest.mark.moztrap([3389, 3390])
-    def test_that_user_can_create_and_delete_version(self, mozwebqa_logged_in):
+    def test_that_user_can_create_and_delete_version(self, mozwebqa_logged_in, product):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
-        version = self.create_version(mozwebqa_logged_in)
+        version = self.create_version(mozwebqa_logged_in, product)
 
         manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 
@@ -28,13 +28,11 @@ class TestManageVersionsPage(BaseTest):
 
         Assert.false(manage_versions_pg.is_element_present(*version['manage_locator']))
 
-        self.delete_product(mozwebqa_logged_in, version['product'])
-
     @pytest.mark.moztrap(3391)
-    def test_that_user_can_filter_version_by_name(self, mozwebqa_logged_in):
+    def test_that_user_can_filter_version_by_name(self, mozwebqa_logged_in, product):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
-        version = self.create_version(mozwebqa_logged_in)
+        version = self.create_version(mozwebqa_logged_in, product)
 
         filter_item = manage_versions_pg.filter_form.filter_by(lookup='version', value='Another Version')
 
@@ -45,13 +43,11 @@ class TestManageVersionsPage(BaseTest):
 
         Assert.true(manage_versions_pg.is_element_present(*version['manage_locator']))
 
-        self.delete_version(mozwebqa_logged_in, version, delete_product=True)
-
     @pytest.mark.moztrap(3392)
-    def test_that_user_can_clone_version(self, mozwebqa_logged_in):
+    def test_that_user_can_clone_version(self, mozwebqa_logged_in, product):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
 
-        version = self.create_version(mozwebqa_logged_in)
+        version = self.create_version(mozwebqa_logged_in, product)
 
         manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 
@@ -62,5 +58,3 @@ class TestManageVersionsPage(BaseTest):
         manage_versions_pg.delete_version(name=cloned_version['name'], product_name=cloned_version['product_name'])
 
         Assert.false(manage_versions_pg.is_element_present(*cloned_version['manage_locator']))
-
-        self.delete_version(mozwebqa_logged_in, version, delete_product=True)

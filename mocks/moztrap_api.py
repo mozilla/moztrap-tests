@@ -12,14 +12,14 @@ import requests
 
 class MoztrapAPI:
 
-    def __init__(self, mozwebqa):
-        user = mozwebqa.credentials['default']
+    def __init__(self, credentials, base_url):
+        user = credentials['default']
         self.params = {
             u'username': unicode(user['username']),
             u'api_key': unicode(user['api_key']),
             u'format': u'json',
         }
-        self.base_url = mozwebqa.base_url
+        self.base_url = base_url
         self.headers = {"content-type": "application/json"}
 
     def _do_post(self, uri, post_data):
@@ -64,7 +64,6 @@ class MoztrapAPI:
         product['id'] = self._do_post(uri, post_data)
 
         Assert.greater(product['id'], 0, 'No product was created.')
-        return product
 
     def delete_product(self, product):
 
