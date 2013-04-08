@@ -53,7 +53,7 @@ class MoztrapAPI:
                 id, response.status_code, response.text)
             return False
 
-    def create_product(self, product, profile=None):
+    def create_product(self, product):
 
         uri = "api/v1/product/"
         post_data = {
