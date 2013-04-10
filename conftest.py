@@ -25,15 +25,16 @@ def mozwebqa_logged_in(request):
 def product(request):
     """Return a product created via the Moztrap API, and automatically delete the product after the test."""
     mozwebqa = request.getfuncargvalue('mozwebqa')
+    credentials = mozwebqa.credentials['default']
     request.product = MockProduct()
-    api = MoztrapAPI(mozwebqa.credentials, mozwebqa.base_url)
+    api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
     api.create_product(request.product)
 
     # This acts like a tearDown, running after each test function
     def fin():
         # If a product was created via the API it will be stored in mozwebqa
         if hasattr(request, 'product'):
-            api = MoztrapAPI(mozwebqa.credentials, mozwebqa.base_url)
+            api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
             api.delete_product(request.product)
     request.addfinalizer(fin)
     return request.product

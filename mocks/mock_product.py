@@ -9,15 +9,18 @@ from datetime import datetime
 
 class MockProduct(dict):
 
-    def __init__(self, name='Test Product', version='Test Version', description='This is a test product', profile=None):
+    def __init__(self, **kwargs):
 
         dt_string = datetime.utcnow().isoformat()
         self['id'] = None
-        self['name'] = u'%(name)s %(dt_string)s' % {'name': name, 'dt_string': dt_string}
-        self['description'] = u'%(desc)s created on %(dt_string)s' % {'desc': description, 'dt_string': dt_string}
+        self['name'] = u'Test Product %s' % dt_string
+        self['description'] = u'This is a test product created on %s' % dt_string
         self['version'] = {}
-        self['version']['name'] = u'%(version)s %(dt_string)s' % {'version': version, 'dt_string': dt_string}
-        self['profile'] = profile
+        self['version']['name'] = u'Test Version %s' % dt_string
+        self['profile'] = None
+
+        # update with any keyword arguments passed
+        self.update(**kwargs)
 
     # allow getting items as if they were attributes
     def __getattr__(self, attr):

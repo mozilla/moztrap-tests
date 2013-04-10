@@ -12,11 +12,10 @@ import requests
 
 class MoztrapAPI:
 
-    def __init__(self, credentials, base_url):
-        user = credentials['default']
+    def __init__(self, username, api_key, base_url):
         self.params = {
-            u'username': unicode(user['username']),
-            u'api_key': unicode(user['api_key']),
+            u'username': unicode(username),
+            u'api_key': unicode(api_key),
             u'format': u'json',
         }
         self.base_url = base_url
