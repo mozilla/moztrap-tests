@@ -7,13 +7,13 @@
 from datetime import datetime
 
 
-class MockProfile(dict):
+class MockCategory(dict):
 
     def __init__(self, **kwargs):
 
         dt_string = datetime.utcnow().isoformat()
         self['id'] = None
-        self['name'] = u'Test Profile %s' % dt_string
+        self['name'] = u'Test Category %s' % dt_string
 
         # update with any keyword arguments passed
         self.update(**kwargs)
@@ -24,4 +24,4 @@ class MockProfile(dict):
 
     @property
     def uri(self):
-        return 'api/v1/profile/%s/' % self['id']
+        return 'api/v1/category/%s/' % self['id']

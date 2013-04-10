@@ -19,6 +19,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
     _create_version_button_locator = (By.CSS_SELECTOR, '#manageproductversions .create.single')
     _delete_version_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .action-delete[title="delete %(product_name)s %(version_name)s"]')
     _clone_version_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem .action-clone[title="clone %(product_name)s %(version_name)s"]')
+    _select_environments_locator = (By.CSS_SELECTOR, '#manageproductversions .listitem a.select-env-link')
 
     @property
     def filter_form(self):
@@ -38,6 +39,12 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
 
         self.selenium.find_element(*_delete_locator).click()
         self.wait_for_ajax()
+
+    def select_environments(self,):
+        self.wait_for_element_to_be_visible(*self._select_environments_locator)
+        self.selenium.find_element(*self._select_environments_locator).click()
+        from pages.manage_environments_page import MozTrapManageEnvironmentsPage
+        return MozTrapManageEnvironmentsPage(self.testsetup)
 
     def clone_version(self, name='Test Version', product_name='Test Product'):
         _clone_version_locator = (self._clone_version_locator[0], self._clone_version_locator[1] % {'product_name': product_name, 'version_name': name})

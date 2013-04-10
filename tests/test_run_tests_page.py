@@ -16,10 +16,10 @@ from pages.manage_runs_page import MozTrapManageRunsPage
 class TestRunTestsPage(BaseTest):
 
     @pytest.mark.moztrap([205, 208])
-    def test_that_user_can_pass_test(self, mozwebqa_logged_in):
+    def test_that_user_can_pass_test(self, mozwebqa_logged_in, product, element):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
-        case = self.create_and_run_test(mozwebqa_logged_in)
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)
 
         Assert.false(run_tests_pg.is_test_passed(case_name=case['name']))
 
@@ -27,14 +27,11 @@ class TestRunTestsPage(BaseTest):
 
         Assert.true(run_tests_pg.is_test_passed(case_name=case['name']))
 
-        self.delete_product(mozwebqa_logged_in, product=case['product'])
-        self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
-
     @pytest.mark.moztrap(206)
-    def test_that_user_can_fail_test(self, mozwebqa_logged_in):
+    def test_that_user_can_fail_test(self, mozwebqa_logged_in, product, element):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
-        case = self.create_and_run_test(mozwebqa_logged_in)
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)
 
         Assert.false(run_tests_pg.is_test_failed(case_name=case['name']))
 
@@ -42,14 +39,11 @@ class TestRunTestsPage(BaseTest):
 
         Assert.true(run_tests_pg.is_test_failed(case_name=case['name']))
 
-        self.delete_product(mozwebqa_logged_in, product=case['product'])
-        self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
-
     @pytest.mark.moztrap(207)
-    def test_that_user_can_mark_test_invalid(self, mozwebqa_logged_in):
+    def test_that_user_can_mark_test_invalid(self, mozwebqa_logged_in, product, element):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
-        case = self.create_and_run_test(mozwebqa_logged_in)
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)
 
         Assert.false(run_tests_pg.is_test_invalid(case_name=case['name']))
 
@@ -57,13 +51,9 @@ class TestRunTestsPage(BaseTest):
 
         Assert.true(run_tests_pg.is_test_invalid(case_name=case['name']))
 
-        self.delete_product(mozwebqa_logged_in, product=case['product'])
-        self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
-
     @pytest.mark.moztrap(2744)
-    def test_that_test_run_saves_right_order_of_test_cases(self, mozwebqa_logged_in, product):
-        profile = self.create_profile(mozwebqa_logged_in)
-        product = self.create_product(mozwebqa_logged_in, profile['name'])
+    def test_that_test_run_saves_right_order_of_test_cases(self, mozwebqa_logged_in, product, element):
+        self.connect_product_to_element(mozwebqa_logged_in, product, element)
         version = product['version']
         #create several test case via bulk create
         cases = self.create_bulk_cases(mozwebqa_logged_in, cases_amount=5, product=product, name='is')
@@ -85,7 +75,7 @@ class TestRunTestsPage(BaseTest):
         home_page.go_to_home_page()
         home_page.go_to_run_test(
             product_name=product['name'], version_name=version['name'], run_name=first_run['name'],
-            env_category=profile['category'], env_element=profile['element'])
+            env_category_name=element['category']['name'], env_element_name=element['name'])
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
         actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
@@ -110,7 +100,7 @@ class TestRunTestsPage(BaseTest):
         home_page.go_to_home_page()
         home_page.go_to_run_test(
             product_name=product['name'], version_name=version['name'], run_name=first_run['name'],
-            env_category=profile['category'], env_element=profile['element'])
+            env_category_name=element['category']['name'], env_element_name=element['name'])
         #check actual order of items on run tests page
         actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
 

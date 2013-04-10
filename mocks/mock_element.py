@@ -5,15 +5,17 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from datetime import datetime
+from mocks.mock_category import MockCategory
 
 
-class MockProfile(dict):
+class MockElement(dict):
 
     def __init__(self, **kwargs):
 
         dt_string = datetime.utcnow().isoformat()
         self['id'] = None
-        self['name'] = u'Test Profile %s' % dt_string
+        self['name'] = u'Test Element %s' % dt_string
+        self['category'] = MockCategory(name=u'Test Category %s' % dt_string)
 
         # update with any keyword arguments passed
         self.update(**kwargs)
@@ -24,4 +26,4 @@ class MockProfile(dict):
 
     @property
     def uri(self):
-        return 'api/v1/profile/%s/' % self['id']
+        return 'api/v1/element/%s/' % self['id']

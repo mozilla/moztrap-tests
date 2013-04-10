@@ -77,7 +77,6 @@ class TestManageSuitesPage(BaseTest):
 
     @pytest.mark.native
     @pytest.mark.moztrap(2742)
-    @pytest.mark.nondestructive
     def test_editing_of_existing_suite_that_includes_cases(self, mozwebqa_logged_in, product):
         # create suite and cases (both included and not included into suite)
         suite = self.create_suite(mozwebqa_logged_in, product=product)
