@@ -40,26 +40,22 @@ class TestHomepage(BaseTest):
         Assert.false(home_pg.header.is_user_logged_in)
 
     @pytest.mark.moztrap(3387)
-    def test_that_user_can_select_product(self, mozwebqa_logged_in):
+    def test_that_user_can_select_product(self, mozwebqa_logged_in, product):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
-
-        product = self.create_product(mozwebqa_logged_in)
 
         home_pg.go_to_home_page()
 
-        Assert.false(home_pg.is_element_visible(*product['version']['homepage_locator']))
+        Assert.false(home_pg.is_product_version_visible(product))
 
         home_pg.select_item(product['name'])
 
-        Assert.true(home_pg.is_element_visible(*product['version']['homepage_locator']))
-
-        self.delete_product(mozwebqa_logged_in, product=product)
+        Assert.true(home_pg.is_product_version_visible(product))
 
     @pytest.mark.moztrap(3388)
-    def test_that_user_can_select_version(self, mozwebqa_logged_in):
+    def test_that_user_can_select_version(self, mozwebqa_logged_in, product):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
-        run = self.create_run(mozwebqa_logged_in, activate=True)
+        run = self.create_run(mozwebqa_logged_in, product=product, activate=True)
 
         home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])
@@ -70,13 +66,11 @@ class TestHomepage(BaseTest):
 
         Assert.true(home_pg.is_element_visible(*run['homepage_locator']))
 
-        self.delete_product(mozwebqa_logged_in, product=run['version']['product'])
-
     @pytest.mark.moztrap(3414)
-    def test_that_user_can_select_run(self, mozwebqa_logged_in):
+    def test_that_user_can_select_run(self, mozwebqa_logged_in, product):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
-        run = self.create_run(mozwebqa_logged_in, activate=True)
+        run = self.create_run(mozwebqa_logged_in, product=product, activate=True)
 
         home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])
@@ -87,5 +81,3 @@ class TestHomepage(BaseTest):
         home_pg.select_item(run['name'])
 
         Assert.true(home_pg.is_element_visible(*run['run_tests_locator']))
-
-        self.delete_product(mozwebqa_logged_in, product=run['version']['product'])

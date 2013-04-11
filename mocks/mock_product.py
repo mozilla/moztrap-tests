@@ -4,16 +4,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+from datetime import datetime
+
 
 class MockProduct(dict):
 
     def __init__(self, **kwargs):
-        # set your default values
 
-        self['name'] = 'Test Product'
-        self['version'] = 'Test Version'
-        self['desc'] = 'This is a test product'
-        self['profile'] = None
+        dt_string = datetime.utcnow().isoformat()
+        self['id'] = None
+        self['name'] = u'Test Product %s' % dt_string
+        self['description'] = u'This is a test product created on %s' % dt_string
+        self['version'] = {'name': u'Test Version %s' % dt_string}
 
         # update with any keyword arguments passed
         self.update(**kwargs)

@@ -61,8 +61,7 @@ class TestRunTestsPage(BaseTest):
         self.delete_profile(mozwebqa_logged_in, profile=case['profile'])
 
     @pytest.mark.moztrap(2744)
-    def test_that_test_run_saves_right_order_of_test_cases(self, mozwebqa_logged_in):
-        #get profile, product and version
+    def test_that_test_run_saves_right_order_of_test_cases(self, mozwebqa_logged_in, product):
         profile = self.create_profile(mozwebqa_logged_in)
         product = self.create_product(mozwebqa_logged_in, profile['name'])
         version = product['version']
@@ -79,7 +78,7 @@ class TestRunTestsPage(BaseTest):
         #create first test run (suite a, suite b)
         first_suite_order = (suite_a['name'], suite_b['name'])
         first_run = self.create_run(
-            mozwebqa_logged_in, activate=True, product=product,
+            mozwebqa_logged_in, product=product, activate=True,
             version=version, suite_name_list=first_suite_order)
         #execute first test run
         home_page = MozTrapHomePage(mozwebqa_logged_in)
@@ -121,9 +120,8 @@ class TestRunTestsPage(BaseTest):
         Assert.equal(actual_order, expected_order)
 
     @pytest.mark.moztrap(3302)
-    def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, mozwebqa_logged_in):
-        #create product and version
-        product = self.create_product(mozwebqa_logged_in)
+    def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, mozwebqa_logged_in, product):
+        #create version
         version = product['version']
         #create two test suites
         suite_a = self.create_suite(mozwebqa_logged_in, product=product, name='suite A')

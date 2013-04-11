@@ -19,6 +19,7 @@ class MozTrapHomePage(MozTrapBasePage):
     _language_locator = (By.CSS_SELECTOR, '#runtests-environment-form .language-field select')
     _os_locator = (By.CSS_SELECTOR, '#runtests-environment-form .operating-system-field select')
     _submit_locator = (By.CSS_SELECTOR, '#runtests-environment-form .form-actions button[type="submit"]')
+    _version_homepage_locator = (By.CSS_SELECTOR, '.runsdrill .runsfinder .productversions .colcontent .title[title="%(version_name)s"][data-product="%(product_name)s"]')
 
     def go_to_home_page(self):
         self.selenium.get(self.base_url + '/')
@@ -45,3 +46,11 @@ class MozTrapHomePage(MozTrapBasePage):
         env_select = Select(self.find_element(*_env_select_locator))
         env_select.select_by_visible_text(env_element)
         self.find_element(*self._submit_locator).click()
+
+    def is_product_version_visible(self, product):
+        _product_version_locator = (
+            self._version_homepage_locator[0],
+            self._version_homepage_locator[1] %
+            {'product_name': product['name'], 'version_name': product['version']['name']}
+        )
+        return self.is_element_visible(*_product_version_locator)

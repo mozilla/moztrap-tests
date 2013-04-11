@@ -40,39 +40,28 @@ class BaseTest(object):
         manage_products_pg.filter_form.filter_by(lookup='name', value=product['name'])
         manage_products_pg.delete_product(name=product['name'])
 
-    def create_version(self, mozwebqa, product=None):
+    def create_version(self, mozwebqa, product):
         create_version_pg = MozTrapCreateVersionPage(mozwebqa)
 
-        if product is None:
-            product = self.create_product(mozwebqa)
-            version = product['version']
-            manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
-            manage_versions_pg.go_to_manage_versions_page()
-        else:
-            create_version_pg.go_to_create_version_page()
-            version = create_version_pg.create_version(product_name=product['name'])
+        create_version_pg.go_to_create_version_page()
+        version = create_version_pg.create_version(product_name=product['name'])
 
         version['product'] = product
 
         return version
 
-    def delete_version(self, mozwebqa, version, delete_product=False):
+    def delete_version(self, mozwebqa, version):
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
 
         manage_versions_pg.go_to_manage_versions_page()
         manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
         manage_versions_pg.delete_version(name=version['name'], product_name=version['product']['name'])
 
-        if delete_product:
-            self.delete_product(mozwebqa, product=version['product'])
-
-    def create_run(self, mozwebqa, activate=False, product=None, version=None, suite_name_list=None):
+    def create_run(self, mozwebqa, product, activate=False, version=None, suite_name_list=None):
         create_run_pg = MozTrapCreateRunPage(mozwebqa)
 
         if version is None:
             version = self.create_version(mozwebqa, product=product)
-        if product is None:
-            product = version['product']
 
         create_run_pg.go_to_create_run_page()
         product_version = u'%(product_name)s %(version_name)s' % {'product_name': product['name'], 'version_name': version['name']}
@@ -86,7 +75,7 @@ class BaseTest(object):
 
         return run
 
-    def delete_run(self, mozwebqa, run, delete_version=False, delete_product=False):
+    def delete_run(self, mozwebqa, run, delete_version=False):
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
 
         manage_runs_pg.go_to_manage_runs_page()
@@ -94,13 +83,10 @@ class BaseTest(object):
         manage_runs_pg.delete_run(name=run['name'])
 
         if delete_version:
-            self.delete_version(mozwebqa, version=run['version'], delete_product=delete_product)
+            self.delete_version(mozwebqa, version=run['version'])
 
-    def create_suite(self, mozwebqa, status='active', product=None, case_name_list=None, **kwargs):
+    def create_suite(self, mozwebqa, product, status='active', case_name_list=None, **kwargs):
         create_suite_pg = MozTrapCreateSuitePage(mozwebqa)
-
-        if product is None:
-            product = self.create_product(mozwebqa)
 
         create_suite_pg.go_to_create_suite_page()
         suite = create_suite_pg.create_suite(product=product['name'], status=status, case_list=case_name_list, **kwargs)
@@ -108,23 +94,17 @@ class BaseTest(object):
 
         return suite
 
-    def delete_suite(self, mozwebqa, suite, delete_product=False):
+    def delete_suite(self, mozwebqa, suite):
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
 
         manage_suites_pg.go_to_manage_suites_page()
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         manage_suites_pg.delete_suite(name=suite['name'])
 
-        if delete_product:
-            self.delete_product(mozwebqa, product=suite['product'])
-
-    def create_case(self, mozwebqa, status='active', product=None, version=None, suite_name=None):
+    def create_case(self, mozwebqa, product, status='active', version=None, suite_name=None):
         create_case_pg = MozTrapCreateCasePage(mozwebqa)
 
-        if product is None:
-            product = self.create_product(mozwebqa)
-            version = product['version']
-        elif version is None:
+        if version is None:
             version = product['version']
 
         create_case_pg.go_to_create_case_page()
@@ -133,15 +113,12 @@ class BaseTest(object):
 
         return case
 
-    def delete_case(self, mozwebqa, case, delete_product=False):
+    def delete_case(self, mozwebqa, case):
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
 
         manage_cases_pg.go_to_manage_cases_page()
         manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
         manage_cases_pg.delete_case(name=case['name'])
-
-        if delete_product:
-            self.delete_product(mozwebqa, product=case['product'])
 
     def create_profile(self, mozwebqa):
         create_profile_pg = MozTrapCreateProfilePage(mozwebqa)
@@ -171,20 +148,17 @@ class BaseTest(object):
         suite = self.create_suite(mozwebqa, product=product)
         case = self.create_case(mozwebqa, product=product, version=product['version'], suite_name=suite['name'])
         case['profile'] = profile
-        run = self.create_run(mozwebqa, activate=True, product=product, version=product['version'], suite_name_list=[suite['name']])
+        run = self.create_run(mozwebqa, product=product, activate=True, version=product['version'], suite_name_list=[suite['name']])
 
         home_pg.go_to_home_page()
         home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'], env_category=profile['category'], env_element=profile['element'])
 
         return case
 
-    def create_bulk_cases(self, mozwebqa, cases_amount=2, status='active', product=None, version=None, suite_name=None, **kwargs):
+    def create_bulk_cases(self, mozwebqa, product, cases_amount=2, status='active', version=None, suite_name=None, **kwargs):
         create_bulk_cases_pg = MozTrapCreateBulkCasesPage(mozwebqa)
 
-        if product is None:
-            product = self.create_product(mozwebqa)
-            version = product['version']
-        elif version is None:
+        if version is None:
             version = product['version']
 
         create_bulk_cases_pg.go_to_create_bulk_cases_page()

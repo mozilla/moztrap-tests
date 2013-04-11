@@ -17,8 +17,7 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5935)
     @pytest.mark.nondestructive
-    def test_that_pinning_filter_on_product_version_set_defaults_in_new_run(self, mozwebqa_logged_in):
-        product = self.create_product(mozwebqa_logged_in)
+    def test_that_pinning_filter_on_product_version_set_defaults_in_new_run(self, mozwebqa_logged_in, product):
         product_version_name = u'%s %s' % (product['name'], product['version']['name'])
 
         from pages.manage_runs_page import MozTrapManageRunsPage
@@ -49,11 +48,10 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5930)
     @pytest.mark.nondestructive
-    def test_that_pinning_name_field_filter_only_works_for_current_page(self, mozwebqa_logged_in):
+    def test_that_pinning_name_field_filter_only_works_for_current_page(self, mozwebqa_logged_in, product):
         good_case_name = u'MOZILLA'
         good_suite_name = u'MozTrap'
 
-        product = self.create_product(mozwebqa_logged_in)
         self.create_bulk_cases(mozwebqa_logged_in, name=good_case_name, product=product, cases_amount=3)
         self.create_bulk_cases(mozwebqa_logged_in, name=u'ALLIZOM', product=product, cases_amount=2)
         self.create_suite(mozwebqa_logged_in, name=good_suite_name, product=product)
@@ -118,9 +116,7 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5933)
     @pytest.mark.nondestructive
-    def test_that_pinning_filters_on_product_sets_defaults_in_new_suite(self, mozwebqa_logged_in):
-        product = self.create_product(mozwebqa_logged_in)
-
+    def test_that_pinning_filters_on_product_sets_defaults_in_new_suite(self, mozwebqa_logged_in, product):
         from pages.manage_suites_page import MozTrapManageSuitesPage
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
         manage_suites_pg.go_to_manage_suites_page()
@@ -149,8 +145,7 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5932)
     @pytest.mark.nondestructive
-    def test_that_pinning_filters_on_product_and_version_and_suite_set_defaults_in_new_case(self, mozwebqa_logged_in):
-        product = self.create_product(mozwebqa_logged_in)
+    def test_that_pinning_filters_on_product_and_version_and_suite_set_defaults_in_new_case(self, mozwebqa_logged_in, product):
         version = product['version']
         product_version_name = u'%s %s' % (product['name'], version['name'])
         suite = self.create_suite(mozwebqa_logged_in, product=product)
@@ -184,9 +179,7 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5936)
     @pytest.mark.nondestructive
-    def test_that_pinning_filter_on_product_sets_defaults_in_new_product_version(self, mozwebqa_logged_in):
-        product = self.create_product(mozwebqa_logged_in)
-
+    def test_that_pinning_filter_on_product_sets_defaults_in_new_product_version(self, mozwebqa_logged_in, product):
         from pages.manage_versions_page import MozTrapManageVersionsPage
         manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
         manage_versions_pg.go_to_manage_versions_page()

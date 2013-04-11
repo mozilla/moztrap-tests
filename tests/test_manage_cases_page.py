@@ -14,10 +14,10 @@ from pages.manage_cases_page import MozTrapManageCasesPage
 class TestManageCasesPage(BaseTest):
 
     @pytest.mark.moztrap([142, 137])
-    def test_that_user_can_create_and_delete_case(self, mozwebqa_logged_in):
+    def test_that_user_can_create_and_delete_case(self, mozwebqa_logged_in, product):
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
 
-        case = self.create_case(mozwebqa_logged_in)
+        case = self.create_case(mozwebqa_logged_in, product)
 
         manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
 
@@ -27,13 +27,10 @@ class TestManageCasesPage(BaseTest):
 
         Assert.false(manage_cases_pg.is_element_present(*case['locator']))
 
-        self.delete_product(mozwebqa_logged_in, product=case['product'])
-
-    def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, mozwebqa_logged_in):
+    def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, mozwebqa_logged_in, product):
         """test for https://www.pivotaltracker.com/projects/280483#!/stories/40857085"""
 
         #prerequisites
-        product = self.create_product(mozwebqa_logged_in)
         first_version = product['version']
         test_case = self.create_case(mozwebqa_logged_in, product=product, version=first_version)
         second_version = self.create_version(mozwebqa_logged_in, product=product)
@@ -58,11 +55,10 @@ class TestManageCasesPage(BaseTest):
         Assert.equal(test_cases[0].name, test_case['name'], u'that\'s wrong test case')
         Assert.equal(test_cases[0].product_version, product_versions[0], u'that\'s wrong product version')
 
-    def test_that_manage_cases_list_shows_all_case_versions_individually(self, mozwebqa_logged_in):
+    def test_that_manage_cases_list_shows_all_case_versions_individually(self, mozwebqa_logged_in, product):
         """https://www.pivotaltracker.com/projects/280483#!/stories/40857159"""
 
         #prerequisites
-        product = self.create_product(mozwebqa_logged_in)
         first_version = product['version']
         test_case = self.create_case(mozwebqa_logged_in, product=product, version=first_version)
         second_version = self.create_version(mozwebqa_logged_in, product=product)
