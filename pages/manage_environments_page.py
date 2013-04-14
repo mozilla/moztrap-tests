@@ -23,11 +23,8 @@ class MozTrapManageEnvironmentsPage(MozTrapBasePage):
     _environments_form_locator = (By.ID, 'productversion-environments-form')
     _done_editing_button_locator = (By.CSS_SELECTOR, 'div.form-actions a.done-link')
 
-    @property
-    def filter_form(self):
-        return Filter(self.testsetup)
-
     def add_element_to_environment(self, element):
+        self.wait_for_element_to_be_visible(*self._add_an_environment_link_locator)
         self.find_element(*self._add_an_environment_link_locator).click()
         self.wait_for_ajax()
         self.wait_for_element_to_be_visible(*self._elements_filter_input_locator)

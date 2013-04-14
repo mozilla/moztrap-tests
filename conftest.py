@@ -33,9 +33,7 @@ def product(request):
 
     # This acts like a tearDown, running after each test function
     def fin():
-        # If a product was created via the API it will be stored in mozwebqa
         if hasattr(request, 'product'):
-            api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
             api.delete_product(request.product)
     request.addfinalizer(fin)
     return request.product
@@ -51,31 +49,7 @@ def element(request):
     api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
     api.create_element(request.element)
 
-    # This acts like a tearDown, running after each test function
-    def fin():
-        # If a product was created via the API it will be stored in mozwebqa
-        if hasattr(request, 'element'):
-            api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
-            # TODO: Neither of these deletes work - generate a 500 error - maybe because the test case is still around?
-            # api.delete_element(request.element)
-            # api.delete_category(request.element['category'])
-    request.addfinalizer(fin)
+    # The element and category cannot be deleted via the API at this point, likely because they
+    # are still connected to something. This will be addressed in a future pull.
+
     return request.element
-
-
-@pytest.fixture(scope='function')
-def product(request):
-    """Return a product created via the Moztrap API, and automatically delete the product after the test."""
-    mozwebqa = request.getfuncargvalue('mozwebqa')
-    credentials = mozwebqa.credentials['default']
-    request.product = MockProduct()
-    api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
-    api.create_product(request.product)
-
-    # This acts like a tearDown, running after each test function
-    def fin():
-        # If a product was created via the API it will be stored in mozwebqa
-        if hasattr(request, 'product'):
-            api.delete_product(request.product)
-    request.addfinalizer(fin)
-    return request.product
