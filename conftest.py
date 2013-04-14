@@ -61,3 +61,21 @@ def element(request):
             # api.delete_category(request.element['category'])
     request.addfinalizer(fin)
     return request.element
+
+
+@pytest.fixture(scope='function')
+def product(request):
+    """Return a product created via the Moztrap API, and automatically delete the product after the test."""
+    mozwebqa = request.getfuncargvalue('mozwebqa')
+    credentials = mozwebqa.credentials['default']
+    request.product = MockProduct()
+    api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
+    api.create_product(request.product)
+
+    # This acts like a tearDown, running after each test function
+    def fin():
+        # If a product was created via the API it will be stored in mozwebqa
+        if hasattr(request, 'product'):
+            api.delete_product(request.product)
+    request.addfinalizer(fin)
+    return request.product

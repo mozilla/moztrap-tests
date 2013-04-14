@@ -55,7 +55,7 @@ class TestHomepage(BaseTest):
     def test_that_user_can_select_version(self, mozwebqa_logged_in, product):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
-        run = self.create_run(mozwebqa_logged_in, activate=True, product=product)
+        run = self.create_run(mozwebqa_logged_in, product=product, activate=True)
 
         home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])
@@ -70,7 +70,7 @@ class TestHomepage(BaseTest):
     def test_that_user_can_select_run(self, mozwebqa_logged_in, product):
         home_pg = MozTrapHomePage(mozwebqa_logged_in)
 
-        run = self.create_run(mozwebqa_logged_in, activate=True, product=product)
+        run = self.create_run(mozwebqa_logged_in, product=product, activate=True)
 
         home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])

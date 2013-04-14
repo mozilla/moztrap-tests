@@ -15,9 +15,7 @@ class MockProduct(dict):
         self['id'] = None
         self['name'] = u'Test Product %s' % dt_string
         self['description'] = u'This is a test product created on %s' % dt_string
-        self['version'] = {}
-        self['version']['name'] = u'Test Version %s' % dt_string
-        self['profile'] = None
+        self['version'] = {'name': u'Test Version %s' % dt_string}
 
         # update with any keyword arguments passed
         self.update(**kwargs)

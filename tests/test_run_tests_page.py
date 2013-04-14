@@ -68,7 +68,7 @@ class TestRunTestsPage(BaseTest):
         #create first test run (suite a, suite b)
         first_suite_order = (suite_a['name'], suite_b['name'])
         first_run = self.create_run(
-            mozwebqa_logged_in, activate=True, product=product,
+            mozwebqa_logged_in, product=product, activate=True,
             version=version, suite_name_list=first_suite_order)
         #execute first test run
         home_page = MozTrapHomePage(mozwebqa_logged_in)
