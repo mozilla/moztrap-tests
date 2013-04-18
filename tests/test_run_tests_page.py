@@ -60,11 +60,11 @@ class TestRunTestsPage(BaseTest):
         #create first test suite
         suite_a_cases = (cases[3]['name'], cases[1]['name'])
         suite_a = self.create_suite(
-            mozwebqa_logged_in, product=product, name='suite A', case_name_list=suite_a_cases)
+            mozwebqa_logged_in, product=product, use_API=True, name='suite A', case_name_list=suite_a_cases)
         #create second test suite
         suite_b_cases = (cases[2]['name'], cases[0]['name'], cases[4]['name'])
         suite_b = self.create_suite(
-            mozwebqa_logged_in, product=product, name='suite B', case_name_list=suite_b_cases)
+            mozwebqa_logged_in, product=product, use_API=True, name='suite B', case_name_list=suite_b_cases)
         #create first test run (suite a, suite b)
         first_suite_order = (suite_a['name'], suite_b['name'])
         first_run = self.create_run(
@@ -114,8 +114,9 @@ class TestRunTestsPage(BaseTest):
         #create version
         version = product['version']
         #create two test suites
-        suite_a = self.create_suite(mozwebqa_logged_in, product=product, name='suite A')
-        suite_b = self.create_suite(mozwebqa_logged_in, product=product, name='suite B')
+        # TODO: Replace this create suite with API call
+        suite_a = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite A')
+        suite_b = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite B')
         #create test run
         suite_order = [suite_b['name'], suite_a['name']]
         test_run = self.create_run(

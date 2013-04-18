@@ -54,8 +54,8 @@ class TestPinningFilters(BaseTest):
 
         self.create_bulk_cases(mozwebqa_logged_in, name=good_case_name, product=product, cases_amount=3)
         self.create_bulk_cases(mozwebqa_logged_in, name=u'ALLIZOM', product=product, cases_amount=2)
-        self.create_suite(mozwebqa_logged_in, name=good_suite_name, product=product)
-        self.create_suite(mozwebqa_logged_in, name=u'PartZom', product=product)
+        self.create_suite(mozwebqa_logged_in, name=good_suite_name, product=product, use_API=True)
+        self.create_suite(mozwebqa_logged_in, name=u'PartZom', product=product, use_API=True)
 
         from pages.manage_cases_page import MozTrapManageCasesPage
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
@@ -148,7 +148,7 @@ class TestPinningFilters(BaseTest):
     def test_that_pinning_filters_on_product_and_version_and_suite_set_defaults_in_new_case(self, mozwebqa_logged_in, product):
         version = product['version']
         product_version_name = u'%s %s' % (product['name'], version['name'])
-        suite = self.create_suite(mozwebqa_logged_in, product=product)
+        suite = self.create_suite(mozwebqa_logged_in, product=product, use_API=True)
 
         from pages.manage_cases_page import MozTrapManageCasesPage
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)

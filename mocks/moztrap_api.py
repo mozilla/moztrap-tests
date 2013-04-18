@@ -106,3 +106,14 @@ class MoztrapAPI:
         uri = "api/v1/element"
         self.params['permanent'] = True
         Assert.true(self._do_delete(uri, element['id']), 'Deletion of product %s failed' % element['name'])
+
+    def create_suite(self, suite, product):
+
+        uri = "api/v1/suite/"
+        post_data = {
+            u'name': unicode(suite['name']),
+            u'product': unicode('/%s' % product.uri)
+        }
+        suite['id'] = self._do_post(uri, post_data)
+
+        Assert.greater(suite['id'], 0, 'No suite was created.')

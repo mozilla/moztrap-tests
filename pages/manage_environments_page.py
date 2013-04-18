@@ -34,8 +34,7 @@ class MozTrapManageEnvironmentsPage(MozTrapBasePage):
             self._elements_suggestion_locator[1] % element['name']
         )
         self.wait_for_element_to_be_visible(*_elements_suggestion_locator)
-        suggestion = self.find_element(*_elements_suggestion_locator)
-        suggestion.click()
+        self.find_element(*_elements_suggestion_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(lambda s: element['name'] in s.find_element(*self._added_elements_locator).text)
         self.find_element(*self._save_environment_button_locator).click()
         self.wait_for_ajax()
