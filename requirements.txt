@@ -11,4 +11,5 @@ pytest==2.3.4
 pytest-mozwebqa==1.0
 pytest-xdist==1.8
 requests==0.13.2
-selenium
+# Temporarily pinning to 2.31 until https://code.google.com/p/selenium/issues/detail?id=5532 is fixed
+selenium==2.31
