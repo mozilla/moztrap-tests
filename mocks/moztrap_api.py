@@ -69,3 +69,40 @@ class MoztrapAPI:
         uri = "api/v1/product"
         self.params['permanent'] = True
         Assert.true(self._do_delete(uri, product['id']), 'Deletion of product %s failed' % product['name'])
+
+    def create_category(self, category):
+
+        uri = "api/v1/category/"
+        post_data = {
+            u'name': unicode(category['name'])
+        }
+        category['id'] = self._do_post(uri, post_data)
+
+        Assert.greater(category['id'], 0, 'No category was created.')
+
+    def delete_category(self, category):
+
+        uri = "api/v1/category"
+        self.params['permanent'] = True
+        Assert.true(self._do_delete(uri, category['id']), 'Deletion of product %s failed' % category['name'])
+
+    def create_element(self, element):
+
+        category = element['category']
+        if category['id'] is None:
+            self.create_category(category)
+
+        uri = "api/v1/element/"
+        post_data = {
+            u'name': unicode(element['name']),
+            u'category': unicode('/%s' % element['category'].uri)
+        }
+        element['id'] = self._do_post(uri, post_data)
+
+        Assert.greater(element['id'], 0, 'No element was created.')
+
+    def delete_element(self, element):
+
+        uri = "api/v1/element"
+        self.params['permanent'] = True
+        Assert.true(self._do_delete(uri, element['id']), 'Deletion of product %s failed' % element['name'])

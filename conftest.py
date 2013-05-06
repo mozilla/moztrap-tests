@@ -7,6 +7,7 @@
 import pytest
 
 from mocks.mock_product import MockProduct
+from mocks.mock_element import MockElement
 from mocks.moztrap_api import MoztrapAPI
 
 
@@ -32,8 +33,23 @@ def product(request):
 
     # This acts like a tearDown, running after each test function
     def fin():
-        # If a product was created via the API it will be stored in mozwebqa
         if hasattr(request, 'product'):
             api.delete_product(request.product)
     request.addfinalizer(fin)
     return request.product
+
+
+@pytest.fixture(scope='function')
+def element(request):
+    """Return an element with an embedded category created via the Moztrap API,
+     and automatically delete them after the test."""
+    mozwebqa = request.getfuncargvalue('mozwebqa')
+    credentials = mozwebqa.credentials['default']
+    request.element = MockElement()
+    api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
+    api.create_element(request.element)
+
+    # The element and category cannot be deleted via the API at this point, likely because they
+    # are still connected to something. This will be addressed in a future pull.
+
+    return request.element

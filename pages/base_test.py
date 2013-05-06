@@ -138,20 +138,16 @@ class BaseTest(object):
         create_profile_pg.go_to_create_profile_page()
         create_profile_pg.delete_environment_category(category_name=profile['category'])
 
-    def create_and_run_test(self, mozwebqa, profile=None):
+    def create_and_run_test(self, mozwebqa, product, element):
         home_pg = MozTrapHomePage(mozwebqa)
 
-        if profile is None:
-            profile = self.create_profile(mozwebqa)
-
-        product = self.create_product(mozwebqa, profile=profile['name'])
+        self.connect_product_to_element(mozwebqa, product, element)
         suite = self.create_suite(mozwebqa, product=product)
         case = self.create_case(mozwebqa, product=product, version=product['version'], suite_name=suite['name'])
-        case['profile'] = profile
-        run = self.create_run(mozwebqa, product=product, activate=True, version=product['version'], suite_name_list=[suite['name']])
+        run = self.create_run(mozwebqa, activate=True, product=product, version=product['version'], suite_name_list=[suite['name']])
 
         home_pg.go_to_home_page()
-        home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'], env_category=profile['category'], env_element=profile['element'])
+        home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'], env_category_name=element['category']['name'], env_element_name=element['name'])
 
         return case
 
@@ -172,3 +168,11 @@ class BaseTest(object):
             case['product'] = product
 
         return cases
+
+    def connect_product_to_element(self, mozwebqa, product, element):
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
+
+        manage_versions_pg.go_to_manage_versions_page()
+        manage_versions_pg.filter_form.filter_by(lookup='version', value=product['version']['name'])
+        manage_environments_pg = manage_versions_pg.select_environments()
+        manage_environments_pg.add_element_to_environment(element)
