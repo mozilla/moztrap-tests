@@ -49,7 +49,7 @@ class TestPinningFilters(BaseTest):
     @pytest.mark.moztrap(5930)
     @pytest.mark.nondestructive
     def test_that_pinning_name_field_filter_only_works_for_current_page(self, mozwebqa_logged_in, product):
-        good_case_name = u'MOZILLA'
+        good_case_name = u'mozilla'
         good_suite_name = u'MozTrap'
 
         self.create_bulk_cases(mozwebqa_logged_in, name=good_case_name, product=product, cases_amount=3)
@@ -63,10 +63,10 @@ class TestPinningFilters(BaseTest):
 
         #filter cases by name and assert that only cases with mozilla in their name are found
         cases_filter = manage_cases_pg.filter_form.filter_by(lookup='name', value=good_case_name)
-        Assert.equal(cases_filter.content_text, good_case_name.lower())
+        Assert.equal(cases_filter.content_text, good_case_name)
         Assert.not_equal(cases_filter.get_filter_color(), PINNED_FILTER_COLOR)
         for case in manage_cases_pg.test_cases:
-            Assert.contains(good_case_name, case.name)
+            Assert.contains(good_case_name, case.name.lower())
 
         #pin filter and assert that it turns orange
         cases_filter.pin_filter()
@@ -94,9 +94,9 @@ class TestPinningFilters(BaseTest):
         manage_cases_pg.go_to_manage_cases_page()
         applied_filter = manage_cases_pg.filter_form.filter_items
         Assert.equal(len(applied_filter), 1)
-        Assert.equal(applied_filter[0].content_text, good_case_name.lower())
+        Assert.equal(applied_filter[0].content_text, good_case_name)
         for case in manage_cases_pg.test_cases:
-            Assert.contains(good_case_name, case.name)
+            Assert.contains(good_case_name, case.name.lower())
 
         #and check everything one more time on manage suites page
         manage_suites_pg.go_to_manage_suites_page()
