@@ -28,7 +28,7 @@ def product(request):
     mozwebqa = request.getfuncargvalue('mozwebqa')
     credentials = mozwebqa.credentials['default']
     request.product = MockProduct()
-    api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
+    api = MoztrapAPI(credentials['api_user'], credentials['api_key'], mozwebqa.base_url)
     api.create_product(request.product)
 
     # This acts like a tearDown, running after each test function
@@ -46,7 +46,7 @@ def element(request):
     mozwebqa = request.getfuncargvalue('mozwebqa')
     credentials = mozwebqa.credentials['default']
     request.element = MockElement()
-    api = MoztrapAPI(credentials['username'], credentials['api_key'], mozwebqa.base_url)
+    api = MoztrapAPI(credentials['api_user'], credentials['api_key'], mozwebqa.base_url)
     api.create_element(request.element)
 
     # The element and category cannot be deleted via the API at this point, likely because they
