@@ -21,9 +21,11 @@ class MozTrapEditSuitePage(MozTrapBasePage):
     _included_case_item_locator = (By.CSS_SELECTOR, '.multiselected .selectitem')
     _included_cases_box_locator = (By.CSS_SELECTOR, '.multiselected .select')
     _include_selected_cases_button_locator = (By.CSS_SELECTOR, '#suite-edit-form .action-include')
+    _remove_selected_cases_button_locator = (By.CSS_SELECTOR, '#suite-edit-form .action-exclude')
     _loading_available_cases_locator = (By.CSS_SELECTOR, '.multiunselected .select .overlay')
     _loading_included_cases_locator = (By.CSS_SELECTOR, '.multiselected .select .overlay')
     _save_suite_button_locator = (By.CSS_SELECTOR, '#suite-edit-form .form-actions > button')
+    _included_cases_select_all_checkbox_locator = (By.ID, 'bulk_select_selected')
 
     @property
     def is_product_field_readonly(self):
@@ -70,18 +72,11 @@ class MozTrapEditSuitePage(MozTrapBasePage):
         if save:
             self.save_suite()
 
-    def reorder_included_cases(self, case_name_list):
-        """ reorder cases via drag and drop """
+    def remove_all_included_cases(self):
         self.wait_for_element_not_present(*self._loading_included_cases_locator)
 
-        for i in xrange(1, len(case_name_list)):
-            case_names = [case.name for case in self.included_cases]
-            j = i - 1
-            while j >= 0 and case_name_list.index(case_names[i]) < case_name_list.index(case_names[j]):
-                ActionChains(self.selenium).drag_and_drop(
-                    self.included_cases[j]._selenium_root,
-                    self.included_cases[j + 1]._selenium_root).perform()
-                j -= 1
+        self.find_element(*self._included_cases_select_all_checkbox_locator).click()
+        self.find_element(*self._remove_selected_cases_button_locator).click()
 
     class TestCaseItem(PageRegion):
 
