@@ -52,10 +52,10 @@ class TestPinningFilters(BaseTest):
         good_case_name = u'mozilla'
         good_suite_name = u'MozTrap'
 
-        self.create_bulk_cases(mozwebqa_logged_in, name=good_case_name, product=product, cases_amount=3)
-        self.create_bulk_cases(mozwebqa_logged_in, name=u'ALLIZOM', product=product, cases_amount=2)
-        self.create_suite(mozwebqa_logged_in, name=good_suite_name, product=product, use_API=True)
-        self.create_suite(mozwebqa_logged_in, name=u'PartZom', product=product, use_API=True)
+        self.create_bulk_cases(mozwebqa_logged_in, product, use_API=True, name=good_case_name, cases_amount=3)
+        self.create_bulk_cases(mozwebqa_logged_in, product, use_API=True, name=u'ALLIZOM', cases_amount=2)
+        self.create_suite(mozwebqa_logged_in, product, use_API=True, name=good_suite_name)
+        self.create_suite(mozwebqa_logged_in, product, use_API=True, name=u'PartZom')
 
         from pages.manage_cases_page import MozTrapManageCasesPage
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)

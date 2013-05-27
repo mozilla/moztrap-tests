@@ -17,6 +17,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
 
     _create_suite_button_locator = (By.CSS_SELECTOR, '#managesuites .create.single')
     _test_suite_item_locator = (By.CSS_SELECTOR, '#manage-suites-form .listitem')
+    _suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem .title[title="%(suite_name)s"]')
 
     @property
     def filter_form(self):
@@ -50,6 +51,10 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     def test_suites(self):
         return [self.TestSuiteItem(self.testsetup, web_element)
                 for web_element in self.find_elements(*self._test_suite_item_locator)]
+
+    def is_suite_present(self, suite):
+        _suite_locator = (self._suite_locator[0], self._suite_locator[1] % {'suite_name': suite['name']})
+        return self.is_element_present(*_suite_locator)
 
     class TestSuiteItem(PageRegion):
 
