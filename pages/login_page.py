@@ -30,15 +30,10 @@ class MozTrapLoginPage(MozTrapBasePage):
         if type(user) is str:
             user = self.testsetup.credentials[user]
 
-        if self.is_browserid_visible:
-            from browserid import BrowserID
-            self.selenium.find_element(*self._browserid_locator).click()
-            browser_id = BrowserID(self.selenium, timeout=self.timeout)
-            browser_id.sign_in(user['email'], user['password'])
-        else:
-            self.selenium.find_element(*self._username_locator).send_keys(user['username'])
-            self.selenium.find_element(*self._password_locator).send_keys(user['password'])
-            self.selenium.find_element(*self._submit_locator).click()
+        from browserid import BrowserID
+        self.selenium.find_element(*self._browserid_locator).click()
+        browser_id = BrowserID(self.selenium, timeout=self.timeout)
+        browser_id.sign_in(user['email'], user['password'])
 
         WebDriverWait(self.selenium, self.timeout).until(lambda s: self.header.is_user_logged_in)
 

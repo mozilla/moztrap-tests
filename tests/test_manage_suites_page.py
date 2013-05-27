@@ -76,7 +76,6 @@ class TestManageSuitesPage(BaseTest):
             [item.name for item in edit_suite_pg.included_cases], case_list,
             u'items are listed in wrong order')
 
-    @pytest.mark.native
     @pytest.mark.moztrap(2742)
     def test_editing_of_existing_suite_that_includes_cases(self, mozwebqa_logged_in, product):
         # create suite and cases (both included and not included into suite)
@@ -108,10 +107,9 @@ class TestManageSuitesPage(BaseTest):
         all_cases = expected_available_cases + expected_included_cases
         random.shuffle(all_cases)
 
-        # include new cases to suite and reorder them in accordance with all_cases list
-        edit_suite_pg.include_cases_to_suite(actual_available_cases, save=False)
-        edit_suite_pg.reorder_included_cases(all_cases)
-        edit_suite_pg.save_suite()
+        # include cases to suite in the expected order
+        edit_suite_pg.remove_all_included_cases()
+        edit_suite_pg.include_cases_to_suite(all_cases)
 
         # re-edit the same suite
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
