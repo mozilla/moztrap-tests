@@ -56,15 +56,15 @@ class TestRunTestsPage(BaseTest):
         self.connect_product_to_element(mozwebqa_logged_in, product, element)
         version = product['version']
         #create several test case via bulk create
-        cases = self.create_bulk_cases(mozwebqa_logged_in, cases_amount=5, product=product, name='is')
+        cases = self.create_bulk_cases(mozwebqa_logged_in, product, use_API=True, cases_amount=5)
         #create first test suite
-        suite_a_cases = (cases[3]['name'], cases[1]['name'])
+        suite_a_cases = (cases[3], cases[1])
         suite_a = self.create_suite(
-            mozwebqa_logged_in, product=product, name='suite A', case_name_list=suite_a_cases)
+            mozwebqa_logged_in, product=product, use_API=True, name='suite A', case_list=suite_a_cases)
         #create second test suite
-        suite_b_cases = (cases[2]['name'], cases[0]['name'], cases[4]['name'])
+        suite_b_cases = (cases[2], cases[0], cases[4])
         suite_b = self.create_suite(
-            mozwebqa_logged_in, product=product, name='suite B', case_name_list=suite_b_cases)
+            mozwebqa_logged_in, product=product, use_API=True, name='suite B', case_list=suite_b_cases)
         #create first test run (suite a, suite b)
         first_suite_order = (suite_a['name'], suite_b['name'])
         first_run = self.create_run(
@@ -80,8 +80,8 @@ class TestRunTestsPage(BaseTest):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
         actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
 
-        expected_order = [(case, suite) for case in suite_a_cases for suite in (suite_a['name'],)] + \
-                         [(case, suite) for case in suite_b_cases for suite in (suite_b['name'],)]
+        expected_order = [(case['name'], suite) for case in suite_a_cases for suite in (suite_a['name'],)] + \
+                         [(case['name'], suite) for case in suite_b_cases for suite in (suite_b['name'],)]
         #assert that right order saved
         Assert.equal(actual_order, expected_order)
         #edit run to reorder suites
@@ -104,8 +104,8 @@ class TestRunTestsPage(BaseTest):
         #check actual order of items on run tests page
         actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
 
-        expected_order = [(case, suite) for case in suite_b_cases for suite in (suite_b['name'],)] + \
-                         [(case, suite) for case in suite_a_cases for suite in (suite_a['name'],)]
+        expected_order = [(case['name'], suite) for case in suite_b_cases for suite in (suite_b['name'],)] + \
+                         [(case['name'], suite) for case in suite_a_cases for suite in (suite_a['name'],)]
         #assert that right order saved
         Assert.equal(actual_order, expected_order)
 
@@ -114,8 +114,8 @@ class TestRunTestsPage(BaseTest):
         #create version
         version = product['version']
         #create two test suites
-        suite_a = self.create_suite(mozwebqa_logged_in, product=product, name='suite A')
-        suite_b = self.create_suite(mozwebqa_logged_in, product=product, name='suite B')
+        suite_a = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite A')
+        suite_b = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite B')
         #create test run
         suite_order = [suite_b['name'], suite_a['name']]
         test_run = self.create_run(

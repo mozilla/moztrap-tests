@@ -17,7 +17,7 @@ class TestManageCasesPage(BaseTest):
     def test_that_user_can_create_and_delete_case(self, mozwebqa_logged_in, product):
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
 
-        case = self.create_case(mozwebqa_logged_in, product)
+        case = self.create_case(mozwebqa_logged_in, product, use_API=False)
 
         manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
 
@@ -32,7 +32,7 @@ class TestManageCasesPage(BaseTest):
 
         #prerequisites
         first_version = product['version']
-        test_case = self.create_case(mozwebqa_logged_in, product=product, version=first_version)
+        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True, version=first_version)
         second_version = self.create_version(mozwebqa_logged_in, product=product)
         product_versions = [u'%s %s' % (product['name'], version['name']) for version in (first_version, second_version)]
 
@@ -60,7 +60,7 @@ class TestManageCasesPage(BaseTest):
 
         #prerequisites
         first_version = product['version']
-        test_case = self.create_case(mozwebqa_logged_in, product=product, version=first_version)
+        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True, version=first_version)
         second_version = self.create_version(mozwebqa_logged_in, product=product)
         product_versions = [u'%s %s' % (product['name'], version['name']) for version in (first_version, second_version)]
 

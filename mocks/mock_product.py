@@ -23,3 +23,7 @@ class MockProduct(dict):
     # allow getting items as if they were attributes
     def __getattr__(self, attr):
         return self[attr]
+
+    @property
+    def uri(self):
+        return 'api/v1/product/%s/' % self['id']

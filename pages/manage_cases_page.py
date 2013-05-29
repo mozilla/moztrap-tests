@@ -18,6 +18,7 @@ class MozTrapManageCasesPage(MozTrapBasePage):
     _test_case_item_locator = (By.CSS_SELECTOR, '.listitem.active')
     _create_case_button_locator = (By.CSS_SELECTOR, '#managecases .create.single')
     _create_bulk_cases_button_locator = (By.CSS_SELECTOR, '#managecases .create.bulk')
+    _case_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem .title[title="%(case_name)s"]')
 
     @property
     def filter_form(self):
@@ -50,6 +51,10 @@ class MozTrapManageCasesPage(MozTrapBasePage):
     def test_cases(self):
         return [self.TestCaseItem(self.testsetup, web_element)
                 for web_element in self.find_elements(*self._test_case_item_locator)]
+
+    def is_case_present(self, case):
+        _case_locator = (self._case_locator[0], self._case_locator[1] % {'case_name': case['name']})
+        return self.is_element_present(*_case_locator)
 
     class TestCaseItem(PageRegion):
 
