@@ -33,9 +33,7 @@ class TestManageSuitesPage(BaseTest):
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa_logged_in)
 
         cases = [self.create_case(mozwebqa=mozwebqa_logged_in, product=product, use_API=True) for i in range(3)]
-
-        suite = self.create_suite(mozwebqa=mozwebqa_logged_in, product=product, use_API=True,
-                                  case_list=[case for case in cases])
+        suite = self.create_suite(mozwebqa=mozwebqa_logged_in, product=product, use_API=True, case_list=[case for case in cases])
 
         manage_suites_pg.go_to_manage_suites_page()
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
