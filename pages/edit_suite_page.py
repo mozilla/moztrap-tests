@@ -74,9 +74,11 @@ class MozTrapEditSuitePage(MozTrapBasePage):
 
     def remove_all_included_cases(self):
         self.wait_for_element_not_present(*self._loading_included_cases_locator)
+        remove_button = self.find_element(*self._remove_selected_cases_button_locator)
 
-        self.find_element(*self._included_cases_select_all_checkbox_locator).click()
-        self.find_element(*self._remove_selected_cases_button_locator).click()
+        for case in self.included_cases:
+            case.select()
+            remove_button.click()
 
     class TestCaseItem(PageRegion):
 
