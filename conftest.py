@@ -35,6 +35,10 @@ def product(request):
     def fin():
         if hasattr(request, 'product'):
             api.delete_product(request.product)
+        # We have to add this here, rather than in a finalizer for the element fixture as the
+        # Product has to be deleted first
+        if hasattr(request, 'element'):
+            api.delete_element(request.element)
     request.addfinalizer(fin)
     return request.product
 
@@ -48,8 +52,5 @@ def element(request):
     request.element = MockElement()
     api = MoztrapAPI(credentials['api_user'], credentials['api_key'], mozwebqa.base_url)
     api.create_element(request.element)
-
-    # The element and category cannot be deleted via the API at this point, likely because they
-    # are still connected to something. This will be addressed in a future pull.
 
     return request.element

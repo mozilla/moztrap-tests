@@ -55,6 +55,21 @@ class MoztrapAPI:
                 id, response.status_code, response.text)
             return False
 
+    def _do_get(self, uri, get_params):
+        """Get to an API method and return an array of objects."""
+        response = requests.get("%s/%s" % (self.base_url, uri), params=get_params)
+        response.raise_for_status()
+        text = json.loads(response.text)
+        objects = text["objects"]
+        next = text["meta"]["next"]
+        while next:
+            response = requests.get("%s/%s" % (self.base_url, next))
+            response.raise_for_status()
+            text = json.loads(response.text)
+            objects.extend(text["objects"])
+            next = text["meta"]["next"]
+        return objects
+
     def create_product(self, product):
 
         uri = "api/v1/product/"
@@ -107,9 +122,28 @@ class MoztrapAPI:
 
     def delete_element(self, element):
 
+        # First we need to find any Environments that use the element and delete them
+        uri = "api/v1/environment"
+        self.params['elements'] = element['id']
+        environments = self._do_get(uri, self.params)
+        for environment in environments:
+            self.delete_environment(environment)
+
+        # Next delete the Element
         uri = "api/v1/element"
         self.params['permanent'] = True
-        Assert.true(self._do_delete(uri, element['id']), 'Deletion of product %s failed' % element['name'])
+        Assert.true(self._do_delete(uri, element['id']), 'Deletion of element %s failed' % element['name'])
+
+        #Finally delete the embedded Category
+        uri = "api/v1/category"
+        category = element['category']
+        Assert.true(self._do_delete(uri, category['id']), 'Deletion of category %s failed' % category['name'])
+
+    def delete_environment(self, environment):
+
+        uri = "api/v1/environment"
+        self.params['permanent'] = True
+        Assert.true(self._do_delete(uri, environment['id']), 'Deletion of environment %s failed' % environment['id'])
 
     def create_suite(self, suite, product, case_list=[]):
 
