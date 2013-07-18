@@ -164,7 +164,7 @@ class BaseTest(object):
         home_pg.go_to_home_page()
         home_pg.go_to_run_test(product_name=product['name'], version_name=product['version']['name'], run_name=run['name'], env_category_name=element['category']['name'], env_element_name=element['name'])
 
-        return case
+        return case, suite, run
 
     def create_bulk_cases(self, mozwebqa, product, use_API, cases_amount=2, status='active', version=None, suite_name=None, **kwargs):
         if use_API:

@@ -19,7 +19,7 @@ class TestRunTestsPage(BaseTest):
     def test_that_user_can_pass_test(self, mozwebqa_logged_in, product, element):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
-        case = self.create_and_run_test(mozwebqa_logged_in, product, element)
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
 
         Assert.false(run_tests_pg.is_test_passed(case_name=case['name']))
 
@@ -31,7 +31,7 @@ class TestRunTestsPage(BaseTest):
     def test_that_user_can_fail_test(self, mozwebqa_logged_in, product, element):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
-        case = self.create_and_run_test(mozwebqa_logged_in, product, element)
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
 
         Assert.false(run_tests_pg.is_test_failed(case_name=case['name']))
 
@@ -43,7 +43,7 @@ class TestRunTestsPage(BaseTest):
     def test_that_user_can_mark_test_invalid(self, mozwebqa_logged_in, product, element):
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
 
-        case = self.create_and_run_test(mozwebqa_logged_in, product, element)
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
 
         Assert.false(run_tests_pg.is_test_invalid(case_name=case['name']))
 

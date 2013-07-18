@@ -131,6 +131,9 @@ class Page(object):
     def go_back(self):
         self.selenium.back()
 
+    def refresh(self):
+        self.selenium.refresh()
+
 
 class PageRegion(Page):
 
