@@ -11,8 +11,8 @@ from pages.base_page import MozTrapBasePage
 
 class MozTrapCreateTagPage(MozTrapBasePage):
 
-    _name_input_locator = (By.CSS_SELECTOR, '#id_name')
-    _description_input_locator = (By.CSS_SELECTOR, '#id_description')
+    _name_input_locator = (By.ID, 'id_name')
+    _description_input_locator = (By.ID, 'id_description')
     _submit_button_locator = (By.CSS_SELECTOR, '.form-actions > button[type="submit"]')
     _multiselect_widget_locator = (By.CSS_SELECTOR, '.multiselect')
 
