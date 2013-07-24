@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from pages.base_page import MozTrapBasePage
+from pages.regions.multiselect_widget import MultiselectWidget
 
 
 class MozTrapCreateRunPage(MozTrapBasePage):
@@ -21,8 +22,6 @@ class MozTrapCreateRunPage(MozTrapBasePage):
     _description_locator = (By.ID, 'id_description')
     _start_date_locator = (By.ID, 'id_start')
     _end_date_locator = (By.ID, 'id_end')
-    _suite_select_locator = (By.CSS_SELECTOR, '#run-add-form .multiunselected .itemlist article.selectitem[data-title="%(suite_name)s"] input.bulk-value')
-    _include_selected_suites_locator = (By.CSS_SELECTOR, '#run-add-form .multiselect .include-exclude .action-include')
     _submit_locator = (By.CSS_SELECTOR, '#run-add-form .form-actions > button')
     _run_manage_locator = (By.CSS_SELECTOR, '#manageruns .itemlist .listitem .title[title="%(run_name)s"]')
     _run_homepage_locator = (By.CSS_SELECTOR, '.runsdrill .runsfinder .runs .colcontent .title[title="%(run_name)s"]')
@@ -30,7 +29,7 @@ class MozTrapCreateRunPage(MozTrapBasePage):
     _series_run_locator = (By.ID, 'id_is_series')
 
     def go_to_create_run_page(self):
-        self.selenium.get(self.base_url + '/manage/run/add/')
+        self.get_relative_path('/manage/run/add/')
         self.is_the_current_page
 
     def create_run(self, name='Test Run', product_version='Test Product Test Version', desc='This is a test run', start_date='2011-01-01', end_date='2012-12-31', suite_list=None, series_run=False):
@@ -64,10 +63,7 @@ class MozTrapCreateRunPage(MozTrapBasePage):
         self.selenium.find_element(*self._end_date_locator).send_keys(end_date)
 
         if suite_list:
-            for suite in reversed(suite_list):
-                suite_input_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s']//label" % suite)
-                suite_input_element.click()
-                self.selenium.find_element(*self._include_selected_suites_locator).click()
+            self.multiselect_widget.include_items(suite_list)
         self.selenium.find_element(*self._submit_locator).click()
 
         return run
@@ -76,3 +72,7 @@ class MozTrapCreateRunPage(MozTrapBasePage):
     def product_version_value(self):
         product_version_select = self.find_element(*self._product_version_select_locator)
         return product_version_select.find_element(By.CSS_SELECTOR, 'option:checked').text
+
+    @property
+    def multiselect_widget(self):
+        return MultiselectWidget(self.testsetup)

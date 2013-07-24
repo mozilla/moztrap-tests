@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from pages.base_page import MozTrapBasePage
+from pages.regions.multiselect_widget import MultiselectWidget
 
 
 class MozTrapCreateSuitePage(MozTrapBasePage):
@@ -21,8 +22,6 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
     _description_locator = (By.ID, 'id_description')
     _status_select_locator = (By.ID, 'id_status')
     _submit_locator = (By.CSS_SELECTOR, '#suite-add-form .form-actions button[type="submit"]')
-    _case_select_locator = (By.CSS_SELECTOR, '#suite-add-form .multiunselected .itemlist .selectitem[data-title="%(case_name)s"] input.bulk-value')
-    _include_selected_cases_locator = (By.CSS_SELECTOR, '#suite-add-form .multiselect .include-exclude .action-include')
     _suite_locator = (By.CSS_SELECTOR, '#managesuites .itemlist .listitem .title[title="%(suite_name)s"]')
 
     def go_to_create_suite_page(self):
@@ -46,10 +45,7 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
         status_select.select_by_visible_text(status)
 
         if case_list:
-            for case in reversed(case_list):
-                case_element = self.selenium.find_element(By.XPATH, "//article[@data-title='%s']/div/label" % case)
-                case_element.click()
-                self.selenium.find_element(*self._include_selected_cases_locator).click()
+            self.multiselect_widget.include_items(case_list)
         self.selenium.find_element(*self._submit_locator).click()
 
         return suite
@@ -58,3 +54,7 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
     def product_name_value(self):
         product_select = self.find_element(*self._product_select_locator)
         return product_select.find_element(By.CSS_SELECTOR, 'option:checked').text
+
+    @property
+    def multiselect_widget(self):
+        return MultiselectWidget(self.testsetup)

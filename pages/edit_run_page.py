@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from pages.base_page import MozTrapBasePage
+from pages.regions.multiselect_widget import MultiselectWidget
 
 
 class MozTrapEditRunPage(MozTrapBasePage):
@@ -21,11 +22,7 @@ class MozTrapEditRunPage(MozTrapBasePage):
     _start_date_locator = (By.ID, 'id_start')
     _end_date_locator = (By.ID, 'id_end')
     _series_run_locator = (By.ID, 'id_is_series')
-    _include_selected_suites_locator = (By.CSS_SELECTOR, '.multiselect .include-exclude .action-include')
-    _sort_included_suites_by_name_locator = (By.CSS_SELECTOR, '.multiselected .byname .sortlink')
-    _loading_included_suites_locator = (By.CSS_SELECTOR, '.multiselected .select[data-name="suites"] .overlay')
     _submit_locator = (By.CSS_SELECTOR, '#run-edit-form .form-actions > button')
-    _multiselect_widget_locator = (By.CSS_SELECTOR, '#run-edit-form .multiselect')
     _readonly_included_suite_locator = (By.CSS_SELECTOR, '.suites-field .value > li')
 
     def edit_run(self, run, name=None, product_version=None, desc=None,
@@ -60,10 +57,7 @@ class MozTrapEditRunPage(MozTrapBasePage):
             run['series'] = series_run
 
         if reorder_suites:
-            sorter = self.find_element(*self._sort_included_suites_by_name_locator)
-            self.wait_for_element_not_present(*self._loading_included_suites_locator)
-            sorter.click()
-            sorter.click()
+            self.multiselect_widget.reorder_included_items()
 
         self.save_run()
 
@@ -73,9 +67,13 @@ class MozTrapEditRunPage(MozTrapBasePage):
         self.find_element(*self._submit_locator).click()
 
     @property
-    def is_multiselect_widget_present(self):
-        return self.is_element_present(*self._multiselect_widget_locator)
-
-    @property
     def readonly_included_suites(self):
         return [item.text for item in self.find_elements(*self._readonly_included_suite_locator)]
+
+    @property
+    def multiselect_widget(self):
+        return MultiselectWidget(self.testsetup)
+
+    @property
+    def is_multiselect_widget_present(self):
+        return self.multiselect_widget.is_present

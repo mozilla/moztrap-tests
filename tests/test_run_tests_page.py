@@ -92,7 +92,7 @@ class TestRunTestsPage(BaseTest):
         manage_runs_pg.make_run_draft(first_run['name'])
         #go to edit run page and reorder suites by name (suite b, suite a)
         edit_run_pg = manage_runs_pg.go_to_edit_run_page(first_run['name'])
-        second_run = edit_run_pg.edit_run(first_run, reorder_suites=True)
+        edit_run_pg.edit_run(first_run, reorder_suites=True)
         #make run active again
         manage_runs_pg.filter_form.filter_by(lookup='name', value=first_run['name'])
         manage_runs_pg.activate_run(first_run['name'])
