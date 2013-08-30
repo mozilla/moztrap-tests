@@ -7,6 +7,7 @@
 from unittestzero import Assert
 
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import WebDriverException
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
 
 
@@ -31,6 +32,12 @@ class Page(object):
     @property
     def url_current_page(self):
         return(self.selenium.current_url)
+
+    def maximize_window(self):
+        try:
+            self.selenium.maximize_window()
+        except WebDriverException as e:
+            pass
 
     @property
     def page_title(self):
