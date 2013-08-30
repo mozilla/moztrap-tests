@@ -26,7 +26,6 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
     def go_to_manage_cases_page(self):
         self.selenium.get(self.base_url + '/manage/cases/')
-        self.maximize_window()
         self.is_the_current_page
 
     def click_create_case_button(self):
