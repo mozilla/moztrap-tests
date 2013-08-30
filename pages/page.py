@@ -36,7 +36,7 @@ class Page(object):
     def maximize_window(self):
         try:
             self.selenium.maximize_window()
-        except WebDriverException as e:
+        except WebDriverException:
             pass
 
     @property
