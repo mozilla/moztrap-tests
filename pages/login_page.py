@@ -22,6 +22,7 @@ class MozTrapLoginPage(MozTrapBasePage):
 
     def go_to_login_page(self):
         self.get_relative_path('/users/login/')
+        self.maximize_window()
         self.is_the_current_page
 
     def login(self, user='default'):
