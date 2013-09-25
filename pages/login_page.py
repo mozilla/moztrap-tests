@@ -28,7 +28,7 @@ class MozTrapLoginPage(MozTrapBasePage):
     def login(self, user='default'):
         from home_page import MozTrapHomePage
 
-        if type(user) is str:
+        if isinstance(user, str):
             user = self.testsetup.credentials[user]
 
         from browserid import BrowserID

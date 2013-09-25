@@ -22,6 +22,7 @@ class MozTrapBasePage(Page):
 
         _user_name_locator = (By.CSS_SELECTOR, '#accountnav .account-welcome .fn')
         _logout_locator = (By.CSS_SELECTOR, '#logoutform > button')
+        _signin_locator = (By.CSS_SELECTOR, '.signin')
 
         _drilldown_locator = (By.CSS_SELECTOR, 'nav.drilldown > h2')
 
@@ -35,8 +36,6 @@ class MozTrapBasePage(Page):
 
         def click_logout(self):
             self.selenium.find_element(*self._logout_locator).click()
-            from pages.login_page import MozTrapLoginPage
-            return MozTrapLoginPage(self.testsetup)
 
         def click_run_tests(self):
             self.selenium.find_element(*self._run_tests_locator).click()
@@ -50,3 +49,8 @@ class MozTrapBasePage(Page):
 
         def toggle_drilldown(self):
             self.selenium.find_element(*self._drilldown_locator).click()
+
+        def click_login(self, user='default'):
+            self.find_element(*self._signin_locator).click()
+            from pages.login_page import MozTrapLoginPage
+            MozTrapLoginPage(self.testsetup).login(user)
