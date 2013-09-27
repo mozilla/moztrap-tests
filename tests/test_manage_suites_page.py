@@ -64,6 +64,7 @@ class TestManageSuitesPage(BaseTest):
             u'product version field should be editable')
 
         edit_suite_pg.include_cases_to_suite(case_list)
+
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 

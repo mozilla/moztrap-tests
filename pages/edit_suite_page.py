@@ -4,12 +4,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
 
 from pages.base_page import MozTrapBasePage
-from pages.page import PageRegion
+from pages.regions.multiselect_widget import MultiselectWidget
 
 
 class MozTrapEditSuitePage(MozTrapBasePage):
@@ -17,15 +15,7 @@ class MozTrapEditSuitePage(MozTrapBasePage):
     _page_title = 'Edit Suite'
 
     _product_field_locator = (By.CSS_SELECTOR, '.formfield.product-field .value')
-    _available_case_item_locator = (By.CSS_SELECTOR, '.multiunselected .selectitem')
-    _included_case_item_locator = (By.CSS_SELECTOR, '.multiselected .selectitem')
-    _included_cases_box_locator = (By.CSS_SELECTOR, '.multiselected .select')
-    _include_selected_cases_button_locator = (By.CSS_SELECTOR, '#suite-edit-form .action-include')
-    _remove_selected_cases_button_locator = (By.CSS_SELECTOR, '#suite-edit-form .action-exclude')
-    _loading_available_cases_locator = (By.CSS_SELECTOR, '.multiunselected .select .overlay')
-    _loading_included_cases_locator = (By.CSS_SELECTOR, '.multiselected .select .overlay')
     _save_suite_button_locator = (By.CSS_SELECTOR, '#suite-edit-form .form-actions > button')
-    _included_cases_select_all_checkbox_locator = (By.ID, 'bulk_select_selected')
 
     @property
     def is_product_field_readonly(self):
@@ -35,59 +25,25 @@ class MozTrapEditSuitePage(MozTrapBasePage):
         else:
             return True
 
-    @property
-    def available_cases(self):
-        self.wait_for_element_not_present(*self._loading_available_cases_locator)
-        return [self.TestCaseItem(self.testsetup, case_item)
-                for case_item in self.find_elements(*self._available_case_item_locator)]
-
-    @property
-    def has_included_cases(self):
-        self.wait_for_element_not_present(*self._loading_included_cases_locator)
-        return self.is_element_present(*self._included_case_item_locator)
-
-    @property
-    def included_cases(self):
-        self.wait_for_element_not_present(*self._loading_included_cases_locator)
-        return [self.TestCaseItem(self.testsetup, case_item)
-                for case_item in self.find_elements(*self._included_case_item_locator)]
-
     def save_suite(self):
         self.find_element(*self._save_suite_button_locator).click()
 
-    def include_cases_to_suite(self, case_name_list, save=True):
-        #wait till available and included cases are loaded
-        self.wait_for_element_not_present(*self._loading_available_cases_locator)
-        self.wait_for_element_not_present(*self._loading_included_cases_locator)
-        include_button = self.find_element(*self._include_selected_cases_button_locator)
+    @property
+    def multiselect_widget(self):
+        return MultiselectWidget(self.testsetup)
 
-        available_items = self.available_cases
-        items_to_add = [item for name in reversed(case_name_list) for item in available_items
-                        if name == item.name]
-
-        for item in items_to_add:
-            item.select()
-            include_button.click()
-
-        if save:
+    def include_cases_to_suite(self, case_list, save_suite=True):
+        self.multiselect_widget.include_items(case_list)
+        if save_suite:
             self.save_suite()
 
+    @property
+    def included_cases(self):
+        return self.multiselect_widget.included_items
+
+    @property
+    def available_cases(self):
+        return self.multiselect_widget.available_items
+
     def remove_all_included_cases(self):
-        self.wait_for_element_not_present(*self._loading_included_cases_locator)
-        remove_button = self.find_element(*self._remove_selected_cases_button_locator)
-
-        for case in self.included_cases:
-            case.select()
-            remove_button.click()
-
-    class TestCaseItem(PageRegion):
-
-        _select_item_locator = (By.CSS_SELECTOR, '.bulk-type')
-        _item_title_locator = (By.CSS_SELECTOR, '.title')
-
-        @property
-        def name(self):
-            return self.find_element(*self._item_title_locator).text
-
-        def select(self):
-            self.find_element(*self._select_item_locator).click()
+        self.multiselect_widget.remove_all_included_items()
