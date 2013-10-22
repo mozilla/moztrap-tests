@@ -45,7 +45,7 @@ class MozTrapCreateCasePage(MozTrapBasePage):
         product_select.select_by_visible_text(product)
 
         version_select = Select(self.selenium.find_element(*self._version_select_locator))
-        version_select.select_by_visible_text(product)
+        version_select.select_by_visible_text(version)
 
         if suite:
             suite_select = Select(self.selenium.find_element(*self._suite_select_locator))
