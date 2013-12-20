@@ -94,7 +94,6 @@ class TestRunTestsPage(BaseTest):
         edit_run_pg = manage_runs_pg.go_to_edit_run_page(first_run['name'])
         edit_run_pg.edit_run(first_run, reorder_suites=True)
         #make run active again
-        manage_runs_pg.filter_form.filter_by(lookup='name', value=first_run['name'])
         manage_runs_pg.activate_run(first_run['name'])
         #execute run again
         home_page.go_to_home_page()
@@ -138,7 +137,6 @@ class TestRunTestsPage(BaseTest):
             u'suites are listed in wrong order')
 
         edit_run_pg.save_run()
-        manage_runs_pg.filter_form.filter_by(lookup='name', value=test_run['name'])
         test_run = manage_runs_pg.test_runs[0]
         test_run.show_details()
 
