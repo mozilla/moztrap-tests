@@ -65,7 +65,6 @@ class TestManageSuitesPage(BaseTest):
 
         edit_suite_pg.include_cases_to_suite(case_list)
 
-        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
         Assert.true(
@@ -112,7 +111,6 @@ class TestManageSuitesPage(BaseTest):
         edit_suite_pg.include_cases_to_suite(all_cases)
 
         # re-edit the same suite
-        manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
         # and ensure that included cases are listed in right order
