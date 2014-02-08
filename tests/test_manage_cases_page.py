@@ -28,8 +28,6 @@ class TestManageCasesPage(BaseTest):
         Assert.false(manage_cases_pg.is_element_present(*case['locator']))
 
     def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, mozwebqa_logged_in, product):
-        """test for https://www.pivotaltracker.com/projects/280483#!/stories/40857085"""
-
         #prerequisites
         first_version = product['version']
         test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True, version=first_version)
