@@ -8,7 +8,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base_page import MozTrapBasePage
-from pages.regions.filter import Filter
 
 
 class MozTrapManageEnvironmentsPage(MozTrapBasePage):
