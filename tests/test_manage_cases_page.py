@@ -7,6 +7,8 @@
 import pytest
 from unittestzero import Assert
 
+from mocks.mock_case import MockCase
+from mocks.mock_tag import MockTag
 from pages.base_test import BaseTest
 from pages.manage_cases_page import MozTrapManageCasesPage
 
@@ -31,10 +33,12 @@ class TestManageCasesPage(BaseTest):
         """test for https://www.pivotaltracker.com/projects/280483#!/stories/40857085"""
 
         #prerequisites
+        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True)
+
         first_version = product['version']
-        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True, version=first_version)
         second_version = self.create_version(mozwebqa_logged_in, product=product)
-        product_versions = [u'%s %s' % (product['name'], version['name']) for version in (first_version, second_version)]
+        product_versions = [u'%s %s' % (product['name'], version['name'])
+                            for version in (first_version, second_version)]
 
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
         manage_cases_pg.go_to_manage_cases_page()
@@ -59,10 +63,11 @@ class TestManageCasesPage(BaseTest):
         """https://www.pivotaltracker.com/projects/280483#!/stories/40857159"""
 
         #prerequisites
+        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True)
         first_version = product['version']
-        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True, version=first_version)
         second_version = self.create_version(mozwebqa_logged_in, product=product)
-        product_versions = [u'%s %s' % (product['name'], version['name']) for version in (first_version, second_version)]
+        product_versions = [u'%s %s' % (product['name'], version['name'])
+                            for version in (first_version, second_version)]
 
         manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
         manage_cases_pg.go_to_manage_cases_page()
@@ -77,3 +82,17 @@ class TestManageCasesPage(BaseTest):
             sorted(product_versions),
             sorted([case.product_version for case in filtered_cases]),
             u'expected product versions of test cases don\'t match actual ones')
+
+    def test_that_creates_tag_during_test_case_creation(self, mozwebqa_logged_in, product):
+        mock_tag = MockTag()
+        mock_case = MockCase(tag=mock_tag)
+        test_case = self.create_case(mozwebqa_logged_in, product=product,
+                                     use_API=False, mock_case=mock_case)
+
+        manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
+        manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
+        filtered_cases = manage_cases_pg.test_cases
+
+        Assert.equal(len(filtered_cases), 1, u'there should be only one case')
+        Assert.equal(filtered_cases[0].tag_name, mock_tag['name'].lower(),
+                     'actual tag name does not match expected value')

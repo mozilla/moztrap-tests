@@ -110,21 +110,20 @@ class BaseTest(object):
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         manage_suites_pg.delete_suite(name=suite['name'])
 
-    def create_case(self, mozwebqa, product, use_API, status='active', version=None, suite_name=None):
+    def create_case(self, mozwebqa, product, use_API, mock_case=None):
         if use_API:
             credentials = mozwebqa.credentials['default']
             case = MockCase()
             api = MoztrapAPI(credentials['api_user'], credentials['api_key'], mozwebqa.base_url)
             api.create_case(case, product)
         else:
+            mock_case = mock_case or MockCase()
+            mock_case['product'] = product
+            mock_case['version'] = product['version']
+
             create_case_pg = MozTrapCreateCasePage(mozwebqa)
-
-            if version is None:
-                version = product['version']
-
             create_case_pg.go_to_create_case_page()
-            case = create_case_pg.create_case(product=product['name'], version=version['name'], status=status, suite=suite_name)
-            case['product'] = product
+            case = create_case_pg.create_case(mock_case)
 
         return case
 

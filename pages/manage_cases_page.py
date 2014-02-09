@@ -45,31 +45,40 @@ class MozTrapManageCasesPage(MozTrapBasePage):
         for case in self.test_cases:
             if case.name == name:
                 return case
-        raise NameError('test case with %s name not found' % name)
+        raise Exception('test case with %s name is not found' % name)
 
     @property
     def test_cases(self):
-        return [self.TestCaseItem(self.testsetup, web_element)
+        return [TestCaseItem(self.testsetup, web_element)
                 for web_element in self.find_elements(*self._test_case_item_locator)]
 
     def is_case_present(self, case):
         _case_locator = (self._case_locator[0], self._case_locator[1] % {'case_name': case['name']})
         return self.is_element_present(*_case_locator)
 
-    class TestCaseItem(PageRegion):
 
-        _case_product_version_locator = (By.CSS_SELECTOR, '.product')
-        _case_name_locator = (By.CSS_SELECTOR, '.title')
-        _delete_case_locator = (By.CSS_SELECTOR, '.action-delete')
+class TestCaseItem(PageRegion):
 
-        @property
-        def name(self):
-            return self.find_element(*self._case_name_locator).text
+    _case_product_version_locator = (By.CSS_SELECTOR, '.product')
+    _case_name_locator = (By.CSS_SELECTOR, '.title')
+    _delete_case_locator = (By.CSS_SELECTOR, '.action-delete')
+    _tag_name_locator = (By.CSS_SELECTOR, '.filter-link.tag')
 
-        @property
-        def product_version(self):
-            return self.find_element(*self._case_product_version_locator).text
+    @property
+    def name(self):
+        return self.find_element(*self._case_name_locator).text
 
-        def delete(self):
-            self.find_element(*self._delete_case_locator).click()
-            self.wait_for_ajax()
+    @property
+    def product_version(self):
+        return self.find_element(*self._case_product_version_locator).text
+
+    def delete(self):
+        self.find_element(*self._delete_case_locator).click()
+        self.wait_for_ajax()
+
+    @property
+    def tag_name(self):
+        if self.is_element_present(*self._tag_name_locator):
+            return self.find_element(*self._tag_name_locator).text
+        else:
+            return None
