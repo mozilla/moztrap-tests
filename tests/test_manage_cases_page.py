@@ -56,8 +56,6 @@ class TestManageCasesPage(BaseTest):
         Assert.equal(test_cases[0].product_version, product_versions[0], u'that\'s wrong product version')
 
     def test_that_manage_cases_list_shows_all_case_versions_individually(self, mozwebqa_logged_in, product):
-        """https://www.pivotaltracker.com/projects/280483#!/stories/40857159"""
-
         #prerequisites
         first_version = product['version']
         test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True, version=first_version)
