@@ -25,6 +25,7 @@ class MozTrapCreateCasePage(MozTrapBasePage):
     _status_select_locator = (By.ID, 'id_status')
     _tag_field_locator = (By.ID, 'id_add_tags')
     _tag_field_suggest_locator = (By.CSS_SELECTOR, '.suggest')
+    _tag_item_locator = (By.CSS_SELECTOR, '.tag-item')
     _submit_locator = (By.CSS_SELECTOR, '#single-case-add .form-actions button[type="submit"]')
     _case_locator = (By.CSS_SELECTOR, '#managecases .itemlist .listitem .title[title="%(case_name)s"]')
 
@@ -67,7 +68,8 @@ class MozTrapCreateCasePage(MozTrapBasePage):
 
             # to add new tag we need to wait for suggest list to appear
             self.wait_for_element_to_be_visible(*self._tag_field_suggest_locator)
-            tag_field.send_keys(Keys.ENTER)
+            tag_field.send_keys(Keys.RETURN)
+            self.wait_till_tag_is_attached()
 
         self.selenium.find_element(*self._submit_locator).click()
 
@@ -87,3 +89,6 @@ class MozTrapCreateCasePage(MozTrapBasePage):
     def suite_value(self):
         suite_select = self.find_element(*self._suite_select_locator)
         return suite_select.find_element(By.CSS_SELECTOR, 'option:checked').text
+
+    def wait_till_tag_is_attached(self):
+        self.wait_for_element_to_be_visible(*self._tag_item_locator)
