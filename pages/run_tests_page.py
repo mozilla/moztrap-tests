@@ -14,94 +14,101 @@ class MozTrapRunTestsPage(MozTrapBasePage):
 
     _page_title = 'Run Tests'
 
-    _test_pass_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .action-pass')
-    _test_is_passed_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem.passed[data-title="%(case_name)s"]')
-    _test_is_failed_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem.failed[data-title="%(case_name)s"]')
-    _test_is_invalid_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem.invalidated[data-title="%(case_name)s"]')
-    _test_summary_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .item-summary')
-    _step_fail_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-summary')
-    _step_fail_result_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-content .fail-field textarea[name="comment"]')
-    _step_fail_submit_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .steps .stepitem[data-step-number="%(step_number)s"] .stepfail .stepfail-content .form-actions .fail')
-    _test_invalid_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-summary')
-    _test_invalid_desc_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-form .invalid-input')
-    _test_invalid_submit_locator = (By.CSS_SELECTOR, '#runtests .itemlist .listitem[data-title="%(case_name)s"] .itembody .testinvalid .invalid-form .form-actions .invalid')
-
-    _test_item_locator = (By.CSS_SELECTOR, '.listitem')
-
-    def open_test_summary(self, case_name):
-        _open_test = (self._test_summary_locator[0], self._test_summary_locator[1] % {'case_name': case_name})
-        self.selenium.find_element(*_open_test).click()
-
-    def pass_test(self, case_name):
-        _pass_test_locator = (self._test_pass_locator[0], self._test_pass_locator[1] % {'case_name': case_name})
-
-        self.open_test_summary(case_name)
-        self.selenium.find_element(*_pass_test_locator).click()
-        self.wait_for_ajax()
-
-    def fail_test(self, case_name, step_number=1):
-        _step_fail_locator = (self._step_fail_locator[0], self._step_fail_locator[1] % {'case_name': case_name, 'step_number': step_number})
-        _step_fail_result_locator = (self._step_fail_result_locator[0], self._step_fail_result_locator[1] % {'case_name': case_name, 'step_number': step_number})
-        _step_fail_submit_locator = (self._step_fail_submit_locator[0], self._step_fail_submit_locator[1] % {'case_name': case_name, 'step_number': step_number})
-        _step_fail_result = u'%(case_name)s step %(step_number)s failed' % {'step_number': step_number, 'case_name': case_name}
-
-        self.open_test_summary(case_name)
-        self.selenium.find_element(*_step_fail_locator).click()
-        self.type_in_element(_step_fail_result_locator, _step_fail_result)
-        self.selenium.find_element(*_step_fail_submit_locator).click()
-        self.wait_for_ajax()
-
-    def mark_test_invalid(self, case_name):
-        _test_invalid_locator = (self._test_invalid_locator[0], self._test_invalid_locator[1] % {'case_name': case_name})
-        _test_invalid_desc_locator = (self._test_invalid_desc_locator[0], self._test_invalid_desc_locator[1] % {'case_name': case_name})
-        _test_invalid_submit_locator = (self._test_invalid_submit_locator[0], self._test_invalid_submit_locator[1] % {'case_name': case_name})
-        _test_invalid_desc = u'%(case_name)s is invalid' % {'case_name': case_name}
-
-        self.open_test_summary(case_name)
-        self.selenium.find_element(*_test_invalid_locator).click()
-        self.type_in_element(_test_invalid_desc_locator, _test_invalid_desc)
-        self.selenium.find_element(*_test_invalid_submit_locator).click()
-        self.wait_for_ajax()
-
-    def is_test_passed(self, case_name):
-        _test_is_passed_locator = (self._test_is_passed_locator[0], self._test_is_passed_locator[1] % {'case_name': case_name})
-
-        return self.is_element_present(*_test_is_passed_locator)
-
-    def is_test_failed(self, case_name):
-        _test_is_failed_locator = (self._test_is_failed_locator[0], self._test_is_failed_locator[1] % {'case_name': case_name})
-
-        return self.is_element_present(*_test_is_failed_locator)
-
-    def is_test_invalid(self, case_name):
-        _test_is_invalid_locator = (self._test_is_invalid_locator[0], self._test_is_invalid_locator[1] % {'case_name': case_name})
-
-        return self.is_element_present(*_test_is_invalid_locator)
+    _test_item_locator = (By.CSS_SELECTOR, '#runtests .listitem')
 
     @property
-    def test_items(self):
-        return [self.TestItem(self.testsetup, web_el) for web_el
+    def test_results(self):
+        return [TestResult(self.testsetup, web_el) for web_el
                 in self.selenium.find_elements(*self._test_item_locator)]
 
-    class TestItem(PageRegion):
+    def get_test_result(self, case_name):
+        for result in self.test_results:
+            if result.case_name.lower() == case_name.lower():
+                return result
+        raise Exception('Test case "%s" is not found in the results' % case_name)
 
-        _case_result_locator = (By.CSS_SELECTOR, '.result')
-        _case_name_locator = (By.CSS_SELECTOR, '.title')
-        _suite_name_locator = (By.CSS_SELECTOR, 'a[data-type="suite"]')
-        _case_position_number_locator = (By.CSS_SELECTOR, '.order')
 
-        @property
-        def result(self):
-            return self.find_element(*self._case_result_locator).text
+class TestResult(PageRegion):
 
-        @property
-        def name(self):
-            return self.find_element(*self._case_name_locator).text
+    _case_result_locator = (By.CSS_SELECTOR, '.result')
+    _case_name_locator = (By.CSS_SELECTOR, '.title')
+    _suite_name_locator = (By.CSS_SELECTOR, '.filter-link.suite')
+    _case_position_number_locator = (By.CSS_SELECTOR, '.order')
 
-        @property
-        def suite_name(self):
-            return self.find_element(*self._suite_name_locator).text
+    _result_passed_locator = (By.CSS_SELECTOR, '.result.passed')
+    _result_failed_locator = (By.CSS_SELECTOR, '.result.failed')
+    _result_invalid_locator = (By.CSS_SELECTOR, '.result.invalidated')
+    _result_blocked_locator = (By.CSS_SELECTOR, '.result.blocked')
 
-        @property
-        def position_number(self):
-            return self.find_element(*self._case_position_number_locator).text
+    _open_test_summary_locator = (By.CSS_SELECTOR, '.item-summary')
+    _pass_test_button_locator = (By.CSS_SELECTOR, '.action-pass')
+    _fail_test_button_locator = (By.CSS_SELECTOR, '.stepfail-summary')
+    _invalidate_test_button_locator = (By.CSS_SELECTOR, '.invalid-summary')
+    _block_test_button_locator = (By.CSS_SELECTOR, '.block-summary')
+
+    _failed_step_comment_locator = (By.CSS_SELECTOR, '.fail-field textarea[name="comment"]')
+    _failed_step_submit_locator = (By.CSS_SELECTOR, '.fail')
+    _invalid_test_comment_locator = (By.CSS_SELECTOR, '.invalid-input')
+    _invalid_test_submit_locator = (By.CSS_SELECTOR, '.invalid')
+    _blocked_test_comment_locator = (By.CSS_SELECTOR, '.block-input')
+    _blocked_test_submit_locator = (By.CSS_SELECTOR, '.block')
+
+    @property
+    def case_name(self):
+        return self.find_element(*self._case_name_locator).text
+
+    @property
+    def suite_name(self):
+        return self.find_element(*self._suite_name_locator).text
+
+    @property
+    def position_number(self):
+        return self.find_element(*self._case_position_number_locator).text
+
+    @property
+    def is_test_passed(self):
+        return self.is_element_present(*self._result_passed_locator)
+
+    @property
+    def is_test_failed(self):
+        return self.is_element_present(*self._result_failed_locator)
+
+    @property
+    def is_test_invalid(self):
+        return self.is_element_present(*self._result_invalid_locator)
+
+    @property
+    def is_blocked(self):
+        return self.is_element_present(*self._result_blocked_locator)
+
+    def open_test_summary(self):
+        self.find_element(*self._open_test_summary_locator).click()
+
+    def pass_test(self):
+        self.open_test_summary()
+        self.find_element(*self._pass_test_button_locator).click()
+        self.wait_for_ajax()
+
+    def fail_test(self):
+        self.open_test_summary()
+        self.find_element(*self._fail_test_button_locator).click()
+        self.type_in_element(self._failed_step_comment_locator,
+                             u'Test case "%s" failed' % self.case_name)
+        self.find_element(*self._failed_step_submit_locator).click()
+        self.wait_for_ajax()
+
+    def invalidate_test(self):
+        self.open_test_summary()
+        self.selenium.find_element(*self._invalidate_test_button_locator).click()
+        self.type_in_element(self._invalid_test_comment_locator,
+                             u'Test case "%s" is invalid' % self.case_name)
+        self.selenium.find_element(*self._invalid_test_submit_locator).click()
+        self.wait_for_ajax()
+
+    def mark_blocked(self):
+        self.open_test_summary()
+        self.selenium.find_element(*self._block_test_button_locator).click()
+        self.type_in_element(self._blocked_test_comment_locator,
+                             u'Test case "%s" is blocked' % self.case_name)
+        self.selenium.find_element(*self._blocked_test_submit_locator).click()
+        self.wait_for_ajax()

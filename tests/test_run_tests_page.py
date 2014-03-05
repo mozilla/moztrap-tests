@@ -17,39 +17,42 @@ class TestRunTestsPage(BaseTest):
 
     @pytest.mark.moztrap([205, 208])
     def test_that_user_can_pass_test(self, mozwebqa_logged_in, product, element):
-        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
-
         case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
 
-        Assert.false(run_tests_pg.is_test_passed(case_name=case['name']))
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
+        result = run_tests_pg.get_test_result(case['name'])
+        Assert.false(result.is_test_passed)
 
-        run_tests_pg.pass_test(case_name=case['name'])
+        result.pass_test()
 
-        Assert.true(run_tests_pg.is_test_passed(case_name=case['name']))
+        result = run_tests_pg.get_test_result(case['name'])
+        Assert.true(result.is_test_passed)
 
     @pytest.mark.moztrap(206)
     def test_that_user_can_fail_test(self, mozwebqa_logged_in, product, element):
-        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
-
         case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
 
-        Assert.false(run_tests_pg.is_test_failed(case_name=case['name']))
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
+        result = run_tests_pg.get_test_result(case['name'])
+        Assert.false(result.is_test_failed)
 
-        run_tests_pg.fail_test(case_name=case['name'])
+        result.fail_test()
 
-        Assert.true(run_tests_pg.is_test_failed(case_name=case['name']))
+        result = run_tests_pg.get_test_result(case['name'])
+        Assert.true(result.is_test_failed)
 
     @pytest.mark.moztrap(207)
     def test_that_user_can_mark_test_invalid(self, mozwebqa_logged_in, product, element):
-        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
-
         case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
 
-        Assert.false(run_tests_pg.is_test_invalid(case_name=case['name']))
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
+        result = run_tests_pg.get_test_result(case['name'])
+        Assert.false(result.is_test_invalid)
 
-        run_tests_pg.mark_test_invalid(case_name=case['name'])
+        result.invalidate_test()
 
-        Assert.true(run_tests_pg.is_test_invalid(case_name=case['name']))
+        result = run_tests_pg.get_test_result(case['name'])
+        Assert.true(result.is_test_invalid)
 
     @pytest.mark.moztrap(2744)
     def test_that_test_run_saves_right_order_of_test_cases(self, mozwebqa_logged_in, product, element):
@@ -78,7 +81,7 @@ class TestRunTestsPage(BaseTest):
             env_category_name=element['category']['name'], env_element_name=element['name'])
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
-        actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
+        actual_order = [(item.case_name, item.suite_name) for item in run_tests_pg.test_results]
 
         expected_order = [(case['name'], suite) for case in suite_a_cases for suite in (suite_a['name'],)] + \
                          [(case['name'], suite) for case in suite_b_cases for suite in (suite_b['name'],)]
@@ -101,46 +104,21 @@ class TestRunTestsPage(BaseTest):
             product_name=product['name'], version_name=version['name'], run_name=first_run['name'],
             env_category_name=element['category']['name'], env_element_name=element['name'])
         #check actual order of items on run tests page
-        actual_order = [(item.name, item.suite_name) for item in run_tests_pg.test_items]
+        actual_order = [(item.case_name, item.suite_name) for item in run_tests_pg.test_results]
 
         expected_order = [(case['name'], suite) for case in suite_b_cases for suite in (suite_b['name'],)] + \
                          [(case['name'], suite) for case in suite_a_cases for suite in (suite_a['name'],)]
         #assert that right order saved
         Assert.equal(actual_order, expected_order)
 
-    @pytest.mark.moztrap(3302)
-    def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, mozwebqa_logged_in, product):
-        #create version
-        version = product['version']
-        #create two test suites
-        suite_a = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite A')
-        suite_b = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite B')
-        #create test run
-        suite_order = [suite_b['name'], suite_a['name']]
-        test_run = self.create_run(
-            mozwebqa_logged_in, product=product,
-            version=version, suite_name_list=suite_order)
+    def test_that_user_can_mark_test_as_blocked(self, mozwebqa_logged_in, product, element):
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
 
-        manage_runs_pg = MozTrapManageRunsPage(mozwebqa_logged_in)
-        manage_runs_pg.go_to_manage_runs_page()
-        manage_runs_pg.filter_form.filter_by(lookup='name', value=test_run['name'])
-        manage_runs_pg.activate_run(name=test_run['name'])
-        edit_run_pg = manage_runs_pg.go_to_edit_run_page(test_run['name'])
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
+        test_result = run_tests_pg.get_test_result(case['name'])
+        Assert.false(test_result.is_blocked)
 
-        #assert that multiselect widget is not present thus suites list is readonly
-        Assert.false(
-            edit_run_pg.is_multiselect_widget_present,
-            u'multiselect widget should not be present')
-        #assert that order of suites is correct
-        Assert.equal(
-            suite_order, edit_run_pg.readonly_included_suites,
-            u'suites are listed in wrong order')
+        test_result.mark_blocked()
 
-        edit_run_pg.save_run()
-        test_run = manage_runs_pg.test_runs[0]
-        test_run.show_details()
-
-        #assert that order of suites is still correct
-        Assert.equal(
-            suite_order, test_run.included_suites,
-            u'suites are listed in wrong order')
+        test_result = run_tests_pg.get_test_result(case['name'])
+        Assert.true(test_result.is_blocked)
