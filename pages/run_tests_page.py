@@ -39,12 +39,14 @@ class TestResult(PageRegion):
     _result_failed_locator = (By.CSS_SELECTOR, '.result.failed')
     _result_invalid_locator = (By.CSS_SELECTOR, '.result.invalidated')
     _result_blocked_locator = (By.CSS_SELECTOR, '.result.blocked')
+    _result_skipped_locator = (By.CSS_SELECTOR, '.result.skipped')
 
     _open_test_summary_locator = (By.CSS_SELECTOR, '.item-summary')
     _pass_test_button_locator = (By.CSS_SELECTOR, '.action-pass')
     _fail_test_button_locator = (By.CSS_SELECTOR, '.stepfail-summary')
     _invalidate_test_button_locator = (By.CSS_SELECTOR, '.invalid-summary')
     _block_test_button_locator = (By.CSS_SELECTOR, '.block-summary')
+    _skip_test_button_locator = (By.CSS_SELECTOR, '.action-skip')
 
     _failed_step_comment_locator = (By.CSS_SELECTOR, '.fail-field textarea[name="comment"]')
     _failed_step_submit_locator = (By.CSS_SELECTOR, '.fail')
@@ -81,6 +83,10 @@ class TestResult(PageRegion):
     def is_blocked(self):
         return self.is_element_present(*self._result_blocked_locator)
 
+    @property
+    def is_skipped(self):
+        return self.is_element_present(*self._result_skipped_locator)
+
     def open_test_summary(self):
         self.find_element(*self._open_test_summary_locator).click()
 
@@ -111,4 +117,9 @@ class TestResult(PageRegion):
         self.type_in_element(self._blocked_test_comment_locator,
                              u'Test case "%s" is blocked' % self.case_name)
         self.selenium.find_element(*self._blocked_test_submit_locator).click()
+        self.wait_for_ajax()
+
+    def skip_test(self):
+        self.open_test_summary()
+        self.find_element(*self._skip_test_button_locator).click()
         self.wait_for_ajax()
