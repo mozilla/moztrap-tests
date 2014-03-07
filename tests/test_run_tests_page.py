@@ -122,3 +122,15 @@ class TestRunTestsPage(BaseTest):
 
         test_result = run_tests_pg.get_test_result(case['name'])
         Assert.true(test_result.is_blocked)
+
+    def test_that_user_can_skip_test(self, mozwebqa_logged_in, product, element):
+        case = self.create_and_run_test(mozwebqa_logged_in, product, element)[0]
+
+        run_tests_pg = MozTrapRunTestsPage(mozwebqa_logged_in)
+        test_result = run_tests_pg.get_test_result(case['name'])
+        Assert.false(test_result.is_skipped)
+
+        test_result.skip_test()
+
+        test_result = run_tests_pg.get_test_result(case['name'])
+        Assert.true(test_result.is_skipped)
