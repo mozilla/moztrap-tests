@@ -124,6 +124,7 @@ class TestPinningFilters(BaseTest):
             u'default product is incorrect')
 
     @pytest.mark.moztrap(5932)
+    @pytest.mark.xfail(reason='Bug 1008850 - Suggestion box is cut off when the filter is too long')
     def test_that_pinning_filters_on_product_and_version_and_suite_set_defaults_in_new_case(self, mozwebqa_logged_in, product):
         version = product['version']
         product_version_name = u'%s %s' % (product['name'], version['name'])
