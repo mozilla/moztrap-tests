@@ -108,8 +108,8 @@ An example of running one test in a file:
 
     py.test --driver=firefox --credentials=/path/to/credentials/credentials.yaml tests/test_manage_runs_page.py -k test_that_user_can_create_and_delete_run
 
-The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [davehunt's pytest mozwebqa github][pymozwebqa].
-[pymozwebqa]: https://github.com/davehunt/pytest-mozwebqa
+The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [pytest mozwebqa github][pymozwebqa].
+[pymozwebqa]: https://github.com/mozilla/pytest-mozwebqa
 
 #### Moz-grid-config (Optional/Intermediate level)
 Prerequisites: [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
