@@ -187,8 +187,8 @@ class BaseTest(object):
                 product=product['name'], version=version['name'], status=status,
                 suite=suite_name, cases_amount=cases_amount, **kwargs)
 
-            #add product to dictionary to ensure that output of this method
-            #is similar to create_case method
+            # add product to dictionary to ensure that output of this method
+            # is similar to create_case method
             for case in cases:
                 case['product'] = product
 

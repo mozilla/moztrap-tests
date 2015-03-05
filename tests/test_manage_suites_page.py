@@ -46,7 +46,7 @@ class TestManageSuitesPage(BaseTest):
 
     @pytest.mark.moztrap(2743)
     def test_editing_of_existing_suite_that_has_no_included_cases(self, mozwebqa_logged_in, product):
-        #create suite and cases
+        # create suite and cases
         suite = self.create_suite(mozwebqa_logged_in, product, use_API=True)
         cases = self.create_bulk_cases(mozwebqa_logged_in, product, use_API=True, cases_amount=3)
 

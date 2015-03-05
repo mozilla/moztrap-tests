@@ -31,7 +31,7 @@ class Filter(Page):
         self.find_element(*self._filter_input_locator).send_keys(value)
         self.wait_for_element_to_be_visible(*_suggestion_locator)
 
-        #find suggestion and get value of its data-id attribute
+        # find suggestion and get value of its data-id attribute
         suggestion = self.find_element(*_suggestion_locator)
         data_id = suggestion.get_attribute('data-id')
         suggestion.click()
@@ -43,7 +43,7 @@ class Filter(Page):
         self.wait_for_element_to_be_visible(*_filter_item_locator)
         self.wait_for_ajax()
 
-        #find filter item and pass it as base element into FilterItem class
+        # find filter item and pass it as base element into FilterItem class
         filter_item = self.find_element(*_filter_item_locator)
         return FilterItem(self.testsetup, filter_item)
 
@@ -53,7 +53,7 @@ class Filter(Page):
 
         self.wait_for_element_to_be_visible(*self._filter_suggestion_dropdown_locator)
 
-        #find suggestion and get value of its data-id attribute
+        # find suggestion and get value of its data-id attribute
         suggestion = self.find_element(*self._filter_suggestion_dropdown_locator)
         data_id = suggestion.get_attribute('data-id')
         suggestion.click()
@@ -66,7 +66,7 @@ class Filter(Page):
         self.wait_for_element_to_be_visible(*_filter_item_locator)
         self.wait_for_ajax()
 
-        #find filter item and pass it as base element into FilterItem class
+        # find filter item and pass it as base element into FilterItem class
         filter_item = self.find_element(*_filter_item_locator)
         return FilterItem(self.testsetup, filter_item)
 

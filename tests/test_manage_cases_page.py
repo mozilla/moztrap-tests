@@ -30,7 +30,7 @@ class TestManageCasesPage(BaseTest):
         Assert.false(manage_cases_pg.is_element_present(*case['locator']))
 
     def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, mozwebqa_logged_in, product):
-        #prerequisites
+        # prerequisites
         test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True)
 
         first_version = product['version']
@@ -43,7 +43,7 @@ class TestManageCasesPage(BaseTest):
         filter_item = manage_cases_pg.filter_form.filter_by(lookup='product', value=product['name'])
         test_cases = manage_cases_pg.test_cases
 
-        #remember case version and delete case
+        # remember case version and delete case
         deleted_version = test_cases[0].product_version
         product_versions.remove(deleted_version)
         test_cases[0].delete()
@@ -52,13 +52,13 @@ class TestManageCasesPage(BaseTest):
         manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
         test_cases = manage_cases_pg.test_cases
 
-        #check that there is only one test case left and ensure its version equals to second version
+        # check that there is only one test case left and ensure its version equals to second version
         Assert.equal(len(test_cases), 1, u'there should be only one case')
         Assert.equal(test_cases[0].name, test_case['name'], u'that\'s wrong test case')
         Assert.equal(test_cases[0].product_version, product_versions[0], u'that\'s wrong product version')
 
     def test_that_manage_cases_list_shows_all_case_versions_individually(self, mozwebqa_logged_in, product):
-        #prerequisites
+        # prerequisites
         test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True)
         first_version = product['version']
         second_version = self.create_version(mozwebqa_logged_in, product=product)
@@ -73,7 +73,7 @@ class TestManageCasesPage(BaseTest):
         for case in filtered_cases:
             Assert.equal(case.name, test_case['name'], u'that\'s wrong case we\'ve got here')
 
-        #check that both product versions are displayed
+        # check that both product versions are displayed
         Assert.equal(
             sorted(product_versions),
             sorted([case.product_version for case in filtered_cases]),

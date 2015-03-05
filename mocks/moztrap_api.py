@@ -134,7 +134,7 @@ class MoztrapAPI:
         self.params['permanent'] = True
         Assert.true(self._do_delete(uri, element['id']), 'Deletion of element %s failed' % element['name'])
 
-        #Finally delete the embedded Category
+        # Finally delete the embedded Category
         uri = "api/v1/category"
         category = element['category']
         Assert.true(self._do_delete(uri, category['id']), 'Deletion of category %s failed' % category['name'])
