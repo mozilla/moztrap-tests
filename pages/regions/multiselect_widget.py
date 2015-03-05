@@ -33,7 +33,7 @@ class MultiselectWidget(Page):
                 for web_element in self.find_elements(*self._included_item_locator)]
 
     def include_items(self, item_names_list):
-        #wait till available and included items are loaded
+        # wait till available and included items are loaded
         self.wait_for_element_not_present(*self._loading_available_items_locator)
         self.wait_for_element_not_present(*self._loading_included_items_locator)
         include_button = self.find_element(*self._include_item_button_locator)

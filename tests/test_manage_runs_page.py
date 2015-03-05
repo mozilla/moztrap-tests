@@ -29,12 +29,12 @@ class TestManageRunsPage(BaseTest):
 
     @pytest.mark.moztrap(3302)
     def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, mozwebqa_logged_in, product):
-        #create version
+        # create version
         version = product['version']
-        #create two test suites
+        # create two test suites
         suite_a = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite A')
         suite_b = self.create_suite(mozwebqa_logged_in, product=product, use_API=True, name='suite B')
-        #create test run
+        # create test run
         suite_order = [suite_b['name'], suite_a['name']]
         test_run = self.create_run(
             mozwebqa_logged_in, product=product,
@@ -46,11 +46,11 @@ class TestManageRunsPage(BaseTest):
         manage_runs_pg.activate_run(name=test_run['name'])
         edit_run_pg = manage_runs_pg.go_to_edit_run_page(test_run['name'])
 
-        #assert that multiselect widget is not present thus suites list is readonly
+        # assert that multiselect widget is not present thus suites list is readonly
         Assert.false(
             edit_run_pg.is_multiselect_widget_present,
             u'multiselect widget should not be present')
-        #assert that order of suites is correct
+        # assert that order of suites is correct
         Assert.equal(
             suite_order, edit_run_pg.readonly_included_suites,
             u'suites are listed in wrong order')
@@ -59,7 +59,7 @@ class TestManageRunsPage(BaseTest):
         test_run = manage_runs_pg.test_runs[0]
         test_run.show_details()
 
-        #assert that order of suites is still correct
+        # assert that order of suites is still correct
         Assert.equal(
             suite_order, test_run.included_suites,
             u'suites are listed in wrong order')

@@ -16,7 +16,7 @@ class MockRun(dict):
         self['start_date'] = '2011-01-01'
         self['end_date'] = '2012-12-31'
         self['suite_list'] = None
- 
+
         # update with any keyword arguments passed
         self.update(**kwargs)
 

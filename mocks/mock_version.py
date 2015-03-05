@@ -12,7 +12,7 @@ class MockVersion(dict):
 
         self['name'] = 'Test Version'
         self['product_name'] = 'Test Product'
- 
+
         # update with any keyword arguments passed
         self.update(**kwargs)
 
