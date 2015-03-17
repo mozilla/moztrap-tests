@@ -8,6 +8,7 @@ from datetime import datetime
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base_page import MozTrapBasePage
 from pages.regions.multiselect_widget import MultiselectWidget
@@ -54,7 +55,10 @@ class MozTrapCreateRunPage(MozTrapBasePage):
             if series_run:
                 series_element.click()
 
-        product_version_select = Select(self.selenium.find_element(*self._product_version_select_locator))
+        product_version_select_element = self.selenium.find_element(*self._product_version_select_locator)
+        product_version_select = Select(product_version_select_element)
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: product_version in product_version_select_element.text)
         product_version_select.select_by_visible_text(product_version)
 
         self.selenium.find_element(*self._description_locator).send_keys(run['desc'])
