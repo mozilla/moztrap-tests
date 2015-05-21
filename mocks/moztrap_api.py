@@ -48,7 +48,7 @@ class MoztrapAPI:
             params=self.params,
             headers=self.headers)
         response.raise_for_status()
-        if response.status_code == 200:
+        if response.status_code == requests.codes.ok:
             return True
         else:
             print "Failed to delete resource: %s with %s.\n%s" % (

@@ -15,10 +15,10 @@ from pages.manage_versions_page import MozTrapManageVersionsPage
 class TestManageVersionsPage(BaseTest):
 
     @pytest.mark.moztrap([3389, 3390])
-    def test_that_user_can_create_and_delete_version(self, mozwebqa_logged_in, product):
-        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
+    def test_that_user_can_create_and_delete_version(self, mozwebqa, login, product):
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
 
-        version = self.create_version(mozwebqa_logged_in, product)
+        version = self.create_version(mozwebqa, product)
 
         manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 
@@ -29,10 +29,10 @@ class TestManageVersionsPage(BaseTest):
         Assert.false(manage_versions_pg.is_element_present(*version['manage_locator']))
 
     @pytest.mark.moztrap(3391)
-    def test_that_user_can_filter_version_by_name(self, mozwebqa_logged_in, product):
-        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
+    def test_that_user_can_filter_version_by_name(self, mozwebqa, login, product):
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
 
-        version = self.create_version(mozwebqa_logged_in, product)
+        version = self.create_version(mozwebqa, product)
 
         filter_item = manage_versions_pg.filter_form.filter_by(lookup='version', value='Another Version')
 
@@ -44,10 +44,10 @@ class TestManageVersionsPage(BaseTest):
         Assert.true(manage_versions_pg.is_element_present(*version['manage_locator']))
 
     @pytest.mark.moztrap(3392)
-    def test_that_user_can_clone_version(self, mozwebqa_logged_in, product):
-        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa_logged_in)
+    def test_that_user_can_clone_version(self, mozwebqa, login, product):
+        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
 
-        version = self.create_version(mozwebqa_logged_in, product)
+        version = self.create_version(mozwebqa, product)
 
         manage_versions_pg.filter_form.filter_by(lookup='version', value=version['name'])
 

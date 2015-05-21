@@ -16,10 +16,10 @@ from pages.manage_cases_page import MozTrapManageCasesPage
 class TestManageCasesPage(BaseTest):
 
     @pytest.mark.moztrap([142, 137])
-    def test_that_user_can_create_and_delete_case(self, mozwebqa_logged_in, product):
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
+    def test_that_user_can_create_and_delete_case(self, mozwebqa, login, product):
+        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
 
-        case = self.create_case(mozwebqa_logged_in, product, use_API=False)
+        case = self.create_case(mozwebqa, product)
 
         manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
 
@@ -29,16 +29,16 @@ class TestManageCasesPage(BaseTest):
 
         Assert.false(manage_cases_pg.is_element_present(*case['locator']))
 
-    def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, mozwebqa_logged_in, product):
+    def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, api, mozwebqa, login, product):
         # prerequisites
-        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True)
+        test_case = self.create_case(mozwebqa, product=product, api=api)
 
         first_version = product['version']
-        second_version = self.create_version(mozwebqa_logged_in, product=product)
+        second_version = self.create_version(mozwebqa, product=product)
         product_versions = [u'%s %s' % (product['name'], version['name'])
                             for version in (first_version, second_version)]
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
+        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
         manage_cases_pg.go_to_manage_cases_page()
         filter_item = manage_cases_pg.filter_form.filter_by(lookup='product', value=product['name'])
         test_cases = manage_cases_pg.test_cases
@@ -57,15 +57,15 @@ class TestManageCasesPage(BaseTest):
         Assert.equal(test_cases[0].name, test_case['name'], u'that\'s wrong test case')
         Assert.equal(test_cases[0].product_version, product_versions[0], u'that\'s wrong product version')
 
-    def test_that_manage_cases_list_shows_all_case_versions_individually(self, mozwebqa_logged_in, product):
+    def test_that_manage_cases_list_shows_all_case_versions_individually(self, api, mozwebqa, login, product):
         # prerequisites
-        test_case = self.create_case(mozwebqa_logged_in, product=product, use_API=True)
+        test_case = self.create_case(mozwebqa, product=product, api=api)
         first_version = product['version']
-        second_version = self.create_version(mozwebqa_logged_in, product=product)
+        second_version = self.create_version(mozwebqa, product=product)
         product_versions = [u'%s %s' % (product['name'], version['name'])
                             for version in (first_version, second_version)]
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
+        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
         manage_cases_pg.go_to_manage_cases_page()
         manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
         filtered_cases = manage_cases_pg.test_cases
@@ -79,13 +79,12 @@ class TestManageCasesPage(BaseTest):
             sorted([case.product_version for case in filtered_cases]),
             u'expected product versions of test cases don\'t match actual ones')
 
-    def test_that_creates_tag_during_test_case_creation(self, mozwebqa_logged_in, product):
+    def test_that_creates_tag_during_test_case_creation(self, mozwebqa, login, product):
         mock_tag = MockTag()
         mock_case = MockCase(tag=mock_tag)
-        test_case = self.create_case(mozwebqa_logged_in, product=product,
-                                     use_API=False, mock_case=mock_case)
+        test_case = self.create_case(mozwebqa, product=product, mock_case=mock_case)
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa_logged_in)
+        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
         manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
         filtered_cases = manage_cases_pg.test_cases
 

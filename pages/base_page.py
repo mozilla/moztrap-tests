@@ -50,7 +50,7 @@ class MozTrapBasePage(Page):
         def toggle_drilldown(self):
             self.selenium.find_element(*self._drilldown_locator).click()
 
-        def click_login(self, user='default'):
+        def login(self, email, password):
             self.find_element(*self._signin_locator).click()
             from pages.login_page import MozTrapLoginPage
-            MozTrapLoginPage(self.testsetup).login(user)
+            MozTrapLoginPage(self.testsetup).login(email, password)

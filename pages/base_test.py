@@ -20,7 +20,6 @@ from pages.manage_profiles_page import MozTrapManageProfilesPage
 from pages.create_bulk_cases_page import MozTrapCreateBulkCasesPage
 from mocks.mock_suite import MockSuite
 from mocks.mock_case import MockCase
-from mocks.moztrap_api import MoztrapAPI
 
 
 class BaseTest(object):
@@ -88,19 +87,15 @@ class BaseTest(object):
         if delete_version:
             self.delete_version(mozwebqa, version=run['version'])
 
-    def create_suite(self, mozwebqa, product, use_API, status='active', case_list=[], **kwargs):
-        if use_API:
-            credentials = mozwebqa.credentials['default']
+    def create_suite(self, mozwebqa, product, api=None, status='active', case_list=[], **kwargs):
+        if api is not None:
             suite = MockSuite()
-            api = MoztrapAPI(credentials['api_user'], credentials['api_key'], mozwebqa.base_url)
             api.create_suite(suite, product, case_list)
         else:
             create_suite_pg = MozTrapCreateSuitePage(mozwebqa)
-
             create_suite_pg.go_to_create_suite_page()
             suite = create_suite_pg.create_suite(product=product['name'], status=status, case_list=case_list, **kwargs)
             suite['product'] = product
-
         return suite
 
     def delete_suite(self, mozwebqa, suite):
@@ -110,11 +105,9 @@ class BaseTest(object):
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         manage_suites_pg.delete_suite(name=suite['name'])
 
-    def create_case(self, mozwebqa, product, use_API, mock_case=None):
-        if use_API:
-            credentials = mozwebqa.credentials['default']
+    def create_case(self, mozwebqa, product, api=None, mock_case=None):
+        if api is not None:
             case = MockCase()
-            api = MoztrapAPI(credentials['api_user'], credentials['api_key'], mozwebqa.base_url)
             api.create_case(case, product)
         else:
             mock_case = mock_case or MockCase()
@@ -152,12 +145,12 @@ class BaseTest(object):
         create_profile_pg.go_to_create_profile_page()
         create_profile_pg.delete_environment_category(category_name=profile['category'])
 
-    def create_and_run_test(self, mozwebqa, product, element):
+    def create_and_run_test(self, api, mozwebqa, product, element):
         home_pg = MozTrapHomePage(mozwebqa)
 
         self.connect_product_to_element(mozwebqa, product, element)
-        case = self.create_case(mozwebqa, product, use_API=True)
-        suite = self.create_suite(mozwebqa, product=product, use_API=True, case_list=[case])
+        case = self.create_case(mozwebqa, product, api=api)
+        suite = self.create_suite(mozwebqa, product=product, api=api, case_list=[case])
         run = self.create_run(mozwebqa, activate=True, product=product, version=product['version'], suite_name_list=[suite['name']])
 
         home_pg.go_to_home_page()
@@ -165,11 +158,9 @@ class BaseTest(object):
 
         return case, suite, run
 
-    def create_bulk_cases(self, mozwebqa, product, use_API, cases_amount=2, status='active', version=None, suite_name=None, **kwargs):
-        if use_API:
+    def create_bulk_cases(self, mozwebqa, product, api=None, cases_amount=2, status='active', version=None, suite_name=None, **kwargs):
+        if api is not None:
             cases = []
-            credentials = mozwebqa.credentials['default']
-            api = MoztrapAPI(credentials['api_user'], credentials['api_key'], mozwebqa.base_url)
             for i in xrange(cases_amount):
                 case = MockCase()
                 if 'name' in kwargs:

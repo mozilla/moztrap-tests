@@ -25,19 +25,14 @@ class MozTrapLoginPage(MozTrapBasePage):
         self.maximize_window()
         self.is_the_current_page
 
-    def login(self, user='default'):
+    def login(self, email, password):
         from home_page import MozTrapHomePage
-
-        if isinstance(user, str):
-            user = self.testsetup.credentials[user]
-
         from browserid import BrowserID
         self.selenium.find_element(*self._browserid_locator).click()
         browser_id = BrowserID(self.selenium, timeout=self.timeout)
-        browser_id.sign_in(user['email'], user['password'])
-
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: self.header.is_user_logged_in)
-
+        browser_id.sign_in(email, password)
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: self.header.is_user_logged_in)
         return MozTrapHomePage(self.testsetup)
 
     @property

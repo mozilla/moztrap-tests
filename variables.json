@@ -1,0 +1,13 @@
+{
+  "users": {
+    "default": {
+      "email": "",
+      "password": "",
+      "name": ""
+    }
+  },
+  "api": {
+    "user": "",
+    "key": ""
+  }
+}
