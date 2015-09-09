@@ -38,7 +38,7 @@ This repository contains Selenium tests used to test the website moztrap-dev.all
 
 Mozilla maintains a guide to running Automated tests on our QMO website:
 
-https://quality.mozilla.org/docs/webqa/running-webqa-automated-tests/
+https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests
 
 This wiki page has some advanced instructions specific to Windows:
 
