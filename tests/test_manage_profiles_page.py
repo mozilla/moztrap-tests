@@ -14,7 +14,6 @@ from pages.manage_profiles_page import MozTrapManageProfilesPage
 class TestManageProfilesPage(BaseTest):
 
     @pytest.mark.moztrap([154, 155])
-    @pytest.mark.xfail(reason='Bug 1213829 - Service Unavailable when requesting create profile page')
     def test_that_user_can_create_and_delete_profile(self, mozwebqa, login):
         from pages.create_profile_page import MozTrapCreateProfilePage
         manage_profiles_pg = MozTrapManageProfilesPage(mozwebqa)
