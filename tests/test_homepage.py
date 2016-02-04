@@ -4,8 +4,6 @@
 
 import pytest
 
-from unittestzero import Assert
-
 from pages.home_page import MozTrapHomePage
 from pages.base_test import BaseTest
 
@@ -20,16 +18,16 @@ class TestHomepage(BaseTest):
         home_pg = MozTrapHomePage(mozwebqa)
 
         home_pg.get_relative_path('/')
-        Assert.false(home_pg.header.is_user_logged_in)
+        assert not home_pg.header.is_user_logged_in
 
         login_pg.go_to_login_page()
         login_pg.login(existing_user['email'], existing_user['password'])
-        Assert.true(home_pg.header.is_user_logged_in)
-        Assert.equal(home_pg.header.username_text, existing_user['name'])
+        assert home_pg.header.is_user_logged_in
+        assert existing_user['name'] == home_pg.header.username_text
 
         home_pg.header.click_logout()
         home_pg.get_relative_path('/')
-        Assert.false(home_pg.header.is_user_logged_in)
+        assert not home_pg.header.is_user_logged_in
 
     @pytest.mark.moztrap(3387)
     def test_that_user_can_select_product(self, mozwebqa, login, product):
@@ -37,11 +35,11 @@ class TestHomepage(BaseTest):
 
         home_pg.go_to_home_page()
 
-        Assert.false(home_pg.is_product_version_visible(product))
+        assert not home_pg.is_product_version_visible(product)
 
         home_pg.select_item(product['name'])
 
-        Assert.true(home_pg.is_product_version_visible(product))
+        assert home_pg.is_product_version_visible(product)
 
     @pytest.mark.moztrap(3388)
     def test_that_user_can_select_version(self, mozwebqa, login, product):
@@ -52,11 +50,11 @@ class TestHomepage(BaseTest):
         home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])
 
-        Assert.false(home_pg.is_element_visible(*run['homepage_locator']))
+        assert not home_pg.is_element_visible(*run['homepage_locator'])
 
         home_pg.select_item(run['version']['name'])
 
-        Assert.true(home_pg.is_element_visible(*run['homepage_locator']))
+        assert home_pg.is_element_visible(*run['homepage_locator'])
 
     @pytest.mark.moztrap(3414)
     def test_that_user_can_select_run(self, mozwebqa, login, product):
@@ -68,8 +66,8 @@ class TestHomepage(BaseTest):
         home_pg.select_item(run['version']['product']['name'])
         home_pg.select_item(run['version']['name'])
 
-        Assert.false(home_pg.is_element_visible(*run['run_tests_locator']))
+        assert not home_pg.is_element_visible(*run['run_tests_locator'])
 
         home_pg.select_item(run['name'])
 
-        Assert.true(home_pg.is_element_visible(*run['run_tests_locator']))
+        assert home_pg.is_element_visible(*run['run_tests_locator'])

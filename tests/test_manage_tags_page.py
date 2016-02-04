@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from unittestzero import Assert
-
 from mocks.mock_tag import MockTag
 from pages.base_test import BaseTest
 from pages.manage_tags_page import MozTrapManageTagsPage
@@ -17,8 +15,7 @@ class TestManageTagsPage(BaseTest):
         manage_tags_pg.go_to_manage_tags_page()
 
         create_tag_pg = manage_tags_pg.click_create_tag_button()
-        Assert.false(create_tag_pg.is_multiselect_widget_visible,
-                     'multiselect widget should be hidden until product is not selected')
+        assert not create_tag_pg.is_multiselect_widget_visible
 
         tag = MockTag()
         create_tag_pg.create_tag(tag)
@@ -26,8 +23,7 @@ class TestManageTagsPage(BaseTest):
         manage_tags_pg.filter_form.filter_by(lookup='name', value=tag['name'])
         displayed_tags = manage_tags_pg.tags()
 
-        Assert.true(tag['name'] in [t.name for t in displayed_tags],
-                    'tag with "%s" name is not displayed on the page' % tag['name'])
+        assert tag['name'] in [t.name for t in displayed_tags]
 
     def test_creating_a_tag_with_a_product_value_and_no_cases(self, mozwebqa, login, product):
         manage_tags_pg = MozTrapManageTagsPage(mozwebqa)
@@ -37,15 +33,13 @@ class TestManageTagsPage(BaseTest):
         tag = MockTag(product=product['name'])
         create_tag_pg.create_tag(tag, save_tag=False)
 
-        Assert.true(create_tag_pg.is_multiselect_widget_visible,
-                    'multiselect widget should be visible after product was selected')
+        assert create_tag_pg.is_multiselect_widget_visible
 
         create_tag_pg.save_tag()
         manage_tags_pg.filter_form.filter_by(lookup='name', value=tag['name'])
         displayed_tags = manage_tags_pg.tags()
 
-        Assert.true(tag['name'] in [t.name for t in displayed_tags],
-                    'tag with "%s" name is not displayed on the page' % tag['name'])
+        assert tag['name'] in [t.name for t in displayed_tags]
 
     def test_creating_a_tag_with_a_product_value_and_cases(self, api, mozwebqa, login, product):
         # create some cases for product
@@ -60,8 +54,7 @@ class TestManageTagsPage(BaseTest):
         expected_case_names = [case.name for case in cases]
         actual_case_names = [case.name for case in create_tag_pg.available_caseversions]
 
-        Assert.equal(sorted(expected_case_names), sorted(actual_case_names),
-                     'list of expected caseversions differs from actually displayed')
+        assert sorted(expected_case_names) == sorted(actual_case_names)
 
         create_tag_pg.include_caseversions_to_tag(expected_case_names)
 
@@ -71,5 +64,4 @@ class TestManageTagsPage(BaseTest):
 
         displayed_case_names = [case.name for case in manage_cases_page.test_cases]
 
-        Assert.equal(sorted(expected_case_names), sorted(displayed_case_names),
-                     'list of test cases attached to a tag differs from expected')
+        assert sorted(expected_case_names) == sorted(displayed_case_names)

@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-from unittestzero import Assert
 
 from pages.base_test import BaseTest
 from pages.manage_runs_page import MozTrapManageRunsPage
@@ -19,11 +18,11 @@ class TestManageRunsPage(BaseTest):
 
         manage_runs_pg.filter_form.filter_by(lookup='name', value=run['name'])
 
-        Assert.true(manage_runs_pg.is_element_present(*run['manage_locator']))
+        assert manage_runs_pg.is_element_present(*run['manage_locator'])
 
         manage_runs_pg.delete_run(name=run['name'])
 
-        Assert.false(manage_runs_pg.is_element_present(*run['manage_locator']))
+        assert not manage_runs_pg.is_element_present(*run['manage_locator'])
 
     @pytest.mark.moztrap(3302)
     def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, api, mozwebqa, login, product):
@@ -45,19 +44,13 @@ class TestManageRunsPage(BaseTest):
         edit_run_pg = manage_runs_pg.go_to_edit_run_page(test_run['name'])
 
         # assert that multiselect widget is not present thus suites list is readonly
-        Assert.false(
-            edit_run_pg.is_multiselect_widget_present,
-            u'multiselect widget should not be present')
+        assert not edit_run_pg.is_multiselect_widget_present
         # assert that order of suites is correct
-        Assert.equal(
-            suite_order, edit_run_pg.readonly_included_suites,
-            u'suites are listed in wrong order')
+        assert suite_order == edit_run_pg.readonly_included_suites
 
         edit_run_pg.save_run()
         test_run = manage_runs_pg.test_runs[0]
         test_run.show_details()
 
         # assert that order of suites is still correct
-        Assert.equal(
-            suite_order, test_run.included_suites,
-            u'suites are listed in wrong order')
+        assert suite_order == test_run.included_suites

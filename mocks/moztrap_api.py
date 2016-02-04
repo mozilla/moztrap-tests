@@ -4,7 +4,6 @@
 
 import json
 
-from unittestzero import Assert
 import requests
 
 
@@ -79,13 +78,13 @@ class MoztrapAPI:
         product['id'], response_text = self._do_post(uri, post_data, True)
         product['version']['uri'] = response_text['productversions'][0]['resource_uri']
 
-        Assert.greater(product['id'], 0, 'No product was created.')
+        assert product['id'] > 0, 'No product was created.'
 
     def delete_product(self, product):
 
         uri = "api/v1/product"
         self.params['permanent'] = True
-        Assert.true(self._do_delete(uri, product['id']), 'Deletion of product %s failed' % product['name'])
+        assert self._do_delete(uri, product['id']), 'Deletion of product %s failed' % product['name']
 
     def create_category(self, category):
 
@@ -95,13 +94,13 @@ class MoztrapAPI:
         }
         category['id'] = self._do_post(uri, post_data)
 
-        Assert.greater(category['id'], 0, 'No category was created.')
+        assert category['id'] > 0, 'No category was created.'
 
     def delete_category(self, category):
 
         uri = "api/v1/category"
         self.params['permanent'] = True
-        Assert.true(self._do_delete(uri, category['id']), 'Deletion of product %s failed' % category['name'])
+        assert self._do_delete(uri, category['id']), 'Deletion of product %s failed' % category['name']
 
     def create_element(self, element):
 
@@ -116,7 +115,7 @@ class MoztrapAPI:
         }
         element['id'] = self._do_post(uri, post_data)
 
-        Assert.greater(element['id'], 0, 'No element was created.')
+        assert element['id'] > 0, 'No element was created.'
 
     def delete_element(self, element):
 
@@ -130,18 +129,18 @@ class MoztrapAPI:
         # Next delete the Element
         uri = "api/v1/element"
         self.params['permanent'] = True
-        Assert.true(self._do_delete(uri, element['id']), 'Deletion of element %s failed' % element['name'])
+        assert self._do_delete(uri, element['id']), 'Deletion of element %s failed' % element['name']
 
         # Finally delete the embedded Category
         uri = "api/v1/category"
         category = element['category']
-        Assert.true(self._do_delete(uri, category['id']), 'Deletion of category %s failed' % category['name'])
+        assert self._do_delete(uri, category['id']), 'Deletion of category %s failed' % category['name']
 
     def delete_environment(self, environment):
 
         uri = "api/v1/environment"
         self.params['permanent'] = True
-        Assert.true(self._do_delete(uri, environment['id']), 'Deletion of environment %s failed' % environment['id'])
+        assert self._do_delete(uri, environment['id']), 'Deletion of environment %s failed' % environment['id']
 
     def create_suite(self, suite, product, case_list=[]):
 
@@ -152,7 +151,7 @@ class MoztrapAPI:
         }
         suite['id'] = self._do_post(uri, post_data)
 
-        Assert.greater(suite['id'], 0, 'No suite was created.')
+        assert suite['id'] > 0, 'No suite was created.'
 
         # add cases to suite
         for i, case in enumerate(case_list):
@@ -168,7 +167,7 @@ class MoztrapAPI:
         }
         id = self._do_post(uri, post_data)
 
-        Assert.greater(id, 0, 'No suite_case was created.')
+        assert id > 0, 'No suite_case was created.'
 
     def create_case(self, case, product):
 
@@ -180,7 +179,7 @@ class MoztrapAPI:
         }
         case['id'] = self._do_post(uri, post_data)
 
-        Assert.greater(case['id'], 0, 'No case was created.')
+        assert case['id'] > 0, 'No case was created.'
 
         # Next create the caseversion
         uri = "api/v1/caseversion/"
@@ -193,7 +192,7 @@ class MoztrapAPI:
         case['version']['id'], response_text = self._do_post(uri, post_data, True)
         case['version']['uri'] = response_text['resource_uri']
 
-        Assert.greater(case['version']['id'], 0, 'No caseversion was created.')
+        assert case['version']['id'] > 0, 'No caseversion was created.'
 
         # Next create the casestep
         uri = "api/v1/casestep/"
@@ -204,4 +203,4 @@ class MoztrapAPI:
         }
         id = self._do_post(uri, post_data)
 
-        Assert.greater(id, 0, 'No casestep was created.')
+        assert id > 0, 'No casestep was created.'

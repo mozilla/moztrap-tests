@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-from unittestzero import Assert
 
 from pages.base_test import BaseTest
 from pages.manage_profiles_page import MozTrapManageProfilesPage
@@ -21,11 +20,11 @@ class TestManageProfilesPage(BaseTest):
 
         manage_profiles_pg.filter_form.filter_by(lookup='name', value=profile['name'])
 
-        Assert.true(manage_profiles_pg.is_element_present(*profile['locator']))
+        assert manage_profiles_pg.is_element_present(*profile['locator'])
 
         manage_profiles_pg.delete_profile(name=profile['name'])
 
-        Assert.false(manage_profiles_pg.is_element_present(*profile['locator']))
+        assert not manage_profiles_pg.is_element_present(*profile['locator'])
 
         create_profile_pg.go_to_create_profile_page()
         create_profile_pg.delete_environment_category(category_name=profile['category'])

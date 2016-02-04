@@ -2,11 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from unittestzero import Assert
-
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import WebDriverException
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementNotVisibleException
+from selenium.common.exceptions import NoSuchElementException, ElementNotVisibleException
 
 
 class Page(object):
@@ -25,7 +23,7 @@ class Page(object):
     def is_the_current_page(self):
         if self._page_title:
             page_title = self.page_title
-            Assert.contains(self._page_title, page_title)
+            assert self._page_title in page_title
 
     @property
     def url_current_page(self):
@@ -70,8 +68,6 @@ class Page(object):
         try:
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: self._selenium_root.find_element(*locator).is_displayed())
-        except TimeoutException:
-            Assert.fail(TimeoutException)
         finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
@@ -80,8 +76,6 @@ class Page(object):
         try:
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: self._selenium_root.find_element(*locator))
-        except TimeoutException:
-            Assert.fail(TimeoutException)
         finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
@@ -90,8 +84,6 @@ class Page(object):
         try:
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: len(self._selenium_root.find_elements(*locator)) < 1)
-        except TimeoutException:
-            Assert.fail(TimeoutException)
         finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 
@@ -100,8 +92,6 @@ class Page(object):
         try:
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: s.execute_script('return $.active == 0'))
-        except TimeoutException:
-            Assert.fail('wait for AJAX timed out after %s seconds' % self.timeout)
         finally:
             self.selenium.implicitly_wait(self.testsetup.default_implicit_wait)
 

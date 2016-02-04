@@ -5,7 +5,6 @@
 import random
 
 import pytest
-from unittestzero import Assert
 
 from pages.base_test import BaseTest
 from pages.manage_suites_page import MozTrapManageSuitesPage
@@ -21,11 +20,11 @@ class TestManageSuitesPage(BaseTest):
 
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
 
-        Assert.true(manage_suites_pg.is_element_present(*suite['locator']))
+        assert manage_suites_pg.is_element_present(*suite['locator'])
 
         manage_suites_pg.delete_suite(name=suite['name'])
 
-        Assert.false(manage_suites_pg.is_element_present(*suite['locator']))
+        assert not manage_suites_pg.is_element_present(*suite['locator'])
 
     def test_that_user_can_create_suite_and_add_some_cases_to_it(self, api, mozwebqa, login, product):
         manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
@@ -35,12 +34,12 @@ class TestManageSuitesPage(BaseTest):
 
         manage_suites_pg.go_to_manage_suites_page()
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
-        Assert.true(manage_suites_pg.is_suite_present(suite))
+        assert manage_suites_pg.is_suite_present(suite)
 
         manage_test_cases_pg = manage_suites_pg.view_cases(name=suite['name'])
 
         for case in cases:
-            Assert.true(manage_test_cases_pg.is_case_present(case))
+            assert manage_test_cases_pg.is_case_present(case)
 
     @pytest.mark.moztrap(2743)
     def test_editing_of_existing_suite_that_has_no_included_cases(self, api, mozwebqa, login, product):
@@ -57,21 +56,14 @@ class TestManageSuitesPage(BaseTest):
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
         # product field should not be read-only.
-        Assert.false(
-            edit_suite_pg.is_product_field_readonly,
-            u'product version field should be editable')
+        assert not edit_suite_pg.is_product_field_readonly
 
         edit_suite_pg.include_cases_to_suite(case_list)
 
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
-        Assert.true(
-            edit_suite_pg.is_product_field_readonly,
-            u'product version field should be read-only')
-
-        Assert.equal(
-            [item.name for item in edit_suite_pg.included_cases], case_list,
-            u'items are listed in wrong order')
+        assert edit_suite_pg.is_product_field_readonly
+        assert case_list == [item.name for item in edit_suite_pg.included_cases]
 
     @pytest.mark.moztrap(2742)
     def test_editing_of_existing_suite_that_includes_cases(self, api, mozwebqa, login, product):
@@ -86,19 +78,17 @@ class TestManageSuitesPage(BaseTest):
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
-        Assert.true(
-            edit_suite_pg.is_product_field_readonly,
-            u'product version field should be read only')
+        assert edit_suite_pg.is_product_field_readonly
 
         # check list of available cases
         actual_available_cases = [item.name for item in edit_suite_pg.available_cases]
         expected_available_cases = [item['name'] for item in not_included_cases]
-        Assert.equal(actual_available_cases, expected_available_cases)
+        assert expected_available_cases == actual_available_cases
 
         # check list of included cases
         actual_included_cases = [item.name for item in edit_suite_pg.included_cases]
         expected_included_cases = [item['name'] for item in included_cases]
-        Assert.equal(actual_included_cases, expected_included_cases)
+        assert expected_included_cases == actual_included_cases
 
         # get all cases names and make random order via random.shuffle
         all_cases = expected_available_cases + expected_included_cases
@@ -112,6 +102,4 @@ class TestManageSuitesPage(BaseTest):
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
 
         # and ensure that included cases are listed in right order
-        Assert.equal(
-            [item.name for item in edit_suite_pg.included_cases], all_cases,
-            u'items are listed in wrong order')
+        assert all_cases == [item.name for item in edit_suite_pg.included_cases]

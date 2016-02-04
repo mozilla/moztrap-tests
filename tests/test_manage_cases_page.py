@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-from unittestzero import Assert
 
 from mocks.mock_case import MockCase
 from mocks.mock_tag import MockTag
@@ -21,11 +20,11 @@ class TestManageCasesPage(BaseTest):
 
         manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
 
-        Assert.true(manage_cases_pg.is_element_present(*case['locator']))
+        assert manage_cases_pg.is_element_present(*case['locator'])
 
         manage_cases_pg.delete_case(name=case['name'])
 
-        Assert.false(manage_cases_pg.is_element_present(*case['locator']))
+        assert not manage_cases_pg.is_element_present(*case['locator'])
 
     def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, api, mozwebqa, login, product):
         # prerequisites
@@ -51,9 +50,9 @@ class TestManageCasesPage(BaseTest):
         test_cases = manage_cases_pg.test_cases
 
         # check that there is only one test case left and ensure its version equals to second version
-        Assert.equal(len(test_cases), 1, u'there should be only one case')
-        Assert.equal(test_cases[0].name, test_case['name'], u'that\'s wrong test case')
-        Assert.equal(test_cases[0].product_version, product_versions[0], u'that\'s wrong product version')
+        assert 1 == len(test_cases)
+        assert test_case['name'] == test_cases[0].name
+        assert product_versions[0] == test_cases[0].product_version
 
     def test_that_manage_cases_list_shows_all_case_versions_individually(self, api, mozwebqa, login, product):
         # prerequisites
@@ -69,13 +68,10 @@ class TestManageCasesPage(BaseTest):
         filtered_cases = manage_cases_pg.test_cases
 
         for case in filtered_cases:
-            Assert.equal(case.name, test_case['name'], u'that\'s wrong case we\'ve got here')
+            assert test_case['name'] == case.name
 
         # check that both product versions are displayed
-        Assert.equal(
-            sorted(product_versions),
-            sorted([case.product_version for case in filtered_cases]),
-            u'expected product versions of test cases don\'t match actual ones')
+        assert sorted(product_versions) == sorted([case.product_version for case in filtered_cases])
 
     def test_that_creates_tag_during_test_case_creation(self, mozwebqa, login, product):
         mock_tag = MockTag()
@@ -86,6 +82,5 @@ class TestManageCasesPage(BaseTest):
         manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
         filtered_cases = manage_cases_pg.test_cases
 
-        Assert.equal(len(filtered_cases), 1, u'there should be only one case')
-        Assert.equal(filtered_cases[0].tag_name, mock_tag['name'].lower(),
-                     'actual tag name does not match expected value')
+        assert 1 == len(filtered_cases)
+        assert mock_tag['name'].lower() == filtered_cases[0].tag_name

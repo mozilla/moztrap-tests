@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-from unittestzero import Assert
 
 from pages.base_test import BaseTest
 from pages.home_page import MozTrapHomePage
@@ -19,12 +18,12 @@ class TestRunTestsPage(BaseTest):
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa)
         result = run_tests_pg.get_test_result(case['name'])
-        Assert.false(result.is_test_passed)
+        assert not result.is_test_passed
 
         result.pass_test()
 
         result = run_tests_pg.get_test_result(case['name'])
-        Assert.true(result.is_test_passed)
+        assert result.is_test_passed
 
     @pytest.mark.moztrap(206)
     def test_that_user_can_fail_test(self, api, mozwebqa, login, product, element):
@@ -32,12 +31,12 @@ class TestRunTestsPage(BaseTest):
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa)
         result = run_tests_pg.get_test_result(case['name'])
-        Assert.false(result.is_test_failed)
+        assert not result.is_test_failed
 
         result.fail_test()
 
         result = run_tests_pg.get_test_result(case['name'])
-        Assert.true(result.is_test_failed)
+        assert result.is_test_failed
 
     @pytest.mark.moztrap(207)
     def test_that_user_can_mark_test_invalid(self, api, mozwebqa, login, product, element):
@@ -45,12 +44,12 @@ class TestRunTestsPage(BaseTest):
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa)
         result = run_tests_pg.get_test_result(case['name'])
-        Assert.false(result.is_test_invalid)
+        assert not result.is_test_invalid
 
         result.invalidate_test()
 
         result = run_tests_pg.get_test_result(case['name'])
-        Assert.true(result.is_test_invalid)
+        assert result.is_test_invalid
 
     @pytest.mark.moztrap(2744)
     def test_that_test_run_saves_right_order_of_test_cases(self, api, mozwebqa, login, product, element):
@@ -84,7 +83,7 @@ class TestRunTestsPage(BaseTest):
         expected_order = [(case['name'], suite) for case in suite_a_cases for suite in (suite_a['name'],)] + \
                          [(case['name'], suite) for case in suite_b_cases for suite in (suite_b['name'],)]
         # assert that right order saved
-        Assert.equal(actual_order, expected_order)
+        assert expected_order == actual_order
         # edit run to reorder suites
         manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
         manage_runs_pg.go_to_manage_runs_page()
@@ -107,28 +106,28 @@ class TestRunTestsPage(BaseTest):
         expected_order = [(case['name'], suite) for case in suite_b_cases for suite in (suite_b['name'],)] + \
                          [(case['name'], suite) for case in suite_a_cases for suite in (suite_a['name'],)]
         # assert that right order saved
-        Assert.equal(actual_order, expected_order)
+        assert expected_order == actual_order
 
     def test_that_user_can_mark_test_as_blocked(self, api, mozwebqa, login, product, element):
         case = self.create_and_run_test(api, mozwebqa, product, element)[0]
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa)
         test_result = run_tests_pg.get_test_result(case['name'])
-        Assert.false(test_result.is_blocked)
+        assert not test_result.is_blocked
 
         test_result.mark_blocked()
 
         test_result = run_tests_pg.get_test_result(case['name'])
-        Assert.true(test_result.is_blocked)
+        assert test_result.is_blocked
 
     def test_that_user_can_skip_test(self, api, mozwebqa, login, product, element):
         case = self.create_and_run_test(api, mozwebqa, product, element)[0]
 
         run_tests_pg = MozTrapRunTestsPage(mozwebqa)
         test_result = run_tests_pg.get_test_result(case['name'])
-        Assert.false(test_result.is_skipped)
+        assert not test_result.is_skipped
 
         test_result.skip_test()
 
         test_result = run_tests_pg.get_test_result(case['name'])
-        Assert.true(test_result.is_skipped)
+        assert test_result.is_skipped

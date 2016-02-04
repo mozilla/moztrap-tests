@@ -3,7 +3,6 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import pytest
-from unittestzero import Assert
 
 from pages.base_test import BaseTest
 from pages.manage_products_page import MozTrapManageProductsPage
@@ -19,11 +18,11 @@ class TestManageProductsPage(BaseTest):
 
         manage_products_pg.filter_form.filter_by(lookup='name', value=product['name'])
 
-        Assert.true(manage_products_pg.is_element_present(*product['locator']))
+        assert manage_products_pg.is_element_present(*product['locator'])
 
         manage_products_pg.delete_product(name=product['name'])
 
-        Assert.false(manage_products_pg.is_element_present(*product['locator']))
+        assert not manage_products_pg.is_element_present(*product['locator'])
 
     @pytest.mark.moztrap(151)
     def test_that_user_can_filter_product_by_name(self, mozwebqa, login, product):
@@ -32,12 +31,12 @@ class TestManageProductsPage(BaseTest):
 
         filter_item = manage_products_pg.filter_form.filter_by(lookup='name', value='Another Product')
 
-        Assert.false(manage_products_pg.is_product_present(product))
+        assert not manage_products_pg.is_product_present(product)
 
         filter_item.remove_filter()
         manage_products_pg.filter_form.filter_by(lookup='name', value=product['name'])
 
-        Assert.true(manage_products_pg.is_product_present(product))
+        assert manage_products_pg.is_product_present(product)
 
     @pytest.mark.moztrap(3415)
     def test_that_user_can_filter_product_by_name_without_mouse(self, mozwebqa, login, product):
@@ -46,9 +45,9 @@ class TestManageProductsPage(BaseTest):
 
         filter_item = manage_products_pg.filter_form.filter_without_mouse_by(lookup='name', value='Another Product')
 
-        Assert.false(manage_products_pg.is_product_present(product))
+        assert not manage_products_pg.is_product_present(product)
 
         filter_item.remove_filter()
         manage_products_pg.filter_form.filter_without_mouse_by(lookup='name', value=product['name'])
 
-        Assert.true(manage_products_pg.is_product_present(product))
+        assert manage_products_pg.is_product_present(product)
