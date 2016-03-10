@@ -13,10 +13,10 @@ from pages.manage_cases_page import MozTrapManageCasesPage
 class TestManageCasesPage(BaseTest):
 
     @pytest.mark.moztrap([142, 137])
-    def test_that_user_can_create_and_delete_case(self, mozwebqa, login, product):
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
+    def test_that_user_can_create_and_delete_case(self, base_url, selenium, login, product):
+        manage_cases_pg = MozTrapManageCasesPage(base_url, selenium)
 
-        case = self.create_case(mozwebqa, product)
+        case = self.create_case(base_url, selenium, product)
 
         manage_cases_pg.filter_form.filter_by(lookup='name', value=case['name'])
 
@@ -26,16 +26,16 @@ class TestManageCasesPage(BaseTest):
 
         assert not manage_cases_pg.is_element_present(*case['locator'])
 
-    def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, api, mozwebqa, login, product):
+    def test_that_deleting_single_version_of_case_does_not_delete_all_versions(self, api, base_url, selenium, login, product):
         # prerequisites
-        test_case = self.create_case(mozwebqa, product=product, api=api)
+        test_case = self.create_case(base_url, selenium, product=product, api=api)
 
         first_version = product['version']
-        second_version = self.create_version(mozwebqa, product=product)
+        second_version = self.create_version(base_url, selenium, product=product)
         product_versions = [u'%s %s' % (product['name'], version['name'])
                             for version in (first_version, second_version)]
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
+        manage_cases_pg = MozTrapManageCasesPage(base_url, selenium)
         manage_cases_pg.go_to_manage_cases_page()
         filter_item = manage_cases_pg.filter_form.filter_by(lookup='product', value=product['name'])
         test_cases = manage_cases_pg.test_cases
@@ -54,15 +54,15 @@ class TestManageCasesPage(BaseTest):
         assert test_case['name'] == test_cases[0].name
         assert product_versions[0] == test_cases[0].product_version
 
-    def test_that_manage_cases_list_shows_all_case_versions_individually(self, api, mozwebqa, login, product):
+    def test_that_manage_cases_list_shows_all_case_versions_individually(self, api, base_url, selenium, login, product):
         # prerequisites
-        test_case = self.create_case(mozwebqa, product=product, api=api)
+        test_case = self.create_case(base_url, selenium, product=product, api=api)
         first_version = product['version']
-        second_version = self.create_version(mozwebqa, product=product)
+        second_version = self.create_version(base_url, selenium, product=product)
         product_versions = [u'%s %s' % (product['name'], version['name'])
                             for version in (first_version, second_version)]
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
+        manage_cases_pg = MozTrapManageCasesPage(base_url, selenium)
         manage_cases_pg.go_to_manage_cases_page()
         manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
         filtered_cases = manage_cases_pg.test_cases
@@ -73,12 +73,12 @@ class TestManageCasesPage(BaseTest):
         # check that both product versions are displayed
         assert sorted(product_versions) == sorted([case.product_version for case in filtered_cases])
 
-    def test_that_creates_tag_during_test_case_creation(self, mozwebqa, login, product):
+    def test_that_creates_tag_during_test_case_creation(self, base_url, selenium, login, product):
         mock_tag = MockTag()
         mock_case = MockCase(tag=mock_tag)
-        test_case = self.create_case(mozwebqa, product=product, mock_case=mock_case)
+        test_case = self.create_case(base_url, selenium, product=product, mock_case=mock_case)
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
+        manage_cases_pg = MozTrapManageCasesPage(base_url, selenium)
         manage_cases_pg.filter_form.filter_by(lookup='name', value=test_case['name'])
         filtered_cases = manage_cases_pg.test_cases
 

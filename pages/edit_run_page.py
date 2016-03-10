@@ -70,7 +70,7 @@ class MozTrapEditRunPage(MozTrapBasePage):
 
     @property
     def multiselect_widget(self):
-        return MultiselectWidget(self.testsetup)
+        return MultiselectWidget(self.base_url, self.selenium)
 
     @property
     def is_multiselect_widget_present(self):

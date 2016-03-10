@@ -10,8 +10,8 @@ from pages.manage_cases_page import MozTrapManageCasesPage
 
 class TestManageTagsPage(BaseTest):
 
-    def test_creating_a_tag_with_no_product_value_set(self, mozwebqa, login):
-        manage_tags_pg = MozTrapManageTagsPage(mozwebqa)
+    def test_creating_a_tag_with_no_product_value_set(self, base_url, selenium, login):
+        manage_tags_pg = MozTrapManageTagsPage(base_url, selenium)
         manage_tags_pg.go_to_manage_tags_page()
 
         create_tag_pg = manage_tags_pg.click_create_tag_button()
@@ -25,8 +25,8 @@ class TestManageTagsPage(BaseTest):
 
         assert tag['name'] in [t.name for t in displayed_tags]
 
-    def test_creating_a_tag_with_a_product_value_and_no_cases(self, mozwebqa, login, product):
-        manage_tags_pg = MozTrapManageTagsPage(mozwebqa)
+    def test_creating_a_tag_with_a_product_value_and_no_cases(self, base_url, selenium, login, product):
+        manage_tags_pg = MozTrapManageTagsPage(base_url, selenium)
         manage_tags_pg.go_to_manage_tags_page()
 
         create_tag_pg = manage_tags_pg.click_create_tag_button()
@@ -41,10 +41,10 @@ class TestManageTagsPage(BaseTest):
 
         assert tag['name'] in [t.name for t in displayed_tags]
 
-    def test_creating_a_tag_with_a_product_value_and_cases(self, api, mozwebqa, login, product):
+    def test_creating_a_tag_with_a_product_value_and_cases(self, api, base_url, selenium, login, product):
         # create some cases for product
-        cases = self.create_bulk_cases(mozwebqa, product, api=api)
-        manage_tags_pg = MozTrapManageTagsPage(mozwebqa)
+        cases = self.create_bulk_cases(base_url, selenium, product, api=api)
+        manage_tags_pg = MozTrapManageTagsPage(base_url, selenium)
         manage_tags_pg.go_to_manage_tags_page()
 
         create_tag_pg = manage_tags_pg.click_create_tag_button()
@@ -58,7 +58,7 @@ class TestManageTagsPage(BaseTest):
 
         create_tag_pg.include_caseversions_to_tag(expected_case_names)
 
-        manage_cases_page = MozTrapManageCasesPage(mozwebqa)
+        manage_cases_page = MozTrapManageCasesPage(base_url, selenium)
         manage_cases_page.go_to_manage_cases_page()
         manage_cases_page.filter_form.filter_by(lookup='tag', value=tag['name'])
 

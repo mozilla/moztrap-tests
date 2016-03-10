@@ -16,7 +16,7 @@ class MozTrapManageProfilesPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     def go_to_manage_profiles_page(self):
         self.selenium.get(self.base_url + '/manage/profiles/')

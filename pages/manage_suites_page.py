@@ -19,7 +19,7 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     def go_to_manage_suites_page(self):
         self.selenium.get(self.base_url + '/manage/suites/')
@@ -43,11 +43,11 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
     def click_create_suite_button(self):
         self.find_element(*self._create_suite_button_locator).click()
         from pages.create_suite_page import MozTrapCreateSuitePage
-        return MozTrapCreateSuitePage(self.testsetup)
+        return MozTrapCreateSuitePage(self.base_url, self.selenium)
 
     @property
     def test_suites(self):
-        return [self.TestSuiteItem(self.testsetup, web_element)
+        return [self.TestSuiteItem(self.base_url, self.selenium, web_element)
                 for web_element in self.find_elements(*self._test_suite_item_locator)]
 
     def is_suite_present(self, suite):
@@ -72,9 +72,9 @@ class MozTrapManageSuitesPage(MozTrapBasePage):
         def edit(self):
             self.find_element(*self._edit_suite_locator).click()
             from pages.edit_suite_page import MozTrapEditSuitePage
-            return MozTrapEditSuitePage(self.testsetup)
+            return MozTrapEditSuitePage(self.base_url, self.selenium)
 
         def view_cases(self):
             self.find_element(*self._view_cases_locator).click()
             from pages.manage_cases_page import MozTrapManageCasesPage
-            return MozTrapManageCasesPage(self.testsetup)
+            return MozTrapManageCasesPage(self.base_url, self.selenium)

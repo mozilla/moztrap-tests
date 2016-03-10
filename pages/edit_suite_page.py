@@ -28,7 +28,7 @@ class MozTrapEditSuitePage(MozTrapBasePage):
 
     @property
     def multiselect_widget(self):
-        return MultiselectWidget(self.testsetup)
+        return MultiselectWidget(self.base_url, self.selenium)
 
     def include_cases_to_suite(self, case_list, save_suite=True):
         self.multiselect_widget.include_items(case_list)

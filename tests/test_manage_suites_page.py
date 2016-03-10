@@ -13,10 +13,10 @@ from pages.manage_suites_page import MozTrapManageSuitesPage
 class TestManageSuitesPage(BaseTest):
 
     @pytest.mark.moztrap([98, 99])
-    def test_that_user_can_create_and_delete_suite(self, mozwebqa, login, product):
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+    def test_that_user_can_create_and_delete_suite(self, base_url, selenium, login, product):
+        manage_suites_pg = MozTrapManageSuitesPage(base_url, selenium)
 
-        suite = self.create_suite(mozwebqa, product)
+        suite = self.create_suite(base_url, selenium, product)
 
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
 
@@ -26,11 +26,11 @@ class TestManageSuitesPage(BaseTest):
 
         assert not manage_suites_pg.is_element_present(*suite['locator'])
 
-    def test_that_user_can_create_suite_and_add_some_cases_to_it(self, api, mozwebqa, login, product):
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+    def test_that_user_can_create_suite_and_add_some_cases_to_it(self, api, base_url, selenium, login, product):
+        manage_suites_pg = MozTrapManageSuitesPage(base_url, selenium)
 
-        cases = [self.create_case(mozwebqa=mozwebqa, product=product, api=api) for i in range(3)]
-        suite = self.create_suite(mozwebqa=mozwebqa, product=product, api=api, case_list=[case for case in cases])
+        cases = [self.create_case(base_url, selenium, product=product, api=api) for i in range(3)]
+        suite = self.create_suite(base_url, selenium, product=product, api=api, case_list=[case for case in cases])
 
         manage_suites_pg.go_to_manage_suites_page()
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
@@ -42,15 +42,15 @@ class TestManageSuitesPage(BaseTest):
             assert manage_test_cases_pg.is_case_present(case)
 
     @pytest.mark.moztrap(2743)
-    def test_editing_of_existing_suite_that_has_no_included_cases(self, api, mozwebqa, login, product):
+    def test_editing_of_existing_suite_that_has_no_included_cases(self, api, base_url, selenium, login, product):
         # create suite and cases
-        suite = self.create_suite(mozwebqa, product, api=api)
-        cases = self.create_bulk_cases(mozwebqa, product, api=api, cases_amount=3)
+        suite = self.create_suite(base_url, selenium, product, api=api)
+        cases = self.create_bulk_cases(base_url, selenium, product, api=api, cases_amount=3)
 
         # simulate random order of cases
         case_list = [cases[i]['name'] for i in (2, 0, 1)]
 
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+        manage_suites_pg = MozTrapManageSuitesPage(base_url, selenium)
         manage_suites_pg.go_to_manage_suites_page()
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])
@@ -66,14 +66,14 @@ class TestManageSuitesPage(BaseTest):
         assert case_list == [item.name for item in edit_suite_pg.included_cases]
 
     @pytest.mark.moztrap(2742)
-    def test_editing_of_existing_suite_that_includes_cases(self, api, mozwebqa, login, product):
+    def test_editing_of_existing_suite_that_includes_cases(self, api, base_url, selenium, login, product):
         # create suite and cases (both included and not included into suite)
-        included_cases = self.create_bulk_cases(mozwebqa, product, api=api, cases_amount=2)
-        not_included_cases = self.create_bulk_cases(mozwebqa, product, api=api, cases_amount=3)
-        suite = self.create_suite(mozwebqa, product, api=api, case_list=[case for case in included_cases])
+        included_cases = self.create_bulk_cases(base_url, selenium, product, api=api, cases_amount=2)
+        not_included_cases = self.create_bulk_cases(base_url, selenium, product, api=api, cases_amount=3)
+        suite = self.create_suite(base_url, selenium, product, api=api, case_list=[case for case in included_cases])
 
         # filter by suite name and go to edit suite page
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+        manage_suites_pg = MozTrapManageSuitesPage(base_url, selenium)
         manage_suites_pg.go_to_manage_suites_page()
         manage_suites_pg.filter_form.filter_by(lookup='name', value=suite['name'])
         edit_suite_pg = manage_suites_pg.edit_suite(name=suite['name'])

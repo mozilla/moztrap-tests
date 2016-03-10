@@ -21,13 +21,13 @@ class MultiselectWidget(Page):
     @property
     def available_items(self):
         self.wait_for_element_not_present(*self._loading_available_items_locator)
-        return [Item(self.testsetup, web_element)
+        return [Item(self.base_url, self.selenium, web_element)
                 for web_element in self.find_elements(*self._available_item_locator)]
 
     @property
     def included_items(self):
         self.wait_for_element_not_present(*self._loading_included_items_locator)
-        return [Item(self.testsetup, web_element)
+        return [Item(self.base_url, self.selenium, web_element)
                 for web_element in self.find_elements(*self._included_item_locator)]
 
     def include_items(self, item_names_list):

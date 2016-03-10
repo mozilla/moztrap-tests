@@ -21,7 +21,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     def go_to_manage_versions_page(self):
         self.get_relative_path('/manage/productversions/')
@@ -30,7 +30,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
     def click_create_version_button(self):
         self.find_element(*self._create_version_button_locator).click()
         from pages.create_version_page import MozTrapCreateVersionPage
-        return MozTrapCreateVersionPage(self.testsetup)
+        return MozTrapCreateVersionPage(self.base_url, self.selenium)
 
     def delete_version(self, name='Test Version', product_name='Test Product'):
         _delete_locator = (self._delete_version_locator[0], self._delete_version_locator[1] % {'product_name': product_name, 'version_name': name})
@@ -42,7 +42,7 @@ class MozTrapManageVersionsPage(MozTrapBasePage):
         self.wait_for_element_to_be_visible(*self._select_environments_locator)
         self.selenium.find_element(*self._select_environments_locator).click()
         from pages.manage_environments_page import MozTrapManageEnvironmentsPage
-        return MozTrapManageEnvironmentsPage(self.testsetup)
+        return MozTrapManageEnvironmentsPage(self.base_url, self.selenium)
 
     def clone_version(self, name='Test Version', product_name='Test Product'):
         _clone_version_locator = (self._clone_version_locator[0], self._clone_version_locator[1] % {'product_name': product_name, 'version_name': name})

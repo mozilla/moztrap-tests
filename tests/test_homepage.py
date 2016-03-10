@@ -12,10 +12,10 @@ class TestHomepage(BaseTest):
 
     @pytest.mark.moztrap([3385, 3386])
     @pytest.mark.nondestructive
-    def test_that_user_can_login_and_logout(self, mozwebqa, existing_user):
+    def test_that_user_can_login_and_logout(self, base_url, selenium, existing_user):
         from pages.login_page import MozTrapLoginPage
-        login_pg = MozTrapLoginPage(mozwebqa)
-        home_pg = MozTrapHomePage(mozwebqa)
+        login_pg = MozTrapLoginPage(base_url, selenium)
+        home_pg = MozTrapHomePage(base_url, selenium)
 
         home_pg.get_relative_path('/')
         assert not home_pg.header.is_user_logged_in
@@ -30,8 +30,8 @@ class TestHomepage(BaseTest):
         assert not home_pg.header.is_user_logged_in
 
     @pytest.mark.moztrap(3387)
-    def test_that_user_can_select_product(self, mozwebqa, login, product):
-        home_pg = MozTrapHomePage(mozwebqa)
+    def test_that_user_can_select_product(self, base_url, selenium, login, product):
+        home_pg = MozTrapHomePage(base_url, selenium)
 
         home_pg.go_to_home_page()
 
@@ -42,10 +42,10 @@ class TestHomepage(BaseTest):
         assert home_pg.is_product_version_visible(product)
 
     @pytest.mark.moztrap(3388)
-    def test_that_user_can_select_version(self, mozwebqa, login, product):
-        home_pg = MozTrapHomePage(mozwebqa)
+    def test_that_user_can_select_version(self, base_url, selenium, login, product):
+        home_pg = MozTrapHomePage(base_url, selenium)
 
-        run = self.create_run(mozwebqa, product=product, activate=True)
+        run = self.create_run(base_url, selenium, product=product, activate=True)
 
         home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])
@@ -57,10 +57,10 @@ class TestHomepage(BaseTest):
         assert home_pg.is_element_visible(*run['homepage_locator'])
 
     @pytest.mark.moztrap(3414)
-    def test_that_user_can_select_run(self, mozwebqa, login, product):
-        home_pg = MozTrapHomePage(mozwebqa)
+    def test_that_user_can_select_run(self, base_url, selenium, login, product):
+        home_pg = MozTrapHomePage(base_url, selenium)
 
-        run = self.create_run(mozwebqa, product=product, activate=True)
+        run = self.create_run(base_url, selenium, product=product, activate=True)
 
         home_pg.go_to_home_page()
         home_pg.select_item(run['version']['product']['name'])

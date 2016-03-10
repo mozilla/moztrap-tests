@@ -11,10 +11,10 @@ from pages.manage_runs_page import MozTrapManageRunsPage
 class TestManageRunsPage(BaseTest):
 
     @pytest.mark.moztrap([113, 112])
-    def test_that_user_can_create_and_delete_run(self, mozwebqa, login, product):
-        manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
+    def test_that_user_can_create_and_delete_run(self, base_url, selenium, login, product):
+        manage_runs_pg = MozTrapManageRunsPage(base_url, selenium)
 
-        run = self.create_run(mozwebqa, product=product)
+        run = self.create_run(base_url, selenium, product=product)
 
         manage_runs_pg.filter_form.filter_by(lookup='name', value=run['name'])
 
@@ -25,19 +25,19 @@ class TestManageRunsPage(BaseTest):
         assert not manage_runs_pg.is_element_present(*run['manage_locator'])
 
     @pytest.mark.moztrap(3302)
-    def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, api, mozwebqa, login, product):
+    def test_for_edit_active_run_that_includes_suites_to_be_sure_they_are_listed(self, api, base_url, selenium, login, product):
         # create version
         version = product['version']
         # create two test suites
-        suite_a = self.create_suite(mozwebqa, product=product, api=api, name='suite A')
-        suite_b = self.create_suite(mozwebqa, product=product, api=api, name='suite B')
+        suite_a = self.create_suite(base_url, selenium, product=product, api=api, name='suite A')
+        suite_b = self.create_suite(base_url, selenium, product=product, api=api, name='suite B')
         # create test run
         suite_order = [suite_b['name'], suite_a['name']]
         test_run = self.create_run(
-            mozwebqa, product=product,
+            base_url, selenium, product=product,
             version=version, suite_name_list=suite_order)
 
-        manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
+        manage_runs_pg = MozTrapManageRunsPage(base_url, selenium)
         manage_runs_pg.go_to_manage_runs_page()
         manage_runs_pg.filter_form.filter_by(lookup='name', value=test_run['name'])
         manage_runs_pg.activate_run(name=test_run['name'])

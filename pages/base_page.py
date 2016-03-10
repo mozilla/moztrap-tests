@@ -11,7 +11,7 @@ class MozTrapBasePage(Page):
 
     @property
     def header(self):
-        return self.Header(self.testsetup)
+        return self.Header(self.base_url, self.selenium)
 
     class Header(Page):
 
@@ -38,12 +38,12 @@ class MozTrapBasePage(Page):
         def click_run_tests(self):
             self.selenium.find_element(*self._run_tests_locator).click()
             from pages.run_tests_page import MozTrapRunTestsPage
-            return MozTrapRunTestsPage(self.testsetup)
+            return MozTrapRunTestsPage(self.base_url, self.selenium)
 
         def click_manage_locator(self):
             self.selenium.find_element(*self._manage_locator).click()
             from pages.manage_runs_page import MozTrapManageRunsPage
-            return MozTrapManageRunsPage(self.testsetup)
+            return MozTrapManageRunsPage(self.base_url, self.selenium)
 
         def toggle_drilldown(self):
             self.selenium.find_element(*self._drilldown_locator).click()
@@ -51,4 +51,4 @@ class MozTrapBasePage(Page):
         def login(self, email, password):
             self.find_element(*self._signin_locator).click()
             from pages.login_page import MozTrapLoginPage
-            MozTrapLoginPage(self.testsetup).login(email, password)
+            MozTrapLoginPage(self.base_url, self.selenium).login(email, password)
