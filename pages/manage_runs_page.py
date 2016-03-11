@@ -18,11 +18,11 @@ class MozTrapManageRunsPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     @property
     def test_runs(self):
-        return [self.TestRunItem(self.testsetup, web_element)
+        return [self.TestRunItem(self.base_url, self.selenium, web_element)
                 for web_element in self.find_elements(*self._test_run_item_locator)]
 
     def go_to_manage_runs_page(self):
@@ -32,7 +32,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
     def click_create_run_button(self):
         self.find_element(*self._create_run_button_locator).click()
         from pages.create_run_page import MozTrapCreateRunPage
-        return MozTrapCreateRunPage(self.testsetup)
+        return MozTrapCreateRunPage(self.base_url, self.selenium)
 
     def delete_run(self, name='Test Run'):
         self._get_run(name).delete()
@@ -76,7 +76,7 @@ class MozTrapManageRunsPage(MozTrapBasePage):
         def edit(self):
             self.selenium.find_element(*self._edit_run_locator).click()
             from pages.edit_run_page import MozTrapEditRunPage
-            return MozTrapEditRunPage(self.testsetup)
+            return MozTrapEditRunPage(self.base_url, self.selenium)
 
         def activate(self):
             self.find_element(*self._run_status_locator).click()

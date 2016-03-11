@@ -9,6 +9,18 @@ from mocks.mock_element import MockElement
 from mocks.moztrap_api import MoztrapAPI
 
 
+@pytest.fixture(scope='session')
+def session_capabilities(session_capabilities):
+    session_capabilities.setdefault('tags', []).append('moztrap')
+    return session_capabilities
+
+
+@pytest.fixture
+def selenium(selenium):
+    selenium.implicitly_wait(10)
+    return selenium
+
+
 @pytest.fixture
 def stored_users(variables):
     return variables['users']
@@ -20,17 +32,16 @@ def existing_user(stored_users):
 
 
 @pytest.fixture(scope='function')
-def login(request, mozwebqa, existing_user):
+def login(request, base_url, selenium, existing_user):
     from pages.login_page import MozTrapLoginPage
-    login_pg = MozTrapLoginPage(mozwebqa)
+    login_pg = MozTrapLoginPage(base_url, selenium)
     login_pg.go_to_login_page()
     login_pg.login(existing_user['email'], existing_user['password'])
 
 
 @pytest.fixture
-def api(request, variables):
-    url = request.getfuncargvalue('mozwebqa').base_url
-    return MoztrapAPI(variables['api']['user'], variables['api']['key'], url)
+def api(request, base_url, variables):
+    return MoztrapAPI(variables['api']['user'], variables['api']['key'], base_url)
 
 
 @pytest.fixture(scope='function')

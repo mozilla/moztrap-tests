@@ -21,11 +21,11 @@ class MozTrapViewRunResultsPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     @property
     def test_run_results(self):
-        return [TestRunResult(self.testsetup, web_element)
+        return [TestRunResult(self.base_url, self.selenium, web_element)
                 for web_element in self.find_elements(*self._run_results_item_locator)]
 
 

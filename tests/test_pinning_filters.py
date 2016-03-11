@@ -15,10 +15,10 @@ from pages.view_run_results_page import MozTrapViewRunResultsPage
 class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5935)
-    def test_that_pinning_filter_on_product_version_set_defaults_in_new_run(self, mozwebqa, login, product):
+    def test_that_pinning_filter_on_product_version_set_defaults_in_new_run(self, base_url, selenium, login, product):
         product_version_name = u'%s %s' % (product['name'], product['version']['name'])
 
-        manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
+        manage_runs_pg = MozTrapManageRunsPage(base_url, selenium)
         manage_runs_pg.go_to_manage_runs_page()
         filter_item = manage_runs_pg.filter_form.filter_by(lookup='productversion', value=product_version_name)
 
@@ -34,16 +34,16 @@ class TestPinningFilters(BaseTest):
         assert product_version_name == create_run_pg.product_version_value
 
     @pytest.mark.moztrap(5930)
-    def test_that_pinning_name_field_filter_only_works_for_current_page(self, api, mozwebqa, login, product):
+    def test_that_pinning_name_field_filter_only_works_for_current_page(self, api, base_url, selenium, login, product):
         good_case_name = u'mozilla'
         good_suite_name = u'MozTrap'
 
-        self.create_bulk_cases(mozwebqa, product, api=api, name=good_case_name, cases_amount=3)
-        self.create_bulk_cases(mozwebqa, product, api=api, name=u'ALLIZOM', cases_amount=2)
-        self.create_suite(mozwebqa, product, api=api, name=good_suite_name)
-        self.create_suite(mozwebqa, product, api=api, name=u'PartZom')
+        self.create_bulk_cases(base_url, selenium, product, api=api, name=good_case_name, cases_amount=3)
+        self.create_bulk_cases(base_url, selenium, product, api=api, name=u'ALLIZOM', cases_amount=2)
+        self.create_suite(base_url, selenium, product, api=api, name=good_suite_name)
+        self.create_suite(base_url, selenium, product, api=api, name=u'PartZom')
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
+        manage_cases_pg = MozTrapManageCasesPage(base_url, selenium)
         manage_cases_pg.go_to_manage_cases_page()
 
         # filter cases by name and assert that only cases with mozilla in their name are found
@@ -57,7 +57,7 @@ class TestPinningFilters(BaseTest):
         cases_filter.pin_filter()
         self.check_pinned_filter(cases_filter, is_pinned=True)
 
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+        manage_suites_pg = MozTrapManageSuitesPage(base_url, selenium)
         manage_suites_pg.go_to_manage_suites_page()
 
         # check that there is no filters applied
@@ -91,15 +91,15 @@ class TestPinningFilters(BaseTest):
             assert good_suite_name in suite.name
 
         # and go to manage runs page and see no filters there
-        manage_runs_pg = MozTrapManageRunsPage(mozwebqa)
+        manage_runs_pg = MozTrapManageRunsPage(base_url, selenium)
         manage_runs_pg.go_to_manage_runs_page()
 
         # check that there is no filters applied
         assert [] == manage_runs_pg.filter_form.filter_items
 
     @pytest.mark.moztrap(5933)
-    def test_that_pinning_filters_on_product_sets_defaults_in_new_suite(self, mozwebqa, login, product):
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+    def test_that_pinning_filters_on_product_sets_defaults_in_new_suite(self, base_url, selenium, login, product):
+        manage_suites_pg = MozTrapManageSuitesPage(base_url, selenium)
         manage_suites_pg.go_to_manage_suites_page()
         filter_item = manage_suites_pg.filter_form.filter_by(lookup='product', value=product['name'])
 
@@ -116,12 +116,12 @@ class TestPinningFilters(BaseTest):
 
     @pytest.mark.moztrap(5932)
     @pytest.mark.xfail(reason='Bug 1008850 - Suggestion box is cut off when the filter is too long')
-    def test_that_pinning_filters_on_product_and_version_and_suite_set_defaults_in_new_case(self, api, mozwebqa, login, product):
+    def test_that_pinning_filters_on_product_and_version_and_suite_set_defaults_in_new_case(self, api, base_url, selenium, login, product):
         version = product['version']
         product_version_name = u'%s %s' % (product['name'], version['name'])
-        suite = self.create_suite(mozwebqa, product=product, api=api)
+        suite = self.create_suite(base_url, selenium, product=product, api=api)
 
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
+        manage_cases_pg = MozTrapManageCasesPage(base_url, selenium)
         manage_cases_pg.go_to_manage_cases_page()
 
         filters = []
@@ -148,8 +148,8 @@ class TestPinningFilters(BaseTest):
         assert suite['name'] == create_bulk_cases_pg.suite_value
 
     @pytest.mark.moztrap(5936)
-    def test_that_pinning_filter_on_product_sets_defaults_in_new_product_version(self, mozwebqa, login, product):
-        manage_versions_pg = MozTrapManageVersionsPage(mozwebqa)
+    def test_that_pinning_filter_on_product_sets_defaults_in_new_product_version(self, base_url, selenium, login, product):
+        manage_versions_pg = MozTrapManageVersionsPage(base_url, selenium)
         manage_versions_pg.go_to_manage_versions_page()
         filter_item = manage_versions_pg.filter_form.filter_by(lookup='product', value=product['name'])
 
@@ -165,13 +165,13 @@ class TestPinningFilters(BaseTest):
         assert product['name'] == create_version_pg.product_name_value
 
     @pytest.mark.moztrap(5931)
-    def test_that_pinning_filter_persists_for_session(self, api, mozwebqa, existing_user, login, product, element):
+    def test_that_pinning_filter_persists_for_session(self, api, base_url, selenium, existing_user, login, product, element):
         # create suite, cases and test run
         product_version_name = u'%s %s' % (product['name'], product['version']['name'])
-        case, suite, run = self.create_and_run_test(api, mozwebqa, product, element)
+        case, suite, run = self.create_and_run_test(api, base_url, selenium, product, element)
 
         # go to manage cases page
-        manage_cases_pg = MozTrapManageCasesPage(mozwebqa)
+        manage_cases_pg = MozTrapManageCasesPage(base_url, selenium)
         manage_cases_pg.go_to_manage_cases_page()
 
         # filter on product
@@ -188,7 +188,7 @@ class TestPinningFilters(BaseTest):
         self.check_pinned_filter(filter_item, is_pinned=True)
 
         # go to manage suites page
-        manage_suites_pg = MozTrapManageSuitesPage(mozwebqa)
+        manage_suites_pg = MozTrapManageSuitesPage(base_url, selenium)
         manage_suites_pg.go_to_manage_suites_page()
 
         # see only suites for specified product
@@ -197,7 +197,7 @@ class TestPinningFilters(BaseTest):
         assert suite.name.lower() == displayed_suites[0].name.lower()
 
         # go to results page
-        view_results_pg = MozTrapViewRunResultsPage(mozwebqa)
+        view_results_pg = MozTrapViewRunResultsPage(base_url, selenium)
         view_results_pg.go_to_view_run_results_page()
 
         # see only results for specified product

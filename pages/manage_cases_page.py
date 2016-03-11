@@ -20,7 +20,7 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     def go_to_manage_cases_page(self):
         self.selenium.get(self.base_url + '/manage/cases/')
@@ -29,12 +29,12 @@ class MozTrapManageCasesPage(MozTrapBasePage):
     def click_create_case_button(self):
         self.find_element(*self._create_case_button_locator).click()
         from pages.create_case_page import MozTrapCreateCasePage
-        return MozTrapCreateCasePage(self.testsetup)
+        return MozTrapCreateCasePage(self.base_url, self.selenium)
 
     def click_create_bulk_cases_button(self):
         self.find_element(*self._create_bulk_cases_button_locator).click()
         from pages.create_bulk_cases_page import MozTrapCreateBulkCasesPage
-        return MozTrapCreateBulkCasesPage(self.testsetup)
+        return MozTrapCreateBulkCasesPage(self.base_url, self.selenium)
 
     def delete_case(self, name='Test Case'):
         self._get_case(name).delete()
@@ -47,7 +47,7 @@ class MozTrapManageCasesPage(MozTrapBasePage):
 
     @property
     def test_cases(self):
-        return [TestCaseItem(self.testsetup, web_element)
+        return [TestCaseItem(self.base_url, self.selenium, web_element)
                 for web_element in self.find_elements(*self._test_case_item_locator)]
 
     def is_case_present(self, case):

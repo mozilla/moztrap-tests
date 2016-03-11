@@ -18,7 +18,7 @@ class MozTrapManageTagsPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     def go_to_manage_tags_page(self):
         self.get_relative_path('/manage/tags/')
@@ -27,10 +27,10 @@ class MozTrapManageTagsPage(MozTrapBasePage):
     def click_create_tag_button(self):
         self.find_element(*self._create_tag_button_locator).click()
         from pages.create_tag_page import MozTrapCreateTagPage
-        return MozTrapCreateTagPage(self.testsetup)
+        return MozTrapCreateTagPage(self.base_url, self.selenium)
 
     def tags(self):
-        return [TagItem(self.testsetup, web_element) for web_element
+        return [TagItem(self.base_url, self.selenium, web_element) for web_element
                 in self.find_elements(*self._tag_item_locator)]
 
 

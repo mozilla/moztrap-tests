@@ -55,4 +55,4 @@ class MozTrapCreateSuitePage(MozTrapBasePage):
 
     @property
     def multiselect_widget(self):
-        return MultiselectWidget(self.testsetup)
+        return MultiselectWidget(self.base_url, self.selenium)

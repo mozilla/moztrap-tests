@@ -43,7 +43,7 @@ class Filter(Page):
 
         # find filter item and pass it as base element into FilterItem class
         filter_item = self.find_element(*_filter_item_locator)
-        return FilterItem(self.testsetup, filter_item)
+        return FilterItem(self.base_url, self.selenium, filter_item)
 
     def filter_without_mouse_by(self, lookup, value):
         filter_input = self.find_element(*self._filter_input_locator)
@@ -66,11 +66,11 @@ class Filter(Page):
 
         # find filter item and pass it as base element into FilterItem class
         filter_item = self.find_element(*_filter_item_locator)
-        return FilterItem(self.testsetup, filter_item)
+        return FilterItem(self.base_url, self.selenium, filter_item)
 
     @property
     def filter_items(self):
-        return [FilterItem(self.testsetup, web_element)
+        return [FilterItem(self.base_url, self.selenium, web_element)
                 for web_element in self.find_elements(*self._filter_item_locator)]
 
 

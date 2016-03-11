@@ -1,156 +1,118 @@
-Selenium Tests for moztrap-dev.allizom.org (MozTrap)
-====================
+# Tests for Mozilla's MozTrap
+This repository contains tests for [Mozilla's MozTrap](https://moztrap.mozilla.org/).
 
-Thank you for checking out Mozilla's MozTrap test suite. Mozilla and the [Web QA][webqa] team are grateful for the help and hard work of many contributors like yourself.
-The following contributors have submitted pull requests to MozTrap-Tests:
+[![license](https://img.shields.io/badge/license-MPL%202.0-blue.svg)](https://github.com/mozilla/moztrap-tests/blob/master/LICENSE)
+[![travis](https://img.shields.io/travis/mozilla/moztrap-tests.svg?label=travis)](http://travis-ci.org/mozilla/moztrap-tests/)
+[![stage](https://img.shields.io/jenkins/s/https/webqa-ci.mozilla.com/moztrap.stage.saucelabs.svg?label=stage)](https://webqa-ci.mozilla.com/job/moztrap.stage.saucelabs/)
+[![requirements](https://img.shields.io/requires/github/mozilla/moztrap-tests.svg)](https://requires.io/github/mozilla/moztrap-tests/requirements/?branch=master)
 
-https://github.com/mozilla/moztrap-tests/contributors
+## Getting involved
+We love working with contributors to fill out the test coverage for MozTrap,
+but it does require a few skills. By contributing to our test suite you will
+have an opportunity to learn and/or improve your skills with Python, Selenium
+WebDriver, GitHub, virtual environments, the Page Object Model, and more.
 
-[webqa]: http://quality.mozilla.org/teams/web-qa/
+For some resources for learning about these technologies, take a look at our
+documentation on [running Web QA automated tests][running-tests].
 
-Getting involved as a contributor
-------------------------------------------
+All of [these awesome contributors][contributors] have opened pull requests
+against this repository.
 
-We love working with contributors to fill out the Selenium test coverage for MozTrap-Tests, but it does require a few skills. You will need to know some Python, some Selenium and you will need some basic familiarity with Github.
+## Questions are always welcome
+While we take pains to keep our documentation updated, the best source of
+information is those of us who work on the project. Don't be afraid to join us
+in irc.mozilla.org [#mozwebqa][irc] to ask questions about our tests. We also
+have a [mailing list][list] available that you are welcome to join and post to.
 
-If you know some Python, it's worth having a look at the Selenium framework to understand the basic concepts of browser based testing and especially page objects. Our suite uses [Selenium WebDriver][webdriver].
+## How to run the tests locally
+We maintain a [detailed guide][running-tests] to running our automated tests.
+However, if you want to get started quickly, you can try following the steps
+below:
 
-If you need to brush up on programming but are eager to start contributing immediately, please consider helping us find bugs in Mozilla [Firefox][firefox] or find bugs in the Mozilla web-sites tested by the [Web QA][webqa] team.
+### Clone the repository
+If you have cloned this project already then you can skip this, otherwise you'll
+need to clone this repo using Git. If you do not know how to clone a GitHub
+repository, check out this [help page][git-clone] from GitHub.
 
-To brush up on Python skills before engaging with us, [Dive Into Python][dive] is an excellent resource.  MIT also has [lecture notes on Python][mit] available through their open courseware.The programming concepts you will need to know include functions, working with classes, and some object oriented programming basics.
+If you think you would like to contribute to the tests by writing or maintaining
+them in the future, it would be a good idea to create a fork of this repository
+first, and then clone that. GitHub also has great documentation for
+[forking a repository][git-fork].
 
-[mit]: http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-189-a-gentle-introduction-to-programming-using-python-january-iap-2011/
-[dive]: http://www.diveintopython.net/toc/index.html
-[webqa]: http://quality.mozilla.org/teams/web-qa/
-[firefox]: http://quality.mozilla.org/teams/desktop-firefox/
-[webdriver]: http://seleniumhq.org/docs/03_webdriver.html
+### Create or activate a Python virtual environment
+You should install this project's dependencies (which is described in the next
+step) into a virtual environment in order to avoid impacting the rest of your
+system, and to make problem solving easier. If you already have a virtual
+environment for these tests, then you should activate it, otherwise you should
+create a new one. For more information on working with virtual environments see
+our [summary][virtualenv].
 
-Questions are always welcome
-----------------------------
-While we take pains to keep our documentation updated, the best source of information is those of us who work on the project.  Don't be afraid to join us in irc.mozilla.org [#mozwebqa][mozwebqa] to ask questions about our Selenium tests.  Mozilla also hosts the [#mozillians][mozillians] chat room to answer your general questions about contributing to Mozilla.
+### Install dependencies
+Install the Python packages that are needed to run our tests using pip. In a
+terminal, from the the project root, issue the following command:
 
-[mozwebqa]:http://chat.mibbit.com/?server=irc.mozilla.org&channel=#mozwebqa
-[mozillians]:http://chat.mibbit.com/?server=irc.mozilla.org&channel=#mozillians
+```bash
+$ pip install -Ur requirements.txt
+```
 
-How to Set up and Build MozTrap Tests Locally
------------------------------------------
-This repository contains Selenium tests used to test the website moztrap-dev.allizom.org.
+### Create a test user
+Many of the tests require logging in. To run these tests you will need to
+create an account on https://moztrap.allizom.org/. You will also need an API
+user and key.
 
-Mozilla maintains a guide to running Automated tests on our QMO website:
+### Create a variables file
+The credentials associated with the test user is stored in a JSON file, which
+we then pass to the tests via the command line. If you want to be able to run
+any of the tests that need these credentials, you will need to create a
+variables file containing your own credentials (see above). The following is
+an example JSON file with the values missing. You can use this as a template.
 
-https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests
+```json
+{
+  "users": {
+    "default": {
+      "email": "",
+      "password": "",
+      "name": ""
+    }
+  },
+  "api": {
+    "user": "",
+    "key": ""
+  }
+}
+```
 
-This wiki page has some advanced instructions specific to Windows:
+You will then pass the name of that your variables file on the command line.
+For the purposes of the examples below, assume you named your copy of the file
+`my_variables.json`.
 
-https://wiki.mozilla.org/QA_SoftVision_Team/WebQA_Automation
+### Run the tests
+Tests are run using the command line. Below are a couple of examples of running
+the tests:
 
+To run all of the desktop tests against the default environment:
 
-###You will need to install the following:
+```bash
+$ py.test --driver Firefox --variables my_variables.json
+```
 
-#### Git
-If you have cloned this project already then you can skip this!
-GitHub has excellent guides for [Windows][GitWin], [MacOSX][GitMacOSX] and [Linux][GitLinux].
+To run against a different environment, pass in a value for `--base-url`, like so:
 
-[GitWin]: http://help.github.com/win-set-up-git/
-[GitMacOSX]: http://help.github.com/mac-set-up-git/
-[GitLinux]: http://help.github.com/linux-set-up-git/
+```bash
+$ py.test --base-url https://moztrap.mozilla.org --driver Firefox
+```
 
-#### Python
-Before you will be able to run these tests you will need to have [Python 2.6][Python2.6] or [Python 2.7][Python2.7] installed.
+The pytest plugin that we use for running tests has a number of advanced
+command line options available. To see the options available, run
+`py.test --help`. The full documentation for the plugin can be found
+[here][pytest-selenium].
 
-[Python2.6]: http://www.python.org/download/releases/2.6.8/
-[Python2.7]: http://www.python.org/download/releases/2.7.3/
-
-Install pip (for managing Python packages):
-
-    sudo easy_install pip
-
-or
-
-    sudo apt-get install python-pip
-
-####Virtualenv and Virtualenvwrapper (Optional/Intermediate level)
-While most of us have had some experience using virtual machines, [virtualenv][venv] is something else entirely.  It's used to keep libraries that you install from clashing and messing up your local environment.  After installing virtualenv, installing [virtualenvwrapper][wrapper] will give you some nice commands to use with virtualenvwrapper.
-
-[venv]: http://pypi.python.org/pypi/virtualenv
-[wrapper]: http://www.doughellmann.com/projects/virtualenvwrapper/
-
-#### Installing dependencies
-
-If you are using virtualenv, create and activate the virtualenv, then run the following in the project root:
-
-    pip install -r requirements.txt
-
-If you are not using virtualenv, run the following in the project root to install dependencies globally:
-
-    sudo pip install -r requirements.txt
-
-####Initializing git submodules
-Be sure to retrieve the git submodules by issuing this command at the project root:
-
-    git submodule update --init
-
-#### Running tests locally
-
-Tests are run using the py.test library. You will find examples here for running all of the tests, tests in one file and running a single test.
-
-WebDriver does not need a Selenium Server or Grid to run so these examples bypass this step and just use the --driver command.
-
-An example of running all tests without a Selenium Server:
-
-    py.test --driver=firefox --variables=/path/to/variables.json --destructive .
-
-An example of running all of the tests in one file:
-
-    py.test --driver=firefox --variables=/path/to/variables.json tests/test_manage_runs_page.py
-
-An example of running one test in a file:
-
-    py.test --driver=firefox --variables=/path/to/variables.json tests/test_manage_runs_page.py -k test_that_user_can_create_and_delete_run
-
-The mozwebqa plugin has advanced command line options for reporting and using browsers. See the documentation on [pytest mozwebqa github][pymozwebqa].
-[pymozwebqa]: https://github.com/mozilla/pytest-mozwebqa
-
-#### Moz-grid-config (Optional/Intermediate level)
-Prerequisites: [Java Runtime Environment][Java JRE], [Apache Ant][ANT]
-
-[Moz-grid-config][moz-grid] is a project containining our Selenium Grid configuration. It uses Apache Ant to run the Selenium hub or node to the configuration defined in the yaml files.
-
-We recommend git cloning the repository for a couple of reasons:
-
-1. The commands to launch a node or hub are all pre-configured and as simple as typing `ant launch-hub` or `ant launch-node`
-2. The paths to browser binaries and nodes can be stored in configuration (yaml) files
-3. It contains a jar file of the latest Selenium in it's lib directory
-
-(If you prefer to download Selenium it's own, you can do that from [here][Selenium Downloads])
-You will need to make sure that the name of your Firefox application matches one of the names in moz-grid-config/grid_configuration.yml.  As an example:  even though Firefox typically installs without a version number in the name, moz-grid-config requires it to be named "Firefox <version number>".app on mac.
-
-[moz-grid]:https://github.com/mozilla/moz-grid-config
-[ANT]: http://ant.apache.org/
-[Java JRE]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[Selenium Downloads]: http://code.google.com/p/selenium/downloads/list
-
-Writing Tests
--------------
-
-If you want to get involved and add more tests then there's just a few things
-we'd like to ask you to do:
-
-1. Use the [template files][GitHub Templates] for all new tests and page objects
-2. Follow our simple [style guide][Style Guide]
-3. Fork this project with your own GitHub account
-4. Add your test into the "tests" folder and the necessary methods for it into the appropriate file in "pages"
-5. Make sure all tests are passing and submit a pull request with your changes
-
-[GitHub Templates]: https://github.com/mozilla/mozwebqa-test-templates
-[Style Guide]: https://wiki.mozilla.org/QA/Execution/Web_Testing/Docs/Automation/StyleGuide
-
-License
--------
-This software is licensed under the [MPL] 2.0:
-
-    This Source Code Form is subject to the terms of the Mozilla Public
-    License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-[MPL]: http://www.mozilla.org/MPL/2.0/
+[contributors]: https://github.com/mozilla/moztrap-tests/contributors
+[git-clone]: https://help.github.com/articles/cloning-a-repository/
+[git-fork]: https://help.github.com/articles/fork-a-repo/
+[irc]: http://widget01.mibbit.com/?settings=1b10107157e79b08f2bf99a11f521973&server=irc.mozilla.org&channel=%23mozwebqa
+[list]: https://mail.mozilla.org/listinfo/mozwebqa
+[pytest-selenium]: http://pytest-selenium.readthedocs.org/
+[running-tests]: https://developer.mozilla.org/en-US/docs/Mozilla/QA/Running_Web_QA_automated_tests
+[virtualenv]: https://wiki.mozilla.org/QA/Execution/Web_Testing/Automation/Virtual_Environments

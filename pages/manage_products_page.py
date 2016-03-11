@@ -17,7 +17,7 @@ class MozTrapManageProductsPage(MozTrapBasePage):
 
     @property
     def filter_form(self):
-        return Filter(self.testsetup)
+        return Filter(self.base_url, self.selenium)
 
     def go_to_manage_products_page(self):
         self.get_relative_path('/manage/products/')

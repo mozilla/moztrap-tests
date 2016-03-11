@@ -16,7 +16,7 @@ class MozTrapRunTestsPage(MozTrapBasePage):
 
     @property
     def test_results(self):
-        return [TestResult(self.testsetup, web_el) for web_el
+        return [TestResult(self.base_url, self.selenium, web_el) for web_el
                 in self.selenium.find_elements(*self._test_item_locator)]
 
     def get_test_result(self, case_name):

@@ -31,7 +31,7 @@ class MozTrapLoginPage(MozTrapBasePage):
         browser_id.sign_in(email, password)
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: self.header.is_user_logged_in)
-        return MozTrapHomePage(self.testsetup)
+        return MozTrapHomePage(self.base_url, self.selenium)
 
     @property
     def is_browserid_visible(self):
