@@ -1,5 +1,5 @@
 browserid
-pytest==2.9.0
+pytest==2.9.1
 pytest-selenium
 pytest-variables
 pytest-xdist==1.14
