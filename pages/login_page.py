@@ -25,9 +25,9 @@ class MozTrapLoginPage(MozTrapBasePage):
 
     def login(self, email, password):
         from home_page import MozTrapHomePage
-        from browserid import BrowserID
+        from bidpom import BIDPOM
         self.selenium.find_element(*self._browserid_locator).click()
-        browser_id = BrowserID(self.selenium, timeout=self.timeout)
+        browser_id = BIDPOM(self.selenium, timeout=self.timeout)
         browser_id.sign_in(email, password)
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: self.header.is_user_logged_in)
