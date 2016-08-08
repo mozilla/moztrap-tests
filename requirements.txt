@@ -1,4 +1,4 @@
-browserid
+bidpom
 pytest==2.9.2
 pytest-selenium
 pytest-variables
