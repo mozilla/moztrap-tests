@@ -2,9 +2,9 @@
 This repository contains tests for [Mozilla's MozTrap](https://moztrap.mozilla.org/).
 
 [![license](https://img.shields.io/badge/license-MPL%202.0-blue.svg)](https://github.com/mozilla/moztrap-tests/blob/master/LICENSE)
-[![travis](https://img.shields.io/travis/mozilla/moztrap-tests.svg?label=travis)](http://travis-ci.org/mozilla/moztrap-tests/)
-[![stage](https://img.shields.io/jenkins/s/https/webqa-ci.mozilla.com/moztrap.stage.saucelabs.svg?label=stage)](https://webqa-ci.mozilla.com/job/moztrap.stage.saucelabs/)
-[![requirements](https://img.shields.io/requires/github/mozilla/moztrap-tests.svg)](https://requires.io/github/mozilla/moztrap-tests/requirements/?branch=master)
+
+## This project is no longer actively maintained
+Due to MozTrap itself being shut down, we have no use for these tests; we're leaving them as-is, for now, in case they are useful for others.
 
 ## Getting involved
 We love working with contributors to fill out the test coverage for MozTrap,
