@@ -1,6 +1,6 @@
 bidpom
-pytest==3.0.1
+pytest~=3.0.0
 pytest-selenium
 pytest-variables
 pytest-xdist==1.15.0
-requests==2.11.1
+requests==2.12.1
